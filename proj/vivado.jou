@@ -1,0 +1,16 @@
+#-----------------------------------------------------------
+# Vivado v2023.2 (64-bit)
+# SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
+# IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
+# SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
+# Start of session at: Mon Dec 23 11:25:27 2024
+# Process ID: 15220
+# Current directory: D:/vs/cqu_mips/proj
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent28032 D:\vs\cqu_mips\proj\project_mips.xpr
+# Log file: D:/vs/cqu_mips/proj/vivado.log
+# Journal file: D:/vs/cqu_mips/proj\vivado.jou
+# Running On: DESKTOP-OVHQR3F, OS: Windows, CPU Frequency: 3110 MHz, CPU Physical cores: 12, Host memory: 16849 MB
+#-----------------------------------------------------------
+start_gui
+open_project D:/vs/cqu_mips/proj/project_mips.xpr
+update_compile_order -fileset sources_1
