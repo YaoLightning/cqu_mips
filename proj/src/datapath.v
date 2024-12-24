@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: CQU
+// Engineer: Napbad
 // 
-// Create Date: 2024/12/23 11:18:06
-// Design Name: 
+// Create Date: 12/24/2024 05:00:00 PM
+// Design Name: cqu_mips
 // Module Name: datapath
-// Project Name: 
+// Project Name: cqu_mips
 // Target Devices: 
 // Tool Versions: 
 // Description: 
