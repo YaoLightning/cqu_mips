@@ -19,3 +19,15 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+module mips(
+    input wire clk,                // Clock signal
+    input wire reset               // Reset signal
+    );
+
+    // Instantiate the datapath module
+    datapath datapath_m(
+        .clk(clk),
+        .rst(reset)
+    );
+
+endmodule

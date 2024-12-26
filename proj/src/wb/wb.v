@@ -23,15 +23,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module wb(
+// Write back stage module
+module write_back(
+    // Clock and reset signals
     input wire clk,                // Clock signal
-    input wire reset,              // Reset signal
-    input wire reg_write,          // Register write enable signal
-    input wire [4:0] rd,           // Destination register address
-    input wire [31:0] alu_result,  // ALU result
-    input wire [31:0] mem_data,    // Data from memory
-    input wire mem_to_reg,         // Select data from memory or ALU
-    output reg [31:0] wb_data      // Data written to register file
+    input wire stall,            // Stall signal
+    input wire rst,              // Reset signal
+
+    // Inputs from memory access stage
+    input wire [31:0] final_result, // Final result from memory access stage
+    input wire [4:0] write_reg_out, // Register address to be written from memory access stage
+    input wire reg_write_final,    // Final register write enable signal from memory access stage
+    input wire mem_to_reg_final    // Final memory to register selection signal from memory access stage
+
+    // Assume connection to register file
+    output wire reg_write_to_file, // Signal to write to register file
+    output wire [4:0] reg_write_addr, // Address of the register to write in register file
+    output wire [31:0] reg_write_data // Data to be written to register file
 );
 
     // Register file array simulation

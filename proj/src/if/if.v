@@ -25,8 +25,12 @@
 
 module if(
     input wire clk,                // Clock signal
-    input wire reset,              // Reset signal
+    input wire rst,              // Reset signal
+    input wire stall,            // Stall signal
+
     input wire [31:0] pc_in,       // Program counter input
+    input wire stall,              // Stall signal
+    input wire jump,               // Jump signal
     output wire [31:0] pc_out,      // Program counter output
     output wire [31:0] instruction  // Fetched instruction
 );
@@ -53,6 +57,6 @@ module if(
     end
 
     // Memory model for demonstration purposes
-    reg [31:0] mem [0:1023]; // 4KB memory
+    reg [31:0] mem [0:1023]; // 4KB memory TODO: true memory
 
 endmodule

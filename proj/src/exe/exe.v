@@ -26,6 +26,8 @@
 module memory_access(
     input wire clk,                // Clock signal
     input wire reset,              // Reset signal
+    input wire stall,            // Stall signal
+    
     input wire mem_read,           // Memory read enable signal
     input wire mem_write,          // Memory write enable signal
     input wire [31:0] alu_result,  // ALU result used as memory address

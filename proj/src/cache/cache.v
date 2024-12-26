@@ -31,15 +31,22 @@ module cache(
     input wire [31:0] data_in,     // Data to write
     input wire read_enable,        // Read enable signal
     input wire write_enable,       // Write enable signal
-    output reg [31:0] data_out,    // Data read from cache
-    output reg hit,                // Cache hit signal
-    output reg miss                // Cache miss signal
+    output wire [31:0] data_out,    // Data read from cache
+    output wire hit,                // Cache hit signal
+    output wire miss                // Cache miss signal
 );
 
     // Cache parameters
     parameter CACHE_SIZE = 1024;    // Total size of the cache in bytes
     parameter BLOCK_SIZE = 32;      // Size of each cache block in bytes
     parameter NUM_WAYS = 4;         // Number of ways in the cache
+
+    reg [31:0] data_out_reg;
+    reg hit_reg;
+    reg miss_reg;
+    assign data_out = data_out_reg;
+    assign hit = hit_reg;
+    assign miss = miss_reg;
 
     // Cache memory declaration
     reg [31:0] cache_memory [CACHE_SIZE/BLOCK_SIZE-1:0][NUM_WAYS-1:0];

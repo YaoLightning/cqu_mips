@@ -23,7 +23,8 @@
 
 module reg_file(
     input wire clk,                // Clock signal
-    input wire reset,              // Reset signal
+    input wire rst,              // Reset signal
+
     input wire reg_write,          // Register write enable signal
     input wire [4:0] rs,           // Source register 1 address
     input wire [4:0] rt,           // Source register 2 address
