@@ -34,7 +34,7 @@ module write_back(
     input wire [31:0] final_result, // Final result from memory access stage
     input wire [4:0] write_reg_out, // Register address to be written from memory access stage
     input wire reg_write_final,    // Final register write enable signal from memory access stage
-    input wire mem_to_reg_final    // Final memory to register selection signal from memory access stage
+    input wire mem_to_reg_final,    // Final memory to register selection signal from memory access stage
 
     // Assume connection to register file
     output wire reg_write_to_file, // Signal to write to register file
