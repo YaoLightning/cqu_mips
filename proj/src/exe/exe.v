@@ -5,11 +5,11 @@
 // 
 // Create Date: 2024/12/23 11:18:06
 // Design Name: cqu_mips
-// Module Name: memory_access
+// Module Name: execute
 // Project Name: cqu_mips
 // Target Devices: 
 // Tool Versions: 
-// Description: The memory_access module handles memory read and write operations in the MIPS processor.
+// Description: The execute module handles memory read and write operations in the MIPS processor.
 // 
 // Dependencies: 
 // - ALU module
@@ -23,7 +23,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module memory_access(
+module execute(
     input wire clk,                // Clock signal
     input wire reset,              // Reset signal
     input wire stall,            // Stall signal
