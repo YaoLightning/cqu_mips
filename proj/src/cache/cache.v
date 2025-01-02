@@ -36,44 +36,5 @@ module cache(
     output wire miss                // Cache miss signal
 );
 
-    // Cache parameters
-    parameter CACHE_SIZE = 1024;    // Total size of the cache in bytes
-    parameter BLOCK_SIZE = 32;      // Size of each cache block in bytes
-    parameter NUM_WAYS = 4;         // Number of ways in the cache
-
-    reg [31:0] data_out_reg;
-    reg hit_reg;
-    reg miss_reg;
-    assign data_out = data_out_reg;
-    assign hit = hit_reg;
-    assign miss = miss_reg;
-
-    // Cache memory declaration
-    reg [31:0] cache_memory [CACHE_SIZE/BLOCK_SIZE-1:0][NUM_WAYS-1:0];
-
-    // Cache tag and valid bits
-    reg [31:0] tag_memory [CACHE_SIZE/BLOCK_SIZE-1:0][NUM_WAYS-1:0];
-    reg [NUM_WAYS-1:0] valid_bits [CACHE_SIZE/BLOCK_SIZE-1:0];
-
-    // Cache logic here
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            // Initialize cache memory and valid bits
-            for (int i = 0; i < CACHE_SIZE/BLOCK_SIZE; i = i + 1) begin
-                for (int j = 0; j < NUM_WAYS; j = j + 1) begin
-                    cache_memory[i][j] <= 0;
-                    tag_memory[i][j] <= 0;
-                    valid_bits[i][j] <= 0;
-                end
-            end
-        end else begin
-            // Cache read and write logic
-            if (read_enable) begin
-                // Implement read logic
-            end else if (write_enable) begin
-                // Implement write logic
-            end
-        end
-    end
 
 endmodule
