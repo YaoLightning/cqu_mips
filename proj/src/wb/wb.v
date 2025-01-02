@@ -28,7 +28,7 @@ module write_back(
     // Clock and reset signals
     input wire clk,                // Clock signal
     input wire stall,            // Stall signal
-    input wire rst,              // Reset signal
+    input wire rstn,              // Reset signal
 
     // Inputs from memory access stage
     input wire [31:0] final_result, // Final result from memory access stage

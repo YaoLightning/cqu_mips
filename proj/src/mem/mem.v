@@ -28,7 +28,7 @@ module memory_access(
     // Clock and reset signals
     input wire clk,                // Clock signal
     input wire stall,            // Stall signal
-    input wire rst,                // Reset signal
+    input wire rstn,                // Reset signal
 
     // Inputs from execute stage
     input wire [31:0] alu_result,  // ALU operation result from execute stage

@@ -22,34 +22,39 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module reg_file(
-    input wire clk,                // Clock signal
-    input wire rst,              // Reset signal
+    input  wire clk,                // Clock signal
+    input  wire rstn,                // Reset signal
 
-    input wire reg_write,          // Register write enable signal
-    input wire [4:0] rs,           // Source register 1 address
-    input wire [4:0] rt,           // Source register 2 address
-    input wire [4:0] rd,           // Destination register address
-    input wire [31:0] write_data,  // Data to be written to the register file
-    output reg [31:0] rs_data,     // Data from source register 1
-    output reg [31:0] rt_data      // Data from source register 2
+    input  wire reg_write,          // Register write enable signal
+    input  wire [4:0] rs,           // Source register 1 address
+    input  wire [4:0] rt,           // Source register 2 address
+    input  wire [4:0] rd,           // Destination register address
+    input  wire [31:0] write_data,  // Data to be written to the register file
+    output wire [31:0] rs_data,     // Data from source register 1
+    output wire [31:0] rt_data      // Data from source register 2
 );
 
     // Register file array
     reg [31:0] reg_file [0:31];  // 32 registers, each 32 bits
 
+    reg [31:0] rs_data_reg, rt_data_reg;
+
+    assign rs_data = rs_data_reg;
+    assign rt_data = rt_data_reg;
+
     // Read operation
     always @(posedge clk) begin
         if (rs != 0)
-            rs_data <= reg_file[rs];
+            rs_data_reg <= reg_file[rs];
         else
-            rs_data <= 32'b0;  // $zero register always outputs 0
+            rs_data_reg <= 32'b0;  // $zero register always outputs 0
     end
 
     always @(posedge clk) begin
         if (rt != 0)
-            rt_data <= reg_file[rt];
+            rt_data_reg <= reg_file[rt];
         else
-            rt_data <= 32'b0;  // $zero register always outputs 0
+            rt_data_reg <= 32'b0;  // $zero register always outputs 0
     end
 
     // Write operation

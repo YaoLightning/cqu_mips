@@ -25,7 +25,7 @@
 
 module if(
     input wire clk,                // Clock signal
-    input wire rst,              // Reset signal
+    input wire rstn,              // Reset signal
     input wire stall,            // Stall signal
 
     input wire [31:0] pc_in,       // Program counter input

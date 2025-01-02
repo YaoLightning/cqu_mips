@@ -27,7 +27,7 @@ module mips(
     // Instantiate the datapath module
     datapath datapath_m(
         .clk(clk),
-        .rst(reset)
+        .rstn(reset)
     );
 
 endmodule

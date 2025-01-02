@@ -21,8 +21,10 @@
 
 
 module datapath(
-    input clk, rst
+    input clk, rstn
     );
+
+// implement all used modules here and link them
 
 
 

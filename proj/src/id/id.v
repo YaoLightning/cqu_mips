@@ -25,9 +25,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module id(
-    // Clock and rst signals
+    // Clock and rstn signals
     input wire clk,                // Clock signal
-    input wire rst,              // rst signal
+    input wire rstn,              // rstn signal
     input wire stall,              // stall signal
 
     // Inputs from the instruction fetch stage
@@ -87,9 +87,9 @@ module id(
     end
 
     // Instruction decode logic
-    always @(posedge clk or posedge rst) begin
-        if (rst) begin
-            // rst outputs to default values
+    always @(posedge clk or posedge rstn) begin
+        if (rstn) begin
+            // rstn outputs to default values
             rs_reg <= 5'b00000;
             rt_reg <= 5'b00000;
             rd_reg <= 5'b00000;
