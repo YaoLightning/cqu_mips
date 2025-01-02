@@ -25,15 +25,30 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module cache(
-    input wire clk,                // Clock signal
-    input wire reset,              // Reset signal
-    input wire [31:0] address,     // Address to read/write
-    input wire [31:0] data_in,     // Data to write
-    input wire read_enable,        // Read enable signal
-    input wire write_enable,       // Write enable signal
-    output wire [31:0] data_out,    // Data read from cache
-    output wire hit,                // Cache hit signal
-    output wire miss                // Cache miss signal
+    input         clk,
+    input         resetn, 
+
+    //inst sram-like 
+    input         inst_req     ,
+    input         inst_wr      ,
+    input  [1 :0] inst_size    ,
+    input  [31:0] inst_addr    ,
+    input  [31:0] inst_wdata   ,
+    output [31:0] inst_rdata   ,
+    output        inst_addr_ok ,
+    output        inst_data_ok ,
+    
+    //data sram-like 
+    input         data_req     ,
+    input         data_wr      ,
+    input  [1 :0] data_size    ,
+    input  [31:0] data_addr    ,
+    input  [31:0] data_wdata   ,
+    output [31:0] data_rdata   ,
+    output        data_addr_ok ,
+    output        data_data_ok 
+
+    
 );
 
 

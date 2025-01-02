@@ -48,28 +48,6 @@ module write_back(
     // Data to be written to register file
     reg [31:0] write_data;
 
-    // Mux to select data source for register write
-    always @(*) begin
-        if (mem_to_reg)
-            write_data = mem_data;
-        else
-            write_data = alu_result;
-    end
-
-    // Register file write operation
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            // Initialize register file (optional)
-            for (integer i = 0; i < 32; i = i + 1) begin
-                reg_file[i] <= 0;
-            end
-        end else begin
-            if (reg_write && rd != 0) begin  // Ensure not writing to $zero register
-                reg_file[rd] <= write_data;
-            end
-        end
-    end
-
     // Output the data written to the register file
     assign wb_data = write_data;
 
