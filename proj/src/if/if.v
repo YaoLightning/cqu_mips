@@ -23,16 +23,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module if(
-    input wire clk,                // Clock signal
-    input wire rstn,              // Reset signal
-    input wire stall,            // Stall signal
+module inst_fetch (
+    input   wire clk,              // Clock signal
+    input   wire rstn,             // Reset signal
+    input   wire stall,            // Stall signal
 
-    input wire [31:0] pc_in,       // Program counter input
-    input wire stall,              // Stall signal
-    input wire jump,               // Jump signal
-    output wire [31:0] pc_out,      // Program counter output
-    output wire [31:0] instruction  // Fetched instruction
+    input   wire [31:0] pc_in,       // Program counter input
+    output  wire [31:0] pc_out,      // Program counter output
+    output  wire [31:0] instruction  // Fetched instruction
 );
 
     reg [31:0] pc_out_reg;
@@ -57,6 +55,7 @@ module if(
     end
 
     // Memory model for demonstration purposes
-    reg [31:0] mem [0:1023]; // 4KB memory TODO: true memory
-
+    reg [31:0] mem [0:1023]; // 4KB memory
+    // TODO: use true memory rather than the reg array
+  
 endmodule

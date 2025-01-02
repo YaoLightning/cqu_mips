@@ -39,23 +39,8 @@ module reg_file(
 
     reg [31:0] rs_data_reg, rt_data_reg;
 
-    assign rs_data = rs_data_reg;
-    assign rt_data = rt_data_reg;
-
-    // Read operation
-    always @(posedge clk) begin
-        if (rs != 0)
-            rs_data_reg <= reg_file[rs];
-        else
-            rs_data_reg <= 32'b0;  // $zero register always outputs 0
-    end
-
-    always @(posedge clk) begin
-        if (rt != 0)
-            rt_data_reg <= reg_file[rt];
-        else
-            rt_data_reg <= 32'b0;  // $zero register always outputs 0
-    end
+    assign rs_data = reg_file[rs];
+    assign rt_data = reg_file[rt];
 
     // Write operation
     always @(posedge clk or posedge reset) begin
