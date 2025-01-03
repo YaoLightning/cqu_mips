@@ -102,6 +102,11 @@ assign temp_arith = (aluop == `EXE_ADD_OP) ? (src1 + src2) :
                     (aluop == `EXE_SLTU_OP) ? (src1 < src2) :
                     32'b0;
 
+assign temp_mul = (aluop == `EXE_MUL_OP) ? (src1 * src2) :
+                    (aluop == `EXE_MULU_OP) ? (src1 * src2) :
+                    (aluop == `EXE_MUL_OP) ? (src1 * src2) :
+                    (aluop == `EXE_MULU_OP) ? (src1 * src2) :
+                    32'b0;
 
 
 
