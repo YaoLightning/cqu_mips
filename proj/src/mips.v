@@ -33,12 +33,7 @@ module mips(
     // Instantiate the datapath module
     datapath datapath_m(
         .clk(clk),
-        .rstn(rstn),
-        .mem_addr(mem_addr),
-        .mem_wdata(mem_wdata),
-        .mem_write(mem_write),
-        .mem_read(mem_read),
-        .mem_rdata(mem_rdata)
+        .rstn(rstn)
     );
     
     // Instantiate the ram_easy module

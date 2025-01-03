@@ -20,8 +20,12 @@ module reg_file(
 
 
 //write operation
-    always @(posedge clk)begin
+    always @(posedge clk or negedge rstn)begin
         if(!rstn)begin
+//            for (integer i = 0; i < 32; i = i + 1) begin
+//                reg_file[i] <= 32'h00000000;
+//            end
+        end else begin
             if((reg_write==1'b1)&&(waddr!=5'b00000))begin
                 reg_file[waddr] <= wdata;
             end

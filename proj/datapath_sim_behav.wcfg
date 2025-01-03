@@ -12,14 +12,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="125.269 ns"></ZoomEndTime>
-      <Cursor1Time time="39.282 ns"></Cursor1Time>
+      <ZoomEndTime time="185.364 ns"></ZoomEndTime>
+      <Cursor1Time time="31.909 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="108"></ValueColumnWidth>
+      <ValueColumnWidth column_width="96"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="7" />
+   <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/datapath_sim/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -78,8 +78,8 @@
          <obj_property name="ObjectShortName">alu_op[2:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/id_stage/alu_sel">
-         <obj_property name="ElementShortName">alu_sel[3:0]</obj_property>
-         <obj_property name="ObjectShortName">alu_sel[3:0]</obj_property>
+         <obj_property name="ElementShortName">alu_sel[2:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_sel[2:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group105">
@@ -107,6 +107,15 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/inst">
          <obj_property name="ElementShortName">inst[31:0]</obj_property>
          <obj_property name="ObjectShortName">inst[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group22">
+      <obj_property name="label">regfile</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/reg_file">
+         <obj_property name="ElementShortName">reg_file[0:31][31:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_file[0:31][31:0]</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

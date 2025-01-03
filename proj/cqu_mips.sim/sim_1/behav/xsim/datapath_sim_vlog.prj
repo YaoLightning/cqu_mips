@@ -1,7 +1,6 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  --include "../../../../src" \
 "../../../../src/datapath.v" \
-"../../../../src/exe/exe.v" \
 "../../../../src/id/id.v" \
 "../../../../src/if/if.v" \
 "../../../../src/mem/mem.v" \

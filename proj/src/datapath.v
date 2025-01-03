@@ -23,11 +23,24 @@
 module datapath(
     input clk, rstn,
 
-    output wire [31:0] mem_addr,           
-    output wire [31:0] mem_wdata,          
-    output wire        mem_write,          
-    output wire        mem_read,      
-    input  wire [31:0] mem_rdata           
+    //inst sram-like 
+    output        inst_req     ,
+    output        inst_wr      ,
+    output [1 :0] inst_size    ,
+    output [31:0] inst_addr    ,
+    input  [31:0] inst_rdata   ,
+    input         inst_addr_ok ,
+    input         inst_data_ok ,
+    
+    //data sram-like 
+    output        data_req     ,
+    output        data_wr      ,
+    output [1 :0] data_size    ,
+    output [31:0] data_addr    ,
+    output [31:0] data_wdata   ,
+    input  [31:0] data_rdata   ,
+    input         data_addr_ok ,
+    input         data_data_ok 
 );
 
     // implement all used modules here and link them
@@ -35,17 +48,16 @@ module datapath(
     // do not do any sequential logic inside the modules
 
 
-    wire if_stall;
-    wire id_stall;
-    wire exe_stall;
+    wire if_stall ;
+    wire id_stall ;
+    wire exe_stall ;
     wire mem_stall;
-    wire wb_stall;
-
-    assign if_stall  = 0 | id_stall  | exe_stall | mem_stall | wb_stall;
-    assign id_stall  = 0 | exe_stall | mem_stall | wb_stall;
-    assign exe_stall = 0 | mem_stall | wb_stall;
-    assign mem_stall = 0 | wb_stall;
-
+    wire wb_stall  ;
+    
+    assign mem_stall = wb_stall | !data_data_ok;
+    assign exe_stall = mem_stall | wb_stall;
+    assign id_stall = exe_stall | mem_stall | wb_stall;
+    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall ;
     // signal definition
     wire jump;
     wire branch;
@@ -71,7 +83,7 @@ module datapath(
 
     // id -> exe signal
     wire [ 2:0] alu_op_ID_EXE;
-    wire [ 3:0] alu_sel_ID_EXE;
+    wire [ 2:0] alu_sel_ID_EXE;
     wire        reg_write_ID_EXE;
     wire [ 4:0] reg_dst_ID_EXE;
     wire        mem_read_ID_EXE;
@@ -120,6 +132,24 @@ module datapath(
 
     assign regfile_data_write = reg_write_data_wb;
     assign reg_write_addr     = reg_write_addr_wb;
+
+    assign memory_write_data_mem = alu_result_EXE_MEM;
+    
+
+    // memory relative signals
+    assign inst_req = 1'b1;
+    assign inst_addr     = pc_out_IF_ID;
+    // assign inst_IF_ID    = inst_rdata;
+    assign inst_size = 2'b10;
+    assign inst_wr       = 1'b0;
+
+    assign data_req = mem_write_EXE_MEM | mem_read_EXE_MEM;
+    assign data_wr = mem_write_EXE_MEM;
+    assign data_size = 2'b10;
+    assign data_addr     = memory_addr_mem;
+    assign data_wdata     = memory_write_data_mem;
+    assign mem_read_data_MEM_WB = data_rdata;
+    
 
     inst_fetch if_stage(
         .clk             (clk),
@@ -243,15 +273,15 @@ module datapath(
         .rstn           (rstn),
 
         .reg_write      (reg_write),
-        .raddr1             (rs_id), // the read operation can only happend at id stage
-        .raddr2           (rt_id),
+        .raddr1         (rs_id), // the read operation can only happend at id stage
+        .raddr2         (rt_id),
         // write will be done at wb stage, cause that the write operation will take
         // one cycle to complete, so it will use the signal from the mem stage rather than wb
-        .waddr             (reg_write_addr), 
+        .waddr          (reg_write_addr), 
     
-        .wdata     (regfile_data_write),
-        .rdata1        (regfile_data_rs),
-        .rdata2        (regfile_data_rt)
+        .wdata          (regfile_data_write),
+        .rdata1         (regfile_data_rs),
+        .rdata2         (regfile_data_rt)
     );
 
 
