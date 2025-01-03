@@ -30,24 +30,35 @@
 //      this module just implement the signal connection and resolve
 module write_back(
     // Clock and reset signals
-    input wire clk,                // Clock signal
-    input wire stall,            // Stall signal
-    input wire rstn,              // Reset signal
+    input  wire clk,                // Clock signal
+    input  wire stall,              // Stall signal
+    input  wire rstn,               // Reset signal
 
     // Inputs from memory access stage
-    input wire [31:0] final_result, // Final result from memory access stage
-    input wire [4:0] write_reg, // Register address to be written from memory access stage
-    input wire reg_write_final,    // Final register write enable signal from memory access stage
-    input wire mem_to_reg_final,    // Final memory to register selection signal from memory access stage
+    input  wire [31:0]  final_result,       // Final result from memory access stage
+    input  wire [4 :0]  write_reg,          // Register address to be written from memory access stage
+    input  wire         reg_write_final,    // Final register write enable signal from memory access stage
+    input  wire         mem_to_reg_final,   // Final memory to register selection signal from memory access stage
 
-    output wire [4:0] reg_write_addr, // Address of the register to write in register file
-    output wire [31:0] reg_write_data // Data to be written to register file
+    input  wire [31:0]  inst_in,
+
+    output wire [4 :0]  reg_write_addr,     // Address of the register to write in register file
+    output wire [31:0]  reg_write_data      // Data to be written to register file
 );
 
-    // Register file array simulation
-    reg [31:0] reg_file [0:31];  // 32 registers, each 32 bits
+    reg [31:0] inst;
+
+    always @(posedge clk or negedge rstn) begin
+        if (!rstn) begin
+            inst <= 32'b0;
+        end        
+        else begin
+            inst <= inst_in;
+        end
+    end
 
     // Data to be written to register file
+    // logical usage
     reg [31:0] write_data;
 
     // Output the data written to the register file

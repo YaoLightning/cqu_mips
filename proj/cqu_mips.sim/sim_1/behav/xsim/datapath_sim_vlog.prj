@@ -1,0 +1,16 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../src" \
+"../../../../src/datapath.v" \
+"../../../../src/exe/exe.v" \
+"../../../../src/id/id.v" \
+"../../../../src/if/if.v" \
+"../../../../src/mem/mem.v" \
+"../../../../src/regfile.v" \
+"../../../../src/wb/wb.v" \
+"../../../../sim/datapath_sim.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
