@@ -49,10 +49,12 @@ module datapath(
     wire [31:0] regfile_data_write;
     wire reg_write;
 
+    // if signal definition
+    wire [31:0] pc_in_if;
+
     // if -> id signal
     wire [31:0] pc_out_IF_ID;
     wire [31:0] inst_IF_ID;
-    wire [31:0] pc_in_if;
 
     // id singal definition
     wire rs_id;
@@ -97,6 +99,9 @@ module datapath(
     // wb signal definition
     wire [31:0] reg_write_data_wb;
     wire [4 :0] reg_write_addr_wb;
+
+    // TODO: jumpaddress calculation
+    assign pc_in_if = jump ? 32'b0 : pc_out_IF_ID + 4;
 
 
     assign regfile_data_write = reg_write_data_wb;

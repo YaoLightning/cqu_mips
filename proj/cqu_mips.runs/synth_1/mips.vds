@@ -1,0 +1,79 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jan  3 14:54:45 2025
+# Process ID         : 1060884
+# Current directory  : /home/napbad/Project/cqu_mips/proj/cqu_mips.runs/synth_1
+# Command line       : vivado -log mips.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source mips.tcl
+# Log file           : /home/napbad/Project/cqu_mips/proj/cqu_mips.runs/synth_1/mips.vds
+# Journal file       : /home/napbad/Project/cqu_mips/proj/cqu_mips.runs/synth_1/vivado.jou
+# Running On         : napbad-archlinux
+# Platform           : Arch
+# Operating System   : Arch Linux
+# Processor Detail   : AMD Ryzen 9 7845HX with Radeon Graphics
+# CPU Frequency      : 4665.473 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 15929 MB
+# Swap memory        : 34359 MB
+# Total Virtual      : 50289 MB
+# Available Virtual  : 33539 MB
+#-----------------------------------------------------------
+source mips.tcl -notrace
+Command: synth_design -top mips -part xc7k70tfbv676-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7k70t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7k70t'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 1061197
+ERROR: [Synth 8-9263] cannot open include file 'defines.vh' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:25]
+ERROR: [Synth 8-9263] cannot open include file 'defines.vh' [/home/napbad/Project/cqu_mips/proj/src/id/id.v:27]
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1743.035 ; gain = 293.855 ; free physical = 223 ; free virtual = 30297
+---------------------------------------------------------------------------------
+INFO: [Synth 8-11241] undeclared symbol 'reg_write_addr', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:108]
+INFO: [Synth 8-11241] undeclared symbol 'forward_a', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:128]
+INFO: [Synth 8-11241] undeclared symbol 'forward_b', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:129]
+INFO: [Synth 8-11241] undeclared symbol 'forward_a_sel', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:130]
+INFO: [Synth 8-11241] undeclared symbol 'forward_b_sel', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:131]
+INFO: [Synth 8-11241] undeclared symbol 'imm', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:136]
+INFO: [Synth 8-11241] undeclared symbol 'opcode', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:138]
+INFO: [Synth 8-11241] undeclared symbol 'funct', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:139]
+INFO: [Synth 8-11241] undeclared symbol 'rs_data', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:140]
+INFO: [Synth 8-11241] undeclared symbol 'rt_data', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:141]
+INFO: [Synth 8-11241] undeclared symbol 'alu_src', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:144]
+INFO: [Synth 8-11241] undeclared symbol 'mem_read_data_MEM_WB', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:197]
+INFO: [Synth 8-11241] undeclared symbol 'reg_write_out_EXE_MEM', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:199]
+INFO: [Synth 8-11241] undeclared symbol 'final_result_wb', assumed default net type 'wire' [/home/napbad/Project/cqu_mips/proj/src/datapath.v:209]
+ERROR: [Synth 8-9263] cannot open include file 'defines.vh' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:25]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_AND_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:71]
+ERROR: [Synth 8-2716] syntax error near ')' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:71]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_OR_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:72]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_XOR_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:73]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_NOR_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:74]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_ANDI_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:75]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_ORI_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:76]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_XORI_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:77]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_LUI_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:78]
+ERROR: [Synth 8-2716] syntax error near '}' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:78]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SLL_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:80]
+ERROR: [Synth 8-2716] syntax error near ')' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:80]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SRL_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:81]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SRA_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:82]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SLLV_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:83]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SRLV_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:84]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_SRAV_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:85]
+ERROR: [Synth 8-10157] use of undefined macro 'EXE_MFHI_OP' [/home/napbad/Project/cqu_mips/proj/src/exe/exe.v:89]
+ERROR: [Synth 8-12188] Failed to read verilog '/home/napbad/Project/cqu_mips/proj/src/exe/exe.v'
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1812.004 ; gain = 362.824 ; free physical = 224 ; free virtual = 30281
+---------------------------------------------------------------------------------
+synthesize failed
+INFO: [Common 17-83] Releasing license: Synthesis
+19 Infos, 0 Warnings, 0 Critical Warnings and 23 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
+INFO: [Common 17-206] Exiting Vivado at Fri Jan  3 14:54:53 2025...

@@ -31,7 +31,7 @@ module inst_decode (
     input   wire rstn,               // rstn signal
     input   wire stall,              // stall signal
     //与IF交互
-    input   wire [31:0]     inst_in//instruction, // Instruction fetched from the instruction fetch stage
+    input   wire [31:0]     inst_in,//instruction, // Instruction fetched from the instruction fetch stage
     input   wire [31:0]     pc_in//pc,          // Current program counter value
     output  reg  [31:0]     jumppc,
     //与regfile交互
