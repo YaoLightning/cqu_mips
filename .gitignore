@@ -1,1 +1,5 @@
 *.md
+**/*.runs/
+**/*.sim/
+**/*.cache/
+*.log
