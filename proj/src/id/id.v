@@ -143,112 +143,8 @@
 // endmodule
 
 
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: CQU
-// Engineer: Napbad
-// 
-// Create Date: 2024/12/24 04:23:00 PM
-// Design Name: cqu_mips
-// Module Name: id
-// Project Name: cqu_mips
-// Target Devices: 
-// Tool Versions: 
-// Description: The instruction decode stage (ID) decodes the fetched instruction and generates control signals for the execution stage.
-// 
-// Dependencies: 
-// - Instruction fetch stage (if)
-// - Control unit (control)
-// - Register file (reg_file)
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// - This module is part of the MIPS processor design aimed at implementing a complete five-stage pipeline architecture.
-// - Ensure that the correct tool versions are used during simulation and synthesis.
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
-`include "defines.vh"
-module inst_decode (
-    // Clock and rstn signals
-    input   wire clk,                // Clock signal
-    input   wire rstn,              // rstn signal
-    input   wire stall,              // stall signal
-
-    // Inputs from the instruction fetch stage
-    input   wire [31:0]     instruction, // Instruction fetched from the instruction fetch stage
-    input   wire [31:0]     pc,          // Current program counter value
-
-    // Forwarding signals from other stages (example, may be more complex in reality)
-    input   wire [31:0]     forward_a,   // Data forwarded to source register 1
-    input   wire [31:0]     forward_b,   // Data forwarded to source register 2
-    input   wire            forward_a_sel,      // Selection signal for forwarding data to source register 1
-    input   wire            forward_b_sel,      // Selection signal for forwarding data to source register 2
-
-    // Input and output related to the register file
-    output  wire [4:0]      rs,           // Source register 1 address
-    output  wire [4:0]      rt,           // Source register 2 address
-    output  wire [4:0]      rd,           // Destination register address
-    output  wire [15:0]     imm,          // Immediate value
-    output  wire [5:0]      opcode,       // Opcode of the instruction
-    output  wire [5:0]      funct,        // Function field for R-type instructions
-
-    output  wire [2:0]      alu_op,       // ALU operation result
-    output  wire [2:0]      alu_sel,      // ALU operation result
-
-    // instruction outputs
-    output  wire [31:0]     inst_out,          // The instruction output
-
-    // Control signal outputs
-    output  wire            alu_src,           // ALU source selection signal, 1 means use immediate value, 0 means use register
-    output  wire            reg_dst,           // Register destination selection signal, 1 means write to rd, 0 means write to rt
-    output  wire            reg_write,         // Register write enable signal
-    output  wire            mem_read,          // Memory read enable signal
-    output  wire            mem_write,         // Memory write enable signal
-    output  wire            mem_to_reg,        // Memory to register selection signal, 1 means write memory data to register
-    output  wire            branch,            // Branch signal, 1 means a branch operation is needed
-    output  wire            jump,              // Jump signal, 1 means a jump operation is needed
-    output  wire [31:0]     extended_imm,      // Extended immediate value
-    output  wire [31:0]     pc_plus_4          // The value of the current PC + 4
-);
-
-    // Internal registers to store output values
-    reg [4 :0] rs_reg;
-    reg [4 :0] rt_reg;
-    reg [4 :0] rd_reg;
-    reg [15:0] imm_reg;
-    reg [5 :0] opcode_reg;
-    reg [5 :0] funct_reg;
-
-    // this reg is used to store the instruction which is decoding
-    reg [31:0] instruction_reg;
-
-    reg [7 :0] curr_alu_inst;
-
-    // Instruction decode logic
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin
-            // rstn outputs to default values
-            rs_reg      <= 5'b00000;
-            rt_reg      <= 5'b00000;
-            rd_reg      <= 5'b00000;
-            imm_reg     <= 16'b0000000000000000;
-            opcode_reg  <= 6'b000000;
-            funct_reg   <= 6'b000000;
-        end else begin
-            // Extract fields from the instruction
-            instruction_reg <= instruction;
-            rs_reg          <= instruction[25:21];
-            rt_reg          <= instruction[20:16];
-            rd_reg          <= instruction[15:11];
-            imm_reg         <= instruction[15: 0];
-            opcode_reg      <= instruction[31:26];
-            funct_reg       <= instruction[5 : 0];
-        end
-    end
-
-    // for the control signal, just use combinatorial logic
+// for the control signal, just use combinatorial logic
     // because that the previous [always] block has already consume a cycle
     // if the control signal still use one cycle, then the id stage will 
     // cost 2 cycles
@@ -337,6 +233,129 @@ module inst_decode (
     //         default:            curr_alu_inst = 8'bxxxx_xxxx;
     //     endcase
     // end
+
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: CQU
+// Engineer: Napbad
+// 
+// Create Date: 2024/12/24 04:23:00 PM
+// Design Name: cqu_mips
+// Module Name: id
+// Project Name: cqu_mips
+// Target Devices: 
+// Tool Versions: 
+// Description: The instruction decode stage (ID) decodes the fetched instruction and generates control signals for the execution stage.
+// 
+// Dependencies: 
+// - Instruction fetch stage (if)
+// - Control unit (control)
+// - Register file (reg_file)
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// - This module is part of the MIPS processor design aimed at implementing a complete five-stage pipeline architecture.
+// - Ensure that the correct tool versions are used during simulation and synthesis.
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+`include "defines.vh"
+module inst_decode (
+    // Clock and rstn signals
+    input   wire clk,                // Clock signal
+    input   wire rstn,               // rstn signal
+    input   wire stall,              // stall signal
+
+    // Inputs from the instruction fetch stage
+    input   wire [31:0]     instruction, // Instruction fetched from the instruction fetch stage
+    input   wire [31:0]     pc,          // Current program counter value
+
+    // Forwarding signals from other stages (example, may be more complex in reality)
+    input   wire [31:0]     forward_a,          // Data forwarded to source register 1
+    input   wire [31:0]     forward_b,          // Data forwarded to source register 2
+    input   wire            forward_a_sel,      // Selection signal for forwarding data to source register 1
+    input   wire            forward_b_sel,      // Selection signal for forwarding data to source register 2
+
+    //from reg to determine equal
+    input wire [31:0] rs_data,     // Data from source register 1
+    input wire [31:0] rt_data      // Data from source register 2
+
+    // Input and output related to the register file
+    output  wire [4:0]      rs,           // Source register 1 address
+    output  wire [4:0]      rt,           // Source register 2 address
+    output  wire [4:0]      rd,           // Destination register address
+    output  wire [15:0]     imm,          // Immediate value
+    output  wire [5:0]      opcode,       // Opcode of the instruction
+    output  wire [5:0]      funct,        // Function field for R-type instructions
+    // instruction outputs
+    output  wire [31:0]     inst_out,          // The instruction output
+    output  wire [2:0]      alu_op,       // ALU operation result
+    output  wire [7:0]      alu_sel,      // ALU operation result
+
+    // Control signal outputs
+    output  wire            alu_src,           // ALU source selection signal, 1 means use immediate value, 0 means use register
+    output  wire            reg_dst,           // Register destination selection signal, 1 means write to rd, 0 means write to rt
+    output  wire            reg_write,         // Register write enable signal
+    output  wire            mem_read,          // Memory read enable signal
+    output  wire            mem_write,         // Memory write enable signal
+    output  wire            mem_to_reg,        // Memory to register selection signal, 1 means write memory data to register
+    output  wire            branch,            // Branch signal, 1 means a branch operation is needed
+    output  wire            jump,              // Jump signal, 1 means a jump operation is needed
+    output  wire [31:0]     extended_imm,      // Extended immediate value
+    output  wire [1:0]      pc_src             // include [jump , branch & equal]
+    output  wire [31:0]     pc_plus_4          // The value of the current PC + 4
+    output  wire [31:0]     pc_branch
+    output  wire [31:0]     pc_jump
+
+);
+
+    // Internal registers to store output values
+    reg [4 :0] rs_reg;
+    reg [4 :0] rt_reg;
+    reg [4 :0] rd_reg;
+    reg [15:0] imm_reg;
+    reg [5 :0] opcode_reg;
+    reg [5 :0] funct_reg;
+    // this reg is used to store the instruction which is decoding
+    reg [31:0] instruction_reg;
+    reg [7 :0] curr_alu_inst;
+    reg [2 :0] curr_alu_sel;
+
+    // Assign internal registers to output wires
+    assign rs = rs_reg;
+    assign rt = rt_reg;
+    assign rd = rd_reg;
+    assign imm = imm_reg;
+    assign opcode = opcode_reg;
+    assign funct = funct_reg;
+    assign inst_out = instruction_reg;
+    assign alu_op=curr_alu_inst;
+    assign alu_sel=curr_alu_sel;
+
+    // Instruction decode logic
+    always @(posedge clk or negedge rstn) begin
+        if (!rstn) begin
+            // rstn outputs to default values
+            rs_reg      <= 5'b00000;
+            rt_reg      <= 5'b00000;
+            rd_reg      <= 5'b00000;
+            imm_reg     <= 16'b0000000000000000;
+            opcode_reg  <= 6'b000000;
+            funct_reg   <= 6'b000000;
+        end else begin
+            // Extract fields from the instruction
+            instruction_reg <= instruction;
+            rs_reg          <= instruction[25:21];
+            rt_reg          <= instruction[20:16];
+            rd_reg          <= instruction[15:11];
+            imm_reg         <= instruction[15: 0];
+            opcode_reg      <= instruction[31:26];
+            funct_reg       <= instruction[5 : 0];
+        end
+    end
+
+    //curr_alu_inst value
     always @(*) begin
         case (opcode_reg)
             `EXE_AND:        curr_alu_inst = `EXE_AND_OP;
@@ -450,9 +469,6 @@ module inst_decode (
         endcase
     end
 
-    assign alu_op = curr_alu_inst[7:5];
-    assign alu_sel = curr_alu_inst[2:0];
-
     // ALU source and register destination selection
     assign alu_src = (opcode_reg == `EXE_ANDI)  |
                      (opcode_reg == `EXE_ORI)   |
@@ -517,14 +533,121 @@ module inst_decode (
     // PC + 4 value
     assign pc_plus_4 = pc + 4;
 
-    // Assign internal registers to output wires
-    assign rs = rs_reg;
-    assign rt = rt_reg;
-    assign rd = rd_reg;
-    assign imm = imm_reg;
-    assign opcode = opcode_reg;
-    assign funct = funct_reg;
+    //current_alu_sel value
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_SPECIAL_INST: begin // R型指令
+                case (funct_reg)
+                    `EXE_AND,:  alu_sel = `EXE_RES_LOGIC;
+                    `EXE_OR:    alu_sel = `EXE_RES_LOGIC;
+                    `EXE_XOR:   alu_sel = `EXE_RES_LOGIC;
+                    `EXE_NOR:   alu_sel = `EXE_RES_LOGIC; 
 
-    assign inst_out = instruction_reg;
+                    `EXE_SLL:   alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SLLV:  alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRL:   alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRLV:  alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRA:   alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRAV:  alu_sel = `EXE_RES_SHIFT; 
+
+                    `EXE_MFHI:  alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTHI:  alu_sel = `EXE_RES_MOVE;
+                    `EXE_MFLO:  alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTLO:  alu_sel = `EXE_RES_MOVE; 
+
+                    `EXE_ADD:   alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_ADDU:  alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUB:   alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUBU:  alu_sel = `EXE_RES_ARITHMETIC;
+
+                    `EXE_SLT:   alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SLTU:  alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULT:  alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULTU: alu_sel = `EXE_RES_ARITHMETIC; 
+                    `EXE_DIV:   alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_DIVU:  alu_sel = `EXE_RES_ARITHMETIC; 
+
+                    default: 
+                        alu_sel = 3'b000; // 默认值或未定义指令
+                endcase
+            end
+
+            `EXE_REGIMM_INST: begin // REGIMM 指令
+                case (rs_reg)
+                    `EXE_BGEZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BGEZAL:alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BLTZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BLTZAL:alu_sel = `EXE_RES_JUMP_BRANCH; 
+
+                    default: 
+                        alu_sel = 3'b000; // 默认值或未定义指令
+                endcase
+            end
+
+            // 逻辑指令
+            `EXE_ANDI:  alu_sel = `EXE_RES_LOGIC;
+            `EXE_ORI:   alu_sel = `EXE_RES_LOGIC;
+            `EXE_XORI:  alu_sel = `EXE_RES_LOGIC;
+            `EXE_LUI:   alu_sel = `EXE_RES_LOGIC; 
+
+            // 跳转和分支指令
+            `EXE_J:     alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JAL:   alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JALR:  alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JR:    alu_sel = `EXE_RES_JUMP_BRANCH; 
+            `EXE_BEQ:   alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BGTZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BLEZ:  alu_sel = `EXE_RES_JUMP_BRANCH; 
+            `EXE_BNE:   alu_sel = `EXE_RES_JUMP_BRANCH;
+
+            // 负载和存储指令
+            `EXE_LB:    alu_sel = `EXE_RES_LOAD_STORE;       
+            `EXE_LBU:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LH:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LHU:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LL:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LW:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LWL:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LWR:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SB:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SC:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SH:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SW:    alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SWL:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SWR:   alu_sel = `EXE_RES_LOAD_STORE;   
+
+            // 乘法指令
+            `EXE_MULT:  alu_sel = `EXE_RES_MUL;
+            `EXE_MULTU: alu_sel = `EXE_RES_MUL;
+                
+            // 系统调用和其他特殊指令
+            `EXE_SYSCALL:alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BREAK: alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_ERET:  alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_SYNC:  alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_PREF:  alu_sel = `EXE_RES_JUMP_BRANCH;
+                 // 根据需要调整
+
+            default: 
+                alu_sel = 3'b000; // 默认值或未定义指令
+        endcase
+    end
+
+    //extended_imm_sl2 value
+    assign extended_imm_sl2 = {extended_imm[29:0],2'b0};
+    //equal value
+    always@(*)begin
+        if(rs_data==rt_data)begin
+            equal=1'b1;
+        end else begin equal =1'b0;
+        end
+    end
+    //pc_src
+    assign pc_src={jump,branch&equal};
+    //pc + 4 + extended_imm value
+    assign pc_branch = pc_plus_4 + extended_imm_sl2;
+    //pc_jump
+    assign pc_jump = {instruction[25:0],2'b0};
+
 
 endmodule
