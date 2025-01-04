@@ -1,11 +1,11 @@
 // Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 // Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-// Date        : Sat Jan  4 17:48:03 2025
-// Host        : napbad-archlinux running 64-bit Arch Linux
+// Tool Version: Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+// Date        : Sun Jan  5 02:13:35 2025
+// Host        : ZHANGHW running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub
-//               /home/napbad/Project/cqu_mips/proj/cqu_mips.gen/sources_1/ip/ram_easy/ram_easy_stub.v
+//               d:/Projects/cqu_mips/proj/cqu_mips.gen/sources_1/ip/ram_easy/ram_easy_stub.v
 // Design      : ram_easy
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7k70tfbv676-1
