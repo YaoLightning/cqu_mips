@@ -33,7 +33,7 @@ module inst_fetch (
     output  wire [31:0] instruction  // Fetched instruction
 );
 
-    reg [31:0] pc_out_reg;
+    reg [31:0] pc;
     reg [31:0] instruction_reg;
 
 
@@ -41,14 +41,14 @@ module inst_fetch (
     reg [31:0] mem [0:1023]; // 4KB memory
     // TODO: use true memory rather than the reg array
 
-    assign pc_out = pc_out_reg;
+    assign pc_out = pc;
     assign instruction = instruction_reg;
 
     // Instruction fetch stage logic
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
             // Reset the program counter to the initial value (e.g., 0x00400000)
-            pc_out_reg <= 32'h00000000;
+            pc <= 32'h00000000;
 
             // Logical operation instructions
             mem[0 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100100}; // and $3, $1, $2
@@ -71,10 +71,10 @@ module inst_fetch (
             // Assuming the memory module is connected to fetch the instruction
             // Here we assume a simple memory read operation
             // In a real design, this would involve interfacing with the memory module
-            instruction_reg <= mem[pc_out_reg / 4]; // Fetch instruction from memory
+            instruction_reg <= mem[pc / 4]; // Fetch instruction from memory
 
             // Fetch the instruction from memory using the current PC
-            pc_out_reg <= pc_in;
+            pc <= pc_in;
         end
     end
 

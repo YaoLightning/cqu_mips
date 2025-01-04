@@ -5,8 +5,8 @@ module pc_reg(
     input wire clk,
     input wire rstn,
     input wire [5:0]stall,           //暂停信号
-    input wire jumpD,
-    input wire[31:0]pc_in
+    input wire pc_src[1:0],               //pc选择信号
+    input wire [31:0]pc_branch,
 
     output reg[31:0] pc_out,        //要读取的指令的地址
     output reg ce                   //enable pc
