@@ -590,7 +590,17 @@ module inst_decode (
     end
 
     // Extended immediate value
-    assign extended_imm = {{16{imm_reg[15]}}, imm_reg};
+    //assign extended_imm = {{16{imm_reg[15]}}, imm_reg};
+    wire is_zero_extend;
+    assign is_zero_extend = (
+        opcode == `EXE_ANDI  ||
+        opcode == `EXE_ORI   ||
+        opcode == `EXE_XORI  ||
+        opcode == `EXE_LUI
+    );
+    wire [31:0] zero_extended = {16'b0, imm_reg};// 0扩展 
+    wire [31:0] sign_extended = {{16{imm_reg[15]}}, imm_reg};
+    assign extended_imm = is_zero_extend ? zero_extended : sign_extended;
 
     // PC + 4 value
     assign pc_plus_4 = pc + 4;

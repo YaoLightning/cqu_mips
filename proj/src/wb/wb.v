@@ -36,12 +36,8 @@ module write_back(
 
     // Inputs from memory access stage
     input  wire [4 :0]  write_addr_in,          // Register address to be written from memory access stage
-    input  wire [31:0]  write_data_alu,
-    input  wire [31:0]  write_data_mem,
+    input  wire [31:0]  write_data_in,
     input  wire         reg_write,
-
-    input  wire         reg_write_final,    // Final register write enable signal from memory access stage
-    input  wire         mem_to_reg_final,   // Final memory to register selection signal from memory access stage
 
     input  wire [31:0]  inst_in,
 
@@ -50,38 +46,34 @@ module write_back(
 );
 
     reg [31:0] reg_inst;
-    reg [31:0] reg_write_data_alu;
-    reg [31:0] reg_write_data_mem;
-    reg reg_mem_to_reg_final;
 
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
             reg_inst <= 32'b0;
-            reg_write_data_alu<=32'b0;
-            reg_write_data_mem<=32'b0;
-            reg_mem_to_reg_final<=1'b0;
         end        
         else begin
             reg_inst <= inst_in;
-            reg_write_data_alu<=write_data_alu;
-            reg_write_data_mem<=write_data_mem;
-            reg_mem_to_reg_final<=mem_to_reg_final;
         end
     end
 
+    assign write_addr_out = write_addr_in;
+
     // Data to be written to register file
     // logical usage
-    reg [31:0] write_data;
+    // reg [31:0] write_data;
 
-    always@(*)begin
-        case(reg_mem_to_reg_final)
-        1'b0:write_data=reg_write_data_alu;
-        1'b1:write_data=reg_write_data_mem;
-        default:write_data=32'b0;
-        endcase
-    end
-    assign write_addr_out = write_addr_in;
-    assign write_data_out = write_data;
+    // always @(*) begin
+    //     case(reg_mem_to_reg_final)
+    //     1'b0: 
+    //         write_data = reg_write_data_alu;
+    //     1'b1:
+    //         write_data = reg_write_data_mem;
+    //     default:
+    //         write_data = 32'b0;
+    //     endcase
+    // end
+    // assign write_addr_out = write_addr_in;
+    // assign write_data_out = write_data;
 
     // Output the data written to the register file
     //assign wb_data = write_data;

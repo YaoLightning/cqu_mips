@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="148.386 ns"></ZoomEndTime>
-      <Cursor1Time time="94.323 ns"></Cursor1Time>
+      <ZoomStartTime time="18.492 ns"></ZoomStartTime>
+      <ZoomEndTime time="176.302 ns"></ZoomEndTime>
+      <Cursor1Time time="150.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+      <ValueColumnWidth column_width="80"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/datapath_sim/clk">
@@ -111,6 +111,11 @@
          <obj_property name="ElementShortName">extended_imm_sl2</obj_property>
          <obj_property name="ObjectShortName">extended_imm_sl2</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/id_stage/ascii">
+         <obj_property name="ElementShortName">ascii[39:0]</obj_property>
+         <obj_property name="ObjectShortName">ascii[39:0]</obj_property>
+         <obj_property name="Radix">ASCIIRADIX</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group105">
       <obj_property name="label">exe</obj_property>
@@ -141,13 +146,9 @@
          <obj_property name="ElementShortName">alu_result[31:0]</obj_property>
          <obj_property name="ObjectShortName">alu_result[31:0]</obj_property>
       </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/exe_stage/branch_taken_reg">
-         <obj_property name="ElementShortName">branch_taken_reg</obj_property>
-         <obj_property name="ObjectShortName">branch_taken_reg</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/waddr_reg">
-         <obj_property name="ElementShortName">waddr_reg[4:0]</obj_property>
-         <obj_property name="ObjectShortName">waddr_reg[4:0]</obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/write_reg">
+         <obj_property name="ElementShortName">write_reg[4:0]</obj_property>
+         <obj_property name="ObjectShortName">write_reg[4:0]</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/exe_stage/reg_write_reg">
          <obj_property name="ElementShortName">reg_write_reg</obj_property>
@@ -174,17 +175,9 @@
          <obj_property name="ElementShortName">inst[31:0]</obj_property>
          <obj_property name="ObjectShortName">inst[31:0]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/alu_result">
-         <obj_property name="ElementShortName">alu_result[31:0]</obj_property>
-         <obj_property name="ObjectShortName">alu_result[31:0]</obj_property>
-      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/mem_addr">
          <obj_property name="ElementShortName">mem_addr[31:0]</obj_property>
          <obj_property name="ObjectShortName">mem_addr[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/write_data">
-         <obj_property name="ElementShortName">write_data[31:0]</obj_property>
-         <obj_property name="ObjectShortName">write_data[31:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/write_reg_in">
          <obj_property name="ElementShortName">write_reg_in[4:0]</obj_property>
@@ -211,33 +204,21 @@
       <obj_property name="label">wb</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/inst">
-         <obj_property name="ElementShortName">inst[31:0]</obj_property>
-         <obj_property name="ObjectShortName">inst[31:0]</obj_property>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/wb_stage/reg_write">
+         <obj_property name="ElementShortName">reg_write</obj_property>
+         <obj_property name="ObjectShortName">reg_write</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/write_reg">
-         <obj_property name="ElementShortName">write_reg[4:0]</obj_property>
-         <obj_property name="ObjectShortName">write_reg[4:0]</obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/reg_inst">
+         <obj_property name="ElementShortName">reg_inst[31:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_inst[31:0]</obj_property>
       </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/wb_stage/reg_write_final">
-         <obj_property name="ElementShortName">reg_write_final</obj_property>
-         <obj_property name="ObjectShortName">reg_write_final</obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/write_data_out">
+         <obj_property name="ElementShortName">write_data_out[31:0]</obj_property>
+         <obj_property name="ObjectShortName">write_data_out[31:0]</obj_property>
       </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/wb_stage/mem_to_reg_final">
-         <obj_property name="ElementShortName">mem_to_reg_final</obj_property>
-         <obj_property name="ObjectShortName">mem_to_reg_final</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/reg_write_data_in">
-         <obj_property name="ElementShortName">reg_write_data_in[31:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_write_data_in[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/reg_write_addr">
-         <obj_property name="ElementShortName">reg_write_addr[4:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_write_addr[4:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/reg_write_data">
-         <obj_property name="ElementShortName">reg_write_data[31:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_write_data[31:0]</obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/write_addr_out">
+         <obj_property name="ElementShortName">write_addr_out[4:0]</obj_property>
+         <obj_property name="ObjectShortName">write_addr_out[4:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group22">

@@ -1,2 +1,0 @@
-ram_easy.v,verilog,xil_defaultlib,../../../../cqu_mips.gen/sources_1/ip/ram_easy/sim/ram_easy.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

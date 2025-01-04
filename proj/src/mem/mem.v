@@ -31,19 +31,21 @@ module memory_access(
     input  wire rstn,                // Reset signal
 
     // Inputs from execute stage
-    input  wire [31:0] alu_result,       // ALU operation result from execute stage
+    input  wire [31:0] exe_result,       // EXE result from execute stage
     input  wire [31:0] mem_addr,         // Memory address from execute stage
-    input  wire [31:0] write_data,       // Data to be written to memory from execute stage
+
+    input  wire [31:0] mem_read_data_in,// Data read from memory
+
+
+    input  wire        mem_read_in,     // Memory read enable signal from execute stage
+    input  wire        mem_write_in,    // Memory write enable signal from execute stage
+
+    input  wire        mem_to_reg_in,   // Memory to register selection signal from execute stage
     input  wire [ 4:0] write_reg_in,     // Register address to be written from execute stage
+    input  wire        reg_write_in,    // Register write enable signal from execute stage
 
     input  wire [31:0] inst_in,
     output wire [31:0] inst_out,
-
-    input  wire        reg_write_in,    // Register write enable signal from execute stage
-    input  wire        mem_read_in,     // Memory read enable signal from execute stage
-    input  wire        mem_write_in,    // Memory write enable signal from execute stage
-    input  wire        mem_to_reg_in,   // Memory to register selection signal from execute stage
-    input  wire [31:0] mem_read_data,   // Data read from memory
 
     // Outputs to write back stage
     output wire [31:0] final_result,    // Final result to be written back
@@ -53,26 +55,52 @@ module memory_access(
 );
 // Define memory (1024 x 32 bits)
     reg [31:0] memory [0:1023];
+    reg reg_write;
+    reg [4 :0] write_reg_reg;
     
-    reg [31:0] final_result_reg;
-    reg [31:0] alu_result_reg;
+    reg [31:0] exe_result_reg;
     reg [31:0] inst;
+
     assign inst_out = inst;
+
+    assign reg_write_out = reg_write;
+    assign write_reg_out = write_reg_reg;
 
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
             inst <= 32'b0;
+            exe_result_reg <= 32'b0;
+            reg_write <= 1'b0;
+            write_reg_reg <= 5'b0;
         end        
         else begin
             inst <= inst_in;
-            alu_result_reg <= alu_result;
-            final_result_reg <= mem_read_in ? mem_read_data : alu_result_reg;
+            reg_write <= reg_write_in;
+            exe_result_reg <= exe_result;
+            write_reg_reg <= write_reg_in;
         end
     end
 
-    assign final_result = final_result_reg;
+    assign final_result = (mem_read_data_in & mem_read_in) |
+                          (exe_result_reg & ~mem_read_in);
 
 
+    
+// // 加载数据:需要对读到的数据进行扩展再存储到目标寄存器中
+// assign load_data = (aluop == `EXE_LB_OP)   ? {{24{mem_data[7]}}, mem_data[7:0]} :  // LB: 符号扩展
+//                    (aluop == `EXE_LBU_OP)  ? {{24{1'b0}}, mem_data[7:0]} :        // LBU: 零扩展
+//                    (aluop == `EXE_LH_OP)   ? {{16{mem_data[15]}}, mem_data[15:0]} : // LH: 符号扩展
+//                    (aluop == `EXE_LHU_OP)  ? {{16{1'b0}}, mem_data[15:0]} :       // LHU: 零扩展
+//                    (aluop == `EXE_LW_OP)   ? mem_data :                           // LW: 全字直接加载
+//                    32'b0;                                                        // 默认值
+
+// // 存储数据
+// assign store_data = (aluop == `EXE_SB_OP) ? src2[7:0] :       // SB: 低 8 位
+//                     (aluop == `EXE_SH_OP) ? src2[15:0] :      // SH: 低 16 位
+//                     (aluop == `EXE_SW_OP) ? src2 :            // SW: 全字存储
+//                     32'b0;                                    // 默认值
+
+    
 //    // Memory access logic
 //    always @(posedge clk or negedge rstn) begin
 //        if (!rstn) begin
@@ -105,7 +133,7 @@ module memory_access(
 //            end
 
 //            // Determine final result
-//            final_result <= mem_to_reg_out ? mem_read_data : alu_result;
+//            final_result <= mem_to_reg_out ? mem_read_data : exe_result;
 //        end
 //    end
 endmodule

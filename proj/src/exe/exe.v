@@ -65,7 +65,7 @@ module execute(
     output wire [31:0] lo_out,        // lo output
     output wire        whilo_out      // Write HI/LO enable flag
 );
-// TODO: hilo寄存器逻辑实现 / 时序实现
+// TODO: hilo寄存器逻辑实现 / 时序实现 / div模块实现:需要暂停等额外逻辑
 //注意立即数逻辑的实现位置
 
 // logical usage
@@ -89,7 +89,7 @@ always @(posedge clk or negedge rstn) begin
         src2_reg         <= 32'b0;
         aluop_reg        <= 8'b0;
         alusel_reg       <= 3'b0;
-//        branch_taken_reg <= 1'b0;
+//      branch_taken_reg <= 1'b0;
         waddr_reg        <= 5'b0;
         reg_write_reg    <= 1'b0;
         mem_to_reg_reg   <= 1'b0;
@@ -207,6 +207,7 @@ assign mulres = (aluop == `EXE_MULT_OP ) ?//如果异或为真，相乘为负数
                 ((src1[31] ^ src2[31]) ? (~hilo_temp + 1) : hilo_temp) :
                 hilo_temp;
 
+//乘法最终结果也是放到了hilo寄存器中
 // assign temp_mul = (aluop == `EXE_MULT_OP||(aluop == `EXE_MULTU_OP))? mulres :
 //                     64'b0;
 
@@ -240,7 +241,7 @@ assign mem_addr_out = src1 + src2; //默认src2已经是立即数
 
 
 assign reg_write_out = reg_write;
-assign write_reg = waddr;
+assign write_reg = waddr_reg;
 assign mem_read_out  = mem_read;
 assign mem_write_out = mem_write;
 assign mem_to_reg_out = mem_to_reg;
