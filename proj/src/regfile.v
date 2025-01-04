@@ -8,10 +8,8 @@ module reg_file(
     input [4:0] waddr,
     input [31:0] wdata,
     //读数据
-    input re1,
     input [4:0] raddr1,
     output wire [31:0] rdata1,
-    input re2,
     input [4:0] raddr2,
     output wire [31:0] rdata2
 );
@@ -22,9 +20,10 @@ module reg_file(
 //write operation
     always @(posedge clk or negedge rstn)begin
         if(!rstn)begin
-//            for (integer i = 0; i < 32; i = i + 1) begin
-//                reg_file[i] <= 32'h00000000;
-//            end
+            // Fill all registers with 0
+            for (integer i = 0; i < 32; i = i + 1) begin
+                reg_file[i] <= 32'b0;
+            end
         end else begin
             if((reg_write==1'b1)&&(waddr!=5'b00000))begin
                 reg_file[waddr] <= wdata;
@@ -32,8 +31,8 @@ module reg_file(
         end
     end
 
-    assign rdata1 = re1 & reg_file[raddr1];
-    assign rdata2 = re2 & reg_file[raddr2];
+    assign rdata1 = reg_file[raddr1];
+    assign rdata2 = reg_file[raddr2];
 
 
 // //read operation-the first regdata

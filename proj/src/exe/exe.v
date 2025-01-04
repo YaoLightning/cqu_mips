@@ -34,7 +34,7 @@ module execute(
     input  wire [7: 0] aluop_in,        // ALU operation code
     input  wire [2: 0] alusel_in,       // ALU Select Signal
 
-    input  wire        branch_taken_in,       // Branch taken signal
+  //  input  wire        branch_taken_in,       // Branch taken signal
 
     input  wire [4: 0] waddr_in,        // Destination register address  // 写回寄存器的地址
     input  wire        reg_write_in, // Register write enable signal  // 是否写回寄存器标志
@@ -49,19 +49,16 @@ module execute(
     input  wire [31:0] inst_in,
     output wire [31:0] inst_out,
 
-
-
-
     // output to memory stage
     output wire [31:0] alu_result,      // ALU operation result
     output wire [ 4:0] write_reg,       // Register address to be written
     output wire        reg_write_out,   // Register write enable signal
     output wire        mem_to_reg_out,
 
-    output wire [31:0] mem_addr_out,    // Address output from memory
+    output wire [31:0] mem_addr_out,    // Address memory for read or write
 
 
-    //add the support for hilo register
+    // //add the support for hilo register
     input  wire [31:0] hi,            // hi register
     input  wire [31:0] lo,            // lo register
     output wire [31:0] hi_out,        // hi output
@@ -77,7 +74,7 @@ reg [31:0] src1_reg;
 reg [31:0] src2_reg;
 reg [7:0]  aluop_reg;
 reg [2:0]  alusel_reg;
-reg        branch_taken_reg;
+//reg        branch_taken_reg;
 reg [4:0]  waddr_reg;
 reg        reg_write_reg;
 reg        mem_to_reg_reg;
@@ -92,7 +89,7 @@ always @(posedge clk or negedge rstn) begin
         src2_reg         <= 32'b0;
         aluop_reg        <= 8'b0;
         alusel_reg       <= 3'b0;
-        branch_taken_reg <= 1'b0;
+//        branch_taken_reg <= 1'b0;
         waddr_reg        <= 5'b0;
         reg_write_reg    <= 1'b0;
         mem_to_reg_reg   <= 1'b0;
@@ -105,7 +102,7 @@ always @(posedge clk or negedge rstn) begin
         src2_reg         <= src2_in;
         aluop_reg        <= aluop_in;
         alusel_reg       <= alusel_in;
-        branch_taken_reg <= branch_taken_in;
+ //       branch_taken_reg <= branch_taken_in;
         waddr_reg        <= waddr_in;
         reg_write_reg    <= reg_write_in;
         mem_to_reg_reg   <= mem_to_reg_in;
@@ -120,7 +117,7 @@ wire [31:0] src1;
 wire [31:0] src2;
 wire [7:0]  aluop;
 wire [2:0]  alusel;
-wire        branch_taken;
+//wire        branch_taken;
 wire [4:0]  waddr;
 wire        reg_write;
 wire        mem_to_reg;
@@ -132,7 +129,7 @@ assign src1 = src1_reg;
 assign src2 = src2_reg;
 assign aluop = aluop_reg;
 assign alusel = alusel_reg;
-assign branch_taken = branch_taken_reg;
+//assign branch_taken = branch_taken_reg;
 assign waddr = waddr_reg;
 assign reg_write = reg_write_reg;
 assign mem_to_reg = mem_to_reg_reg;

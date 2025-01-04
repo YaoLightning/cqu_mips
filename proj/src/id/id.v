@@ -65,7 +65,7 @@
 //     output  wire            branch,            // Branch signal, 1 means a branch operation is needed
 //     output  wire            jump,              // Jump signal, 1 means a jump operation is needed
 //     output  wire [31:0]     extended_imm,      // Extended immediate value
-//     output  wire [31:0]     pc_plus_4          // The value of the current PC + 4
+//     output  wire [31:0]     pc_plus_4,          // The value of the current PC + 4
 // );
 
 //     // Internal registers to store output values
@@ -278,8 +278,6 @@ module inst_decode (
     input   wire            forward_b_sel,      // Selection signal for forwarding data to source register 2
 
     //from reg to determine equal
-    input wire [31:0] rs_data,     // Data from source register 1
-    input wire [31:0] rt_data      // Data from source register 2
 
     // Input and output related to the register file
     output  wire [4:0]      rs,           // Source register 1 address
@@ -289,9 +287,8 @@ module inst_decode (
     output  wire [5:0]      opcode,       // Opcode of the instruction
     output  wire [5:0]      funct,        // Function field for R-type instructions
     // instruction outputs
-    output  wire [31:0]     inst_out,          // The instruction output
-    output  wire [2:0]      alu_op,       // ALU operation result
-    output  wire [7:0]      alu_sel,      // ALU operation result
+    output  wire [7:0]      alu_op,       // ALU operation result
+    output  wire [2:0]      alu_sel,      // ALU operation result
 
     // Control signal outputs
     output  wire            alu_src,           // ALU source selection signal, 1 means use immediate value, 0 means use register
@@ -302,10 +299,14 @@ module inst_decode (
     output  wire            mem_to_reg,        // Memory to register selection signal, 1 means write memory data to register
     output  wire            branch,            // Branch signal, 1 means a branch operation is needed
     output  wire            jump,              // Jump signal, 1 means a jump operation is needed
+
+    output  wire [31:0]     inst_out,          // The instruction output
+
+
     output  wire [31:0]     extended_imm,      // Extended immediate value
-    output  wire [1:0]      pc_src             // include [jump , branch & equal]
-    output  wire [31:0]     pc_plus_4          // The value of the current PC + 4
-    output  wire [31:0]     pc_branch
+    output  wire [31:0]     pc_plus_4,         // The value of the current PC + 4
+    output  wire [1:0]      pc_src,            // include [jump , branch & equal]
+    output  wire [31:0]     pc_branch,
     output  wire [31:0]     pc_jump
 
 );
@@ -470,29 +471,113 @@ module inst_decode (
     end
 
     // ALU source and register destination selection
-    assign alu_src = (opcode_reg == `EXE_ANDI)  |
-                     (opcode_reg == `EXE_ORI)   |
-                     (opcode_reg == `EXE_XORI)  |
-                     (opcode_reg == `EXE_LUI)   |
-                     (opcode_reg == `EXE_SLTI)  |
-                     (opcode_reg == `EXE_SLTIU) |
-                     (opcode_reg == `EXE_ADDI)  |
-                     (opcode_reg == `EXE_ADDIU);
-    assign reg_dst = (opcode_reg == `EXE_SPECIAL_INST) &&
-                     (funct_reg!= `EXE_JR) &&
-                     (funct_reg!= `EXE_JALR);
+    // assign alu_src = (opcode_reg == `EXE_ANDI)  |
+    //                  (opcode_reg == `EXE_ORI)   |
+    //                  (opcode_reg == `EXE_XORI)  |
+    //                  (opcode_reg == `EXE_LUI)   |
+    //                  (opcode_reg == `EXE_SLTI)  |
+    //                  (opcode_reg == `EXE_SLTIU) |
+    //                  (opcode_reg == `EXE_ADDI)  |
+    //                  (opcode_reg == `EXE_ADDIU);
+    // alu_src value
+    reg alu_src_reg;
+    assign alu_src = alu_src_reg;
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_ANDI, `EXE_ORI, `EXE_XORI, `EXE_LUI,
+            `EXE_ADDI, `EXE_ADDIU, `EXE_SLTI, `EXE_SLTIU,
+            `EXE_LB, `EXE_LBU, `EXE_LH, `EXE_LHU, 
+            `EXE_LL, `EXE_LW, `EXE_LWL, `EXE_LWR,
+            `EXE_SB, `EXE_SC, `EXE_SH, `EXE_SW, 
+            `EXE_SWL, `EXE_SWR: 
+                alu_src_reg = 1'b1;
+            default: 
+                alu_src_reg = 1'b0;
+        endcase
+    end
+
+    // assign reg_dst = (opcode_reg == `EXE_SPECIAL_INST) &&
+    //                  (funct_reg!= `EXE_JR) &&
+    //                  (funct_reg!= `EXE_JALR);
+    //reg_dst value
+    reg  reg_dst_reg;
+    assign reg_dst = reg_dst_reg;
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_SPECIAL_INST: 
+                reg_dst_reg = 1'b1; // R型，目标寄存器为rd
+            `EXE_JALR: 
+                reg_dst_reg = 1'b1; // R型，写回 rd
+            `EXE_REGIMM_INST: 
+                reg_dst_reg = 1'b0; // 不写回 rd
+            default: 
+                reg_dst_reg = 1'b0; // I型指令，目标寄存器为rt
+        endcase
+    end
 
     // Register write, memory read/write, and other control signals
-    assign reg_write = (opcode_reg!= `EXE_J)     &&
-                     (opcode_reg!= `EXE_JAL)     &&
-                     (opcode_reg!= `EXE_BEQ)     &&
-                     (opcode_reg!= `EXE_BNE)     &&
-                     (opcode_reg!= `EXE_BGTZ)    &&
-                     (opcode_reg!= `EXE_BLEZ)    &&
-                     (opcode_reg!= `EXE_BLTZ)    &&
-                     (opcode_reg!= `EXE_BGEZ)    &&
-                     (opcode_reg!= `EXE_SYSCALL) &&
-                     (opcode_reg!= `EXE_BREAK);
+    // assign reg_write = (opcode_reg!= `EXE_J)     &&
+    //                  (opcode_reg!= `EXE_JAL)     &&
+    //                  (opcode_reg!= `EXE_BEQ)     &&
+    //                  (opcode_reg!= `EXE_BNE)     &&
+    //                  (opcode_reg!= `EXE_BGTZ)    &&
+    //                  (opcode_reg!= `EXE_BLEZ)    &&
+    //                  (opcode_reg!= `EXE_BLTZ)    &&
+    //                  (opcode_reg!= `EXE_BGEZ)    &&
+    //                  (opcode_reg!= `EXE_SYSCALL) &&
+    //                  (opcode_reg!= `EXE_BREAK);
+    //reg_write value
+    reg reg_write_reg;
+    assign reg_write=reg_write_reg;
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_SPECIAL_INST: begin
+                case (funct_reg)
+                    `EXE_MFHI, `EXE_MFLO, 
+                    `EXE_AND, `EXE_OR, `EXE_XOR, `EXE_NOR,
+                    `EXE_SLL, `EXE_SLLV, `EXE_SRL, `EXE_SRLV, `EXE_SRA, `EXE_SRAV,
+                    `EXE_ADD, `EXE_ADDU, `EXE_SUB, `EXE_SUBU, 
+                    `EXE_SLT, `EXE_SLTU, `EXE_MULT, `EXE_MULTU, 
+                    `EXE_DIV, `EXE_DIVU,
+                    `EXE_JALR: 
+                        reg_write_reg = 1'b1;
+                    `EXE_MTHI, `EXE_MTLO: 
+                        reg_write_reg = 1'b0;
+                    default: 
+                        reg_write_reg = 1'b0;
+                endcase
+            end
+
+            `EXE_REGIMM_INST: begin
+                case (rs_reg)
+                    `EXE_BGEZAL, `EXE_BLTZAL: 
+                        reg_write_reg = 1'b1; // 写回 $ra
+                    default: 
+                        reg_write_reg = 1'b0;
+                endcase
+            end
+
+            // 逻辑指令、算术立即数指令、加载指令、跳转指令（如 JAL, JALR）
+            `EXE_ANDI, `EXE_ORI, `EXE_XORI, `EXE_LUI,
+            `EXE_ADDI, `EXE_ADDIU, `EXE_SLTI, `EXE_SLTIU,
+            `EXE_JAL, `EXE_JALR,
+            `EXE_LB, `EXE_LBU, `EXE_LH, `EXE_LHU, 
+            `EXE_LL, `EXE_LW, `EXE_LWL, `EXE_LWR: 
+                reg_write_reg = 1'b1;
+
+            // 存储指令、跳转指令（如 JR）
+            `EXE_J, `EXE_JR, 
+            `EXE_BEQ, `EXE_BNE, `EXE_BGTZ, `EXE_BLEZ, 
+            `EXE_BGEZ, `EXE_BGEZAL, `EXE_BLTZ, `EXE_BLTZAL,
+            `EXE_SB, `EXE_SC, `EXE_SH, `EXE_SW, 
+            `EXE_SWL, `EXE_SWR,
+            `EXE_SYSCALL, `EXE_BREAK, `EXE_ERET, `EXE_SYNC, `EXE_PREF: 
+                reg_write_reg = 1'b0;
+
+            default: 
+                reg_write_reg = 1'b0;
+        endcase
+    end
     assign mem_read = (opcode_reg == `EXE_LB) ||
                      (opcode_reg == `EXE_LBU) ||
                      (opcode_reg == `EXE_LH)  ||
@@ -517,15 +602,40 @@ module inst_decode (
                      (opcode_reg == `EXE_LWR);
 
     // Branch and jump signals
-    assign jump = (opcode_reg == `EXE_J)        ||
-                     (opcode_reg == `EXE_JAL)   ||
-                     (opcode_reg == `EXE_JALR);
-    assign branch = (opcode_reg == `EXE_BEQ)    ||
-                     (opcode_reg == `EXE_BNE)   ||
-                     (opcode_reg == `EXE_BGTZ)  ||
-                     (opcode_reg == `EXE_BLEZ)  ||
-                     (opcode_reg == `EXE_BLTZ)  ||
-                     (opcode_reg == `EXE_BGEZ);
+    // assign jump = (opcode_reg == `EXE_J)        ||
+    //                  (opcode_reg == `EXE_JAL)   ||
+    //                  (opcode_reg == `EXE_JALR);
+    // assign branch = (opcode_reg == `EXE_BEQ)    ||
+    //                  (opcode_reg == `EXE_BNE)   ||
+    //                  (opcode_reg == `EXE_BGTZ)  ||
+    //                  (opcode_reg == `EXE_BLEZ)  ||
+    //                  (opcode_reg == `EXE_BLTZ)  ||
+    //                  (opcode_reg == `EXE_BGEZ);
+    
+    //branch value
+	reg branch_reg;
+	assign branch=branch_reg;
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_BEQ, `EXE_BNE, `EXE_BGTZ, `EXE_BLEZ, 
+            `EXE_BGEZ, `EXE_BGEZAL, `EXE_BLTZ, `EXE_BLTZAL: 
+                branch_reg = 1'b1;
+            default: 
+                branch_reg = 1'b0;
+        endcase
+    end
+
+    //jump value
+    reg jump_reg;
+    assign jump=jump_reg;
+    always @(*) begin
+        case (opcode_reg)
+            `EXE_J, `EXE_JAL, `EXE_JR, `EXE_JALR: 
+                jump_reg = 1'b1;
+            default: 
+                jump_reg = 1'b0;
+        endcase
+    end
 
     // Extended immediate value
     assign extended_imm = {{16{imm_reg[15]}}, imm_reg};
@@ -538,116 +648,219 @@ module inst_decode (
         case (opcode_reg)
             `EXE_SPECIAL_INST: begin // R型指令
                 case (funct_reg)
-                    `EXE_AND,:  alu_sel = `EXE_RES_LOGIC;
-                    `EXE_OR:    alu_sel = `EXE_RES_LOGIC;
-                    `EXE_XOR:   alu_sel = `EXE_RES_LOGIC;
-                    `EXE_NOR:   alu_sel = `EXE_RES_LOGIC; 
+                    `EXE_AND:  curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_OR:    curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_XOR:   curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_NOR:   curr_alu_sel = `EXE_RES_LOGIC; 
 
-                    `EXE_SLL:   alu_sel = `EXE_RES_SHIFT;
-                    `EXE_SLLV:  alu_sel = `EXE_RES_SHIFT;
-                    `EXE_SRL:   alu_sel = `EXE_RES_SHIFT;
-                    `EXE_SRLV:  alu_sel = `EXE_RES_SHIFT;
-                    `EXE_SRA:   alu_sel = `EXE_RES_SHIFT;
-                    `EXE_SRAV:  alu_sel = `EXE_RES_SHIFT; 
+                    `EXE_SLL:   curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SLLV:  curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRL:   curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRLV:  curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRA:   curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRAV:  curr_alu_sel = `EXE_RES_SHIFT; 
 
-                    `EXE_MFHI:  alu_sel = `EXE_RES_MOVE;
-                    `EXE_MTHI:  alu_sel = `EXE_RES_MOVE;
-                    `EXE_MFLO:  alu_sel = `EXE_RES_MOVE;
-                    `EXE_MTLO:  alu_sel = `EXE_RES_MOVE; 
+                    `EXE_MFHI:  curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTHI:  curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MFLO:  curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTLO:  curr_alu_sel = `EXE_RES_MOVE; 
 
-                    `EXE_ADD:   alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_ADDU:  alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_SUB:   alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_SUBU:  alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_ADD:   curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_ADDU:  curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUB:   curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUBU:  curr_alu_sel = `EXE_RES_ARITHMETIC;
 
-                    `EXE_SLT:   alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_SLTU:  alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_MULT:  alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_MULTU: alu_sel = `EXE_RES_ARITHMETIC; 
-                    `EXE_DIV:   alu_sel = `EXE_RES_ARITHMETIC;
-                    `EXE_DIVU:  alu_sel = `EXE_RES_ARITHMETIC; 
+                    `EXE_SLT:   curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SLTU:  curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULT:  curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULTU: curr_alu_sel = `EXE_RES_ARITHMETIC; 
+                    `EXE_DIV:   curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_DIVU:  curr_alu_sel = `EXE_RES_ARITHMETIC; 
 
                     default: 
-                        alu_sel = 3'b000; // 默认值或未定义指令
+                        curr_alu_sel = 3'b000; // 默认值或未定义指令
                 endcase
             end
 
             `EXE_REGIMM_INST: begin // REGIMM 指令
                 case (rs_reg)
-                    `EXE_BGEZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
-                    `EXE_BGEZAL:alu_sel = `EXE_RES_JUMP_BRANCH;
-                    `EXE_BLTZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
-                    `EXE_BLTZAL:alu_sel = `EXE_RES_JUMP_BRANCH; 
+                    `EXE_BGEZ:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BGEZAL:curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BLTZ:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+                    `EXE_BLTZAL:curr_alu_sel = `EXE_RES_JUMP_BRANCH; 
 
                     default: 
-                        alu_sel = 3'b000; // 默认值或未定义指令
+                        curr_alu_sel = 3'b000; // 默认值或未定义指令
                 endcase
             end
 
             // 逻辑指令
-            `EXE_ANDI:  alu_sel = `EXE_RES_LOGIC;
-            `EXE_ORI:   alu_sel = `EXE_RES_LOGIC;
-            `EXE_XORI:  alu_sel = `EXE_RES_LOGIC;
-            `EXE_LUI:   alu_sel = `EXE_RES_LOGIC; 
+            `EXE_ANDI:  curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_ORI:   curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_XORI:  curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_LUI:   curr_alu_sel = `EXE_RES_LOGIC; 
 
             // 跳转和分支指令
-            `EXE_J:     alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_JAL:   alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_JALR:  alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_JR:    alu_sel = `EXE_RES_JUMP_BRANCH; 
-            `EXE_BEQ:   alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_BGTZ:  alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_BLEZ:  alu_sel = `EXE_RES_JUMP_BRANCH; 
-            `EXE_BNE:   alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_J:     curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JAL:   curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JALR:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_JR:    curr_alu_sel = `EXE_RES_JUMP_BRANCH; 
+            `EXE_BEQ:   curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BGTZ:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BLEZ:  curr_alu_sel = `EXE_RES_JUMP_BRANCH; 
+            `EXE_BNE:   curr_alu_sel = `EXE_RES_JUMP_BRANCH;
 
             // 负载和存储指令
-            `EXE_LB:    alu_sel = `EXE_RES_LOAD_STORE;       
-            `EXE_LBU:   alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LH:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LHU:   alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LL:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LW:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LWL:   alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_LWR:   alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SB:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SC:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SH:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SW:    alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SWL:   alu_sel = `EXE_RES_LOAD_STORE;   
-            `EXE_SWR:   alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LB:    curr_alu_sel = `EXE_RES_LOAD_STORE;       
+            `EXE_LBU:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LH:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LHU:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LL:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LW:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LWL:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_LWR:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SB:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SC:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SH:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SW:    curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SWL:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
+            `EXE_SWR:   curr_alu_sel = `EXE_RES_LOAD_STORE;   
 
             // 乘法指令
-            `EXE_MULT:  alu_sel = `EXE_RES_MUL;
-            `EXE_MULTU: alu_sel = `EXE_RES_MUL;
+            `EXE_MULT:  curr_alu_sel = `EXE_RES_MUL;
+            `EXE_MULTU: curr_alu_sel = `EXE_RES_MUL;
                 
             // 系统调用和其他特殊指令
-            `EXE_SYSCALL:alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_BREAK: alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_ERET:  alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_SYNC:  alu_sel = `EXE_RES_JUMP_BRANCH;
-            `EXE_PREF:  alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_SYSCALL:curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_BREAK: curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_ERET:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_SYNC:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
+            `EXE_PREF:  curr_alu_sel = `EXE_RES_JUMP_BRANCH;
                  // 根据需要调整
 
             default: 
-                alu_sel = 3'b000; // 默认值或未定义指令
+                curr_alu_sel = 3'b000; // 默认值或未定义指令
         endcase
     end
 
     //extended_imm_sl2 value
     assign extended_imm_sl2 = {extended_imm[29:0],2'b0};
+
     //equal value
-    always@(*)begin
-        if(rs_data==rt_data)begin
-            equal=1'b1;
-        end else begin equal =1'b0;
-        end
-    end
+    // always@(*)begin
+    //     if(rs_data==rt_data)begin
+    //         equal=1'b1;
+    //     end else begin equal =1'b0;
+    //     end
+    // end
+
     //pc_src
-    assign pc_src={jump,branch&equal};
+    // assign pc_src = {jump,branch&equal};
     //pc + 4 + extended_imm value
     assign pc_branch = pc_plus_4 + extended_imm_sl2;
     //pc_jump
     assign pc_jump = {instruction[25:0],2'b0};
 
 
+
+    // debug usage
+    reg [39:0] ascii;
+
+    always @(*)
+    begin
+        ascii<="N-R";
+        case(instr[31:26])
+            `NOP:   // R-type
+                begin
+                    case(instr[5:0])
+                        /* logic instraction */
+                        `AND: ascii<= "AND";
+                        `OR: ascii<= "OR";
+                        `XOR: ascii<= "XOR";
+                        `NOR: ascii<= "NOR";
+                        /* shift instraction */
+                        `SLL: ascii<= "SLL";
+                        `SRL: ascii<= "SRL";
+                        `SRA: ascii<= "SRA";
+                        `SLLV: ascii<= "SLLV";
+                        `SRLV: ascii<= "SRLV";
+                        `SRAV: ascii<= "SRAV";
+                        /* move instraction */
+                        `MFHI: ascii<= "MFHI";
+                        `MTHI: ascii<= "MTHI";
+                        `MFLO: ascii<= "MFLO";
+                        `MTLO: ascii<= "MTLO";
+                        /* arithemtic instraction */
+                        `ADD: ascii<= "ADD";
+                        `ADDU: ascii<= "ADDU";
+                        `SUB: ascii<= "SUB";
+                        `SUBU: ascii<= "SUBU";
+                        `SLT: ascii<= "SLT";
+                        `SLTU: ascii<= "SLTU";
+
+                        `MULT: ascii<= "MULT";
+                        `MULTU: ascii<= "MULTU";
+                        `DIV: ascii<= "DIV";
+                        `DIVU: ascii<= "DIVU";
+                        /* jump instraction */
+                        `JR: ascii<= "JR";
+                        `JALR: ascii<= "JALR";
+                        
+                        `SYSCALL: ascii<= "SYSC";
+                        `BREAK: ascii<= "BRE";
+                        default: ascii<="N-R";
+                    endcase
+                end
+            `ANDI: ascii<= "ANDI";
+            `XORI: ascii<= "XORI";
+            `LUI: ascii<= "LUI";
+            `ORI: ascii<= "ORI";
+
+            `ADDI: ascii<= "ADDI";
+            `ADDIU: ascii<= "ADDIU";
+            `SLTI: ascii<= "SLTI";
+            `SLTIU: ascii<= "SLTIU";
+
+            `J: ascii<= "J";
+            `JAL: ascii<= "JAL";
+            
+            `BEQ: ascii<= "BEQ";
+            `BGTZ: ascii<= "BGTZ";
+            `BLEZ: ascii<= "BLEZ";
+            `BNE: ascii<= "BNE";
+            
+            `LB: ascii<= "LB";
+            `LBU: ascii<= "LBU";
+            `LH: ascii<= "LH";
+            `LHU: ascii<= "LHU";
+            `LW: ascii<= "LW";
+            `SB: ascii<= "SB";
+            `SH: ascii<= "SH";
+            `SW: ascii<= "SW";
+            6'b000001: begin 
+                case (instr[20:16])
+                    `BGEZ: ascii<= "BGEZ";
+                    `BGEZAL: ascii<= "BGEZAL";
+                    `BLTZ: ascii<= "BLTZ";
+                    `BLTZAL: ascii<= "BLTZAL";
+                    default : ascii<= " ";
+                endcase
+            end
+            6'b010000: begin 
+                if(instr==`ERET) begin
+                    ascii<="ERET";
+                end else begin 
+                    case (instr[25:21])
+                        5'b00100: ascii<="MTOC0";
+                        5'b00000: ascii<="MFC0";
+                    endcase
+                end
+            end
+            default: ascii<= "N-R";
+       endcase
+    if(instr==`ERET)
+        ascii<= "ERET";
+    if(!instr)
+        ascii<= "NOP";
+    end
 endmodule

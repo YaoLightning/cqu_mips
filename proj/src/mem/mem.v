@@ -43,9 +43,9 @@ module memory_access(
     input  wire        mem_read_in,     // Memory read enable signal from execute stage
     input  wire        mem_write_in,    // Memory write enable signal from execute stage
     input  wire        mem_to_reg_in,   // Memory to register selection signal from execute stage
+    input  wire [31:0] mem_read_data,   // Data read from memory
 
     // Outputs to write back stage
-    output wire [31:0] mem_read_data,   // Data read from memory
     output wire [31:0] final_result,    // Final result to be written back
     output wire [ 4:0] write_reg_out,   // Register address to be written in write back stage
     output wire        reg_write_out,   // Final register write enable signal
@@ -53,8 +53,9 @@ module memory_access(
 );
 // Define memory (1024 x 32 bits)
     reg [31:0] memory [0:1023];
-
-
+    
+    reg [31:0] final_result_reg;
+    reg [31:0] alu_result_reg;
     reg [31:0] inst;
     assign inst_out = inst;
 
@@ -64,8 +65,12 @@ module memory_access(
         end        
         else begin
             inst <= inst_in;
+            alu_result_reg <= alu_result;
+            final_result_reg <= mem_read_in ? mem_read_data : alu_result_reg;
         end
     end
+
+    assign final_result = final_result_reg;
 
 
 //    // Memory access logic

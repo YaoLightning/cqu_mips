@@ -35,25 +35,36 @@ module write_back(
     input  wire rstn,               // Reset signal
 
     // Inputs from memory access stage
-    input  wire [31:0]  final_result,       // Final result from memory access stage
-    input  wire [4 :0]  write_reg,          // Register address to be written from memory access stage
+    input  wire [4 :0]  write_addr_in,          // Register address to be written from memory access stage
+    input  wire [31:0]  write_data_alu,
+    input  wire [31:0]  write_data_mem,
+
     input  wire         reg_write_final,    // Final register write enable signal from memory access stage
     input  wire         mem_to_reg_final,   // Final memory to register selection signal from memory access stage
 
     input  wire [31:0]  inst_in,
 
-    output wire [4 :0]  reg_write_addr,     // Address of the register to write in register file
-    output wire [31:0]  reg_write_data      // Data to be written to register file
+    output wire [4 :0]  write_addr_out,     // Address of the register to write in register file
+    output wire [31:0]  write_data_out      // Data to be written to register file
 );
 
-    reg [31:0] inst;
+    reg [31:0] reg_inst;
+    reg [31:0] reg_write_data_alu;
+    reg [31:0] reg_write_data_mem;
+    reg reg_mem_to_reg_final;
 
     always @(posedge clk or negedge rstn) begin
         if (!rstn) begin
-            inst <= 32'b0;
+            reg_inst <= 32'b0;
+            reg_write_data_alu<=32'b0;
+            reg_write_data_mem<=32'b0;
+            reg_mem_to_reg_final<=1'b0;
         end        
         else begin
-            inst <= inst_in;
+            reg_inst <= inst_in;
+            reg_write_data_alu<=write_data_alu;
+            reg_write_data_mem<=write_data_mem;
+            reg_mem_to_reg_final<=mem_to_reg;
         end
     end
 
@@ -61,7 +72,16 @@ module write_back(
     // logical usage
     reg [31:0] write_data;
 
-    // Output the data written to the register file
-    assign wb_data = write_data;
+    always@(*)begin
+        case(reg_mem_to_reg_final)
+        1'b0:write_data=reg_write_data_alu;
+        1'b1:write_data=reg_write_data_mem;
+        default:write_data=32'b0;
+        endcase
+    end
+    assign write_addr_out = write_addr_in;
+    assign write_data_out = write_data;
 
+    // Output the data written to the register file
+    //assign wb_data = write_data;
 endmodule

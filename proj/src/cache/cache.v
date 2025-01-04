@@ -26,76 +26,87 @@
 //// 
 ////////////////////////////////////////////////////////////////////////////////////
 
-//module cache
-//#(
-//    parameter int CACHE_SIZE = 10240,  // cache size
-//    parameter int NUM_LINES = 256,     // cache line number
-//    parameter int NUM_WAYS = 4,        // cache way number
-//    parameter int WORD_SIZE = 32       // word size （bit）
-//)(
-//    input         clk,
-//    input         rstn, 
+module cache_module (
+    input wire clk, rst,
+    // mips core for data
+    input         cpu_data_req,
+    input         cpu_data_wr,
+    input  [1:0]  cpu_data_size,
+    input  [31:0] cpu_data_addr,
+    input  [31:0] cpu_data_wdata,
+    output [31:0] cpu_data_rdata,
+    output        cpu_data_addr_ok,
+    output        cpu_data_data_ok,
+    // mips core for instruction
+    input         cpu_inst_req,
+    input         cpu_inst_wr,
+    input  [1:0]  cpu_inst_size,
+    input  [31:0] cpu_inst_addr,
+    input  [31:0] cpu_inst_wdata,
+    output [31:0] cpu_inst_rdata,
+    output        cpu_inst_addr_ok,
+    output        cpu_inst_data_ok,
+    // sram-like interface
+    output         cache_data_req,
+    output         cache_data_wr,
+    output  [1:0]  cache_data_size,
+    output  [31:0]  cache_data_addr,
+    output  [31:0]  cache_data_wdata,
+    input   [31:0]  cache_data_rdata,
+    input          cache_data_addr_ok,
+    input          cache_data_data_ok,
+    output         cache_inst_req,
+    output         cache_inst_wr,
+    output  [1:0]  cache_inst_size,
+    output  [31:0]  cache_inst_addr,
+    output  [31:0]  cache_inst_wdata,
+    input   [31:0]  cache_inst_rdata,
+    input          cache_inst_addr_ok,
+    input          cache_inst_data_ok
+);
 
-//    //inst sram-like 
-//    input         inst_req     ,
-//    input         inst_wr      ,
-//    input  [1 :0] inst_size    ,
-//    input  [31:0] inst_addr    ,
-//    input  [31:0] inst_wdata   ,
-//    output [31:0] inst_rdata   ,
-//    output        inst_addr_ok ,
-//    output        inst_data_ok ,
-    
-//    //data sram-like 
-//    input         data_req     ,
-//    input         data_wr      ,
-//    input  [1 :0] data_size    ,
-//    input  [31:0] data_addr    ,
-//    input  [31:0] data_wdata   ,
-//    output [31:0] data_rdata   ,
-//    output        data_addr_ok ,
-//    output        data_data_ok ,
+    // 实例化数据缓存模块
+    d_cache_write_through data_cache (
+     .clk(clk),
+     .rst(rst),
+     .cpu_data_req(cpu_data_req),
+     .cpu_data_wr(cpu_data_wr),
+     .cpu_data_size(cpu_data_size),
+     .cpu_data_addr(cpu_data_addr),
+     .cpu_data_wdata(cpu_data_wdata),
+     .cpu_data_rdata(cpu_data_rdata),
+     .cpu_data_addr_ok(cpu_data_addr_ok),
+     .cpu_data_data_ok(cpu_data_data_ok),
+     .cache_data_req(cache_data_req),
+     .cache_data_wr(cache_data_wr),
+     .cache_data_size(cache_data_size),
+     .cache_data_addr(cache_data_addr),
+     .cache_data_wdata(cache_data_wdata),
+     .cache_data_rdata(cache_data_rdata),
+     .cache_data_addr_ok(cache_data_addr_ok),
+     .cache_data_data_ok(cache_data_data_ok)
+    );
 
-//    output        req_hit
-//);
+    // 实例化指令缓存模块
+    i_cache_direct_map inst_cache (
+     .clk(clk),
+     .rst(rst),
+     .cpu_inst_req(cpu_inst_req),
+     .cpu_inst_wr(cpu_inst_wr),
+     .cpu_inst_size(cpu_inst_size),
+     .cpu_inst_addr(cpu_inst_addr),
+     .cpu_inst_wdata(cpu_inst_wdata),
+     .cpu_inst_rdata(cpu_inst_rdata),
+     .cpu_inst_addr_ok(cpu_inst_addr_ok),
+     .cpu_inst_data_ok(cpu_inst_data_ok),
+     .cache_inst_req(cache_inst_req),
+     .cache_inst_wr(cache_inst_wr),
+     .cache_inst_size(cache_inst_size),
+     .cache_inst_addr(cache_inst_addr),
+     .cache_inst_wdata(cache_inst_wdata),
+     .cache_inst_rdata(cache_inst_rdata),
+     .cache_inst_addr_ok(cache_inst_addr_ok),
+     .cache_inst_data_ok(cache_inst_data_ok)
+    );
 
-//    // Calculate the number of bits for index, tag, and offset
-//    localparam int INDEX_BITS   = $clog2(NUM_LINES / NUM_WAYS);
-//    localparam int OFFSET_BITS  = $clog2(WORD_SIZE) - INDEX_BITS;
-//    localparam int TAG_BITS     = 32 - OFFSET_BITS - INDEX_BITS;
-
-//    // Internal signals
-//    reg [31:0]           cache_memory   [NUM_LINES - 1:0][NUM_WAYS - 1:0];
-//    reg [TAG_BITS - 1:0] tag_memory     [NUM_LINES - 1:0][NUM_WAYS - 1:0];
-//    reg [NUM_WAYS - 1:0] valid_memory   [NUM_LINES - 1:0];
-//    reg [NUM_WAYS - 1:0] dirty_memory   [NUM_LINES - 1:0];
-
-//    // Address decoding
-//    wire [OFFSET_BITS - 1:0]  offset  = inst_addr[OFFSET_BITS - 1               : 0];
-//    wire [INDEX_BITS  - 1:0]  index   = inst_addr[OFFSET_BITS + INDEX_BITS - 1  : OFFSET_BITS];
-//    wire [TAG_BITS    - 1:0]  tag     = inst_addr[31                            : OFFSET_BITS + INDEX_BITS];
-
-//    // Hit detection
-//    wire [NUM_WAYS    - 1:0]  hit     = valid_memory[index] & (tag_memory[index] == tag);
-//    assign req_hit = |hit;
-
-//    // LRU logic for 2-way set associative cache
-//    reg lru [NUM_LINES - 1:0];
-
-//    reg [31:0] inst_read_reg;
-//    reg [31:0] data_read_reg;
-
-//    always @(posedge clk) begin
-//        if (|hit) begin
-//            data_read_reg <= cache_memory[index];
-//        end
-//    end
-
-
-
-//    always @(negedge rstn) begin
-        
-//    end
-
-//endmodule
-
+endmodule

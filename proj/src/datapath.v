@@ -21,26 +21,26 @@
 
 
 module datapath(
-    input clk, rstn,
+    input clk, rstn
 
-    //inst sram-like 
-    output        inst_req     ,
-    output        inst_wr      ,
-    output [1 :0] inst_size    ,
-    output [31:0] inst_addr    ,
-    input  [31:0] inst_rdata   ,
-    input         inst_addr_ok ,
-    input         inst_data_ok ,
+    // //inst sram-like 
+    // output        inst_req     ,
+    // output        inst_wr      ,
+    // output [1 :0] inst_size    ,
+    // output [31:0] inst_addr    ,
+    // input  [31:0] inst_rdata   ,
+    // input         inst_addr_ok ,
+    // input         inst_data_ok ,
     
-    //data sram-like 
-    output        data_req     ,
-    output        data_wr      ,
-    output [1 :0] data_size    ,
-    output [31:0] data_addr    ,
-    output [31:0] data_wdata   ,
-    input  [31:0] data_rdata   ,
-    input         data_addr_ok ,
-    input         data_data_ok 
+    // //data sram-like 
+    // output        data_req     ,
+    // output        data_wr      ,
+    // output [1 :0] data_size    ,
+    // output [31:0] data_addr    ,
+    // output [31:0] data_wdata   ,
+    // input  [31:0] data_rdata   ,
+    // input         data_addr_ok ,
+    // input         data_data_ok 
 );
 
     // implement all used modules here and link them
@@ -55,23 +55,20 @@ module datapath(
     wire [1:0] forwardaE, forwardbE;
 
 
-    // update stall signals
-    assign mem_stall = wb_stall | !data_data_ok | stallD;
-    assign exe_stall = mem_stall | wb_stall | stallD;
-    assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
-    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall | stallF;
-
-
     wire if_stall ;
     wire id_stall ;
     wire exe_stall ;
     wire mem_stall;
     wire wb_stall  ;
     
-    assign mem_stall = wb_stall | !data_data_ok;
-    assign exe_stall = mem_stall | wb_stall;
-    assign id_stall = exe_stall | mem_stall | wb_stall;
-    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall ;
+
+    // update stall signals
+    // assign mem_stall = wb_stall | !data_data_ok | stallD;
+    // assign exe_stall = mem_stall | wb_stall | stallD;
+    // assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
+    // assign if_stall = id_stall | exe_stall | mem_stall | wb_stall | stallF;
+
+
     // signal definition
     wire jump;
     wire branch;
@@ -79,6 +76,7 @@ module datapath(
     wire [31:0] regfile_data_rs;
     wire [31:0] regfile_data_rt;
     wire [31:0] regfile_data_write;
+    wire [4 :0] reg_write_addr;
     wire reg_write;
 
     // if signal definition
@@ -89,15 +87,16 @@ module datapath(
     wire [31:0] inst_IF_ID;
 
     // id singal definition
-    wire rs_id;
-    wire rt_id;
-    wire rd_id;
+    wire [4 :0] rs_id;
+    wire [4 :0] rt_id;
+    wire [4 :0] rd_id;
 
     wire [31:0] pc_plus_4_id;
 
     // id -> exe signal
-    wire [ 2:0] alu_op_ID_EXE;
+    wire [ 7:0] alu_op_ID_EXE;
     wire [ 2:0] alu_sel_ID_EXE;
+    wire        alu_src_ID_EXE;
     wire        reg_write_ID_EXE;
     wire [ 4:0] reg_dst_ID_EXE;
     wire        mem_read_ID_EXE;
@@ -142,31 +141,33 @@ module datapath(
 
 
     assign regfile_data_write = reg_write_data_wb;
-    assign reg_write_addr     = reg_write_addr_wb;
+    assign reg_write_addr     = write_reg_MEM_WB;
 
     assign memory_write_data_mem = alu_result_EXE_MEM;
-    
+
+    assign reg_write          = reg_write_MEM_WB;    
 
     // memory relative signals
-    assign inst_req = 1'b1;
-    assign inst_addr     = pc_out_IF_ID;
-    // assign inst_IF_ID    = inst_rdata;
-    assign inst_size = 2'b10;
-    assign inst_wr       = 1'b0;
+    // assign inst_req = 1'b1;
+    // assign inst_addr     = pc_out_IF_ID;
+    // // assign inst_IF_ID    = inst_rdata;
+    // assign inst_size = 2'b10;
+    // assign inst_wr       = 1'b0;
 
-    assign data_req = mem_write_EXE_MEM | mem_read_EXE_MEM;
-    assign data_wr = mem_write_EXE_MEM;
-    assign data_size = 2'b10;
-    assign data_addr     = memory_addr_mem;
-    assign data_wdata     = memory_write_data_mem;
-    assign mem_read_data_MEM_WB = data_rdata;
+    // assign data_req = mem_write_EXE_MEM | mem_read_EXE_MEM;
+    // assign data_wr = mem_write_EXE_MEM;
+    // assign data_size = 2'b10;
+    // assign data_addr     = memory_addr_mem;
+    // assign data_wdata     = memory_write_data_mem;
+    // assign mem_read_data_MEM_WB = data_rdata;
+    assign mem_read_data_MEM_WB = 32'b0;
     
     assign src1_exe = forwardaE[0] ? 
                       alu_result_EXE_MEM : forwardaE[1] ? 
                       reg_write_data_wb : regfile_data_rs;
     assign src2_exe = forwardbE[0] ? 
                       alu_result_EXE_MEM : forwardbE[1] ? 
-                      reg_write_data_wb : (alu_sel_ID_EXE ? 
+                      reg_write_data_wb : (alu_src_ID_EXE ? 
                       extended_imm_ID_EXE : regfile_data_rt);
 
 
@@ -188,10 +189,10 @@ module datapath(
         .instruction     (inst_IF_ID),
         .pc              (pc_out_IF_ID),
 
-        .forward_a       (forward_a),
-        .forward_b       (forward_b),
-        .forward_a_sel   (forward_a_sel),
-        .forward_b_sel   (forward_b_sel),
+        // .forward_a       (forward_a),
+        // .forward_b       (forward_b),
+        // .forward_a_sel   (forward_a_sel),
+        // .forward_b_sel   (forward_b_sel),
 
         .rs              (rs_id),
         .rt              (rt_id),
@@ -200,18 +201,20 @@ module datapath(
         .extended_imm    (extended_imm_ID_EXE),
         .opcode          (opcode),
         .funct           (funct),
-        .pc_plus_4       (pc_plus_4_id),
 
         .alu_sel         (alu_sel_ID_EXE),
         .alu_op          (alu_op_ID_EXE),
+        .alu_src         (alu_src_ID_EXE),
 
         .reg_dst         (reg_dst_ID_EXE),
         .reg_write       (reg_write_ID_EXE),
         .mem_read        (mem_read_ID_EXE),
+        .mem_to_reg      (mem_to_reg_ID_EXE),
         .mem_write       (mem_write_ID_EXE),
         .branch          (branch),
         .jump            (jump),
-        .mem_to_reg      (mem_to_reg_ID_EXE),
+        
+        .pc_plus_4       (pc_plus_4_id),
 
         .inst_out         (inst_ID_EXE)
     );
@@ -221,13 +224,15 @@ module datapath(
         .rstn            (rstn),
         .stall           (exe_stall),
 
-        .src1            (src1_exe),
-        .src2            (src2_exe),
+        .src1_in         (src1_exe),
+        .src2_in         (src2_exe),
 
-        .aluop           (alu_op_ID_EXE),
-        .alusel          (alu_sel_ID_EXE),
+        .aluop_in        (alu_op_ID_EXE),
+        .alusel_in       (alu_sel_ID_EXE),
 
-        .waddr           (reg_dst_ID_EXE),
+
+        // .branch_taken_in (0),
+        .waddr_in        (reg_dst_ID_EXE),
         .reg_write_in    (reg_write_ID_EXE),
         .mem_read_in     (mem_read_ID_EXE),
         .mem_write_in    (mem_write_ID_EXE),
@@ -240,7 +245,7 @@ module datapath(
         .mem_to_reg_out  (mem_to_reg_EXE_MEM),
         .mem_read_out    (mem_read_EXE_MEM),
         .mem_write_out   (mem_write_EXE_MEM),
-
+        .mem_addr_out    (memory_addr_mem),
         .inst_in         (inst_ID_EXE),
         .inst_out        (inst_EXE_MEM)
     );
@@ -275,11 +280,14 @@ module datapath(
         .rstn            (rstn),
         .stall           (wb_stall),
 
-        .final_result    (final_result_wb),
         .write_reg       (write_reg_MEM_WB),
 
+    
         .reg_write_final (reg_write_MEM_WB),
         .mem_to_reg_final(mem_to_reg_MEM_WB),
+
+        .reg_write_data_in  (mem_read_data_MEM_WB),
+
  
         .reg_write_addr  (reg_write_addr_wb),
         .reg_write_data  (reg_write_data_wb),
@@ -291,7 +299,7 @@ module datapath(
         .clk            (clk),
         .rstn           (rstn),
 
-        .reg_write      (reg_write),
+        .reg_write      (reg_write_MEM_WB),
         .raddr1         (rs_id), // the read operation can only happend at id stage
         .raddr2         (rt_id),
         // write will be done at wb stage, cause that the write operation will take
