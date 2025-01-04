@@ -2,7 +2,7 @@
 -- Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
--- Date        : Fri Jan  3 15:18:06 2025
+-- Date        : Sat Jan  4 17:37:47 2025
 -- Host        : napbad-archlinux running 64-bit Arch Linux
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/napbad/Project/cqu_mips/proj/cqu_mips.gen/sources_1/ip/ram_axi4/ram_axi4_stub.vhdl

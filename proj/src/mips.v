@@ -41,23 +41,23 @@ module mips(
     // Instantiate the datapath module
     datapath datapath_m(
         .clk(clk),
-        .rstn(rstn),
+        .rstn(rstn)
 
-        .inst_req(mem_read | mem_write),
-        .inst_addr(mem_addr),
-        .inst_rdata(mem_rdata),
-        .inst_size(),
-        .inst_wr(mem_write),
-        .inst_addr_ok(1),
-        .inst_data_ok(1),
+//        .inst_req(mem_read | mem_write),
+//        .inst_addr(mem_addr),
+//        .inst_rdata(mem_rdata),
+//        .inst_size(),
+//        .inst_wr(mem_write),
+//        .inst_addr_ok(1),
+//        .inst_data_ok(1),
 
-        .data_req(mem_read_data | mem_write_data),
-        .data_addr(mem_addr_data),
-        .data_rdata(mem_rdata_data),
-        .data_size(),
-        .data_wr(mem_write_data),
-        .data_addr_ok(1),
-        .data_data_ok(1)
+//        .data_req(mem_read_data | mem_write_data),
+//        .data_addr(mem_addr_data),
+//        .data_rdata(mem_rdata_data),
+//        .data_size(),
+//        .data_wr(mem_write_data),
+//        .data_addr_ok(1),
+//        .data_data_ok(1)
     );
     
     // Instantiate the ram_easy module

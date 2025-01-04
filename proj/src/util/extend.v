@@ -22,9 +22,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module extend #(
-    parameter int IS_SIGNAL,
-    parameter int SRC_BITS,
-    parameter int DST_BITS
+    parameter  IS_SIGNAL= 0,
+    parameter  SRC_BITS = 16,
+    parameter  DST_BITS= 32
 ) (
     input   [SRC_BITS - 1:0]  src,
     output  [DST_BITS - 1:0]  dst

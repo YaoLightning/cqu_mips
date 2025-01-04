@@ -245,7 +245,7 @@ module datapath(
         .mem_to_reg_out  (mem_to_reg_EXE_MEM),
         .mem_read_out    (mem_read_EXE_MEM),
         .mem_write_out   (mem_write_EXE_MEM),
-        .mem_addr_out    (memory_addr_mem),
+
         .inst_in         (inst_ID_EXE),
         .inst_out        (inst_EXE_MEM)
     );
@@ -275,31 +275,28 @@ module datapath(
         .inst_out        (inst_MEM_WB)
     );
 
-    write_back wb_stage(
-        .clk             (clk),
-        .rstn            (rstn),
-        .stall           (wb_stall),
+//    write_back wb_stage(
+//        .clk             (clk),
+//        .rstn            (rstn),
+//        .stall           (wb_stall),
 
-        .write_reg       (write_reg_MEM_WB),
+//        .write_addr_in       (write_reg_MEM_WB),
 
     
-        .reg_write_final (reg_write_MEM_WB),
-        .mem_to_reg_final(mem_to_reg_MEM_WB),
+//        .reg_write_final (reg_write_MEM_WB),
+//        .mem_to_reg_final(mem_to_reg_MEM_WB),
 
-        .reg_write_data_in  (mem_read_data_MEM_WB),
+//        .reg_write_data_in  (mem_read_data_MEM_WB),
 
- 
-        .reg_write_addr  (reg_write_addr_wb),
-        .reg_write_data  (reg_write_data_wb),
          
-        .inst_in         (inst_MEM_WB)
-    );
+//        .inst_in         (inst_MEM_WB)
+//    );
 
     reg_file reg_file_unit(
         .clk            (clk),
         .rstn           (rstn),
 
-        .reg_write      (reg_write_MEM_WB),
+        .reg_write      (reg_write),
         .raddr1         (rs_id), // the read operation can only happend at id stage
         .raddr2         (rt_id),
         // write will be done at wb stage, cause that the write operation will take

@@ -21,9 +21,9 @@ module reg_file(
     always @(posedge clk or negedge rstn)begin
         if(!rstn)begin
             // Fill all registers with 0
-            for (integer i = 0; i < 32; i = i + 1) begin
-                reg_file[i] <= 32'b0;
-            end
+//           for (integer i = 0; i < 32; i = i + 1) begin
+//               reg_file[i] <= 32'b0;
+//           end
         end else begin
             if((reg_write==1'b1)&&(waddr!=5'b00000))begin
                 reg_file[waddr] <= wdata;
@@ -33,43 +33,4 @@ module reg_file(
 
     assign rdata1 = reg_file[raddr1];
     assign rdata2 = reg_file[raddr2];
-
-
-// //read operation-the first regdata
-//     always @(*) begin           //保证在译码阶段取得要读取的值（任何时候都有可能读取）
-//         if(!rstn)begin   
-//             rdata1<=8'h00000000;
-//         end
-//         else if(raddr1== 5'b00000)begin
-//             rdata1<=8'h00000000;
-//         end
-//         else if((raddr1==waddr)&&(reg_write==1'b1)&&(re1==1'b1))begin
-//             rdata1<=wdata;                                   //当同时发生读写时，直接将写的值传送给读,
-//         end
-//         else if(re1==1'b1)begin
-//             rdata1 <= reg_file[raddr1];
-//         end
-//         else begin
-//             rdata1 <=8'h00000000;
-//         end
-//     end
-
-// //read operation-the second regdata
-//     always @(*) begin           //保证在译码阶段取得要读取的值（任何时候都有可能读取）
-//         if(!rstn)begin   
-//             rdata2<=8'h00000000;
-//         end
-//         else if(raddr2== 5'b00000)begin
-//             rdata2<=8'h00000000;
-//         end
-//         else if((raddr2==waddr)&&(reg_write==1'b1)&&(re2==1'b1))begin
-//             rdata2<=wdata;                                   //当同时发生读写时，直接将写的值传送给读,
-//         end
-//         else if(re2==1'b1)begin
-//             rdata2 <= reg_file[raddr2];
-//         end
-//         else begin
-//             rdata2 <=8'h00000000;
-//         end
-//     end
 endmodule

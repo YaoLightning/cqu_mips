@@ -769,88 +769,88 @@ module inst_decode (
     always @(*)
     begin
         ascii<="N-R";
-        case(instr[31:26])
-            `NOP:   // R-type
+        case(instruction[31:26])
+            `EXE_NOP:   // R-type
                 begin
-                    case(instr[5:0])
+                    case(instruction[5:0])
                         /* logic instraction */
-                        `AND: ascii<= "AND";
-                        `OR: ascii<= "OR";
-                        `XOR: ascii<= "XOR";
-                        `NOR: ascii<= "NOR";
+                        `EXE_AND: ascii<= "AND";
+                        `EXE_OR: ascii<= "OR";
+                        `EXE_XOR: ascii<= "XOR";
+                        `EXE_NOR: ascii<= "NOR";
                         /* shift instraction */
-                        `SLL: ascii<= "SLL";
-                        `SRL: ascii<= "SRL";
-                        `SRA: ascii<= "SRA";
-                        `SLLV: ascii<= "SLLV";
-                        `SRLV: ascii<= "SRLV";
-                        `SRAV: ascii<= "SRAV";
+                        `EXE_SLL: ascii<= "SLL";
+                        `EXE_SRL: ascii<= "SRL";
+                        `EXE_SRA: ascii<= "SRA";
+                        `EXE_SLLV: ascii<= "SLLV";
+                        `EXE_SRLV: ascii<= "SRLV";
+                        `EXE_SRAV: ascii<= "SRAV";
                         /* move instraction */
-                        `MFHI: ascii<= "MFHI";
-                        `MTHI: ascii<= "MTHI";
-                        `MFLO: ascii<= "MFLO";
-                        `MTLO: ascii<= "MTLO";
+                        `EXE_MFHI: ascii<= "MFHI";
+                        `EXE_MTHI: ascii<= "MTHI";
+                        `EXE_MFLO: ascii<= "MFLO";
+                        `EXE_MTLO: ascii<= "MTLO";
                         /* arithemtic instraction */
-                        `ADD: ascii<= "ADD";
-                        `ADDU: ascii<= "ADDU";
-                        `SUB: ascii<= "SUB";
-                        `SUBU: ascii<= "SUBU";
-                        `SLT: ascii<= "SLT";
-                        `SLTU: ascii<= "SLTU";
+                        `EXE_ADD: ascii<= "ADD";
+                        `EXE_ADDU: ascii<= "ADDU";
+                        `EXE_SUB: ascii<= "SUB";
+                        `EXE_SUBU: ascii<= "SUBU";
+                        `EXE_SLT: ascii<= "SLT";
+                        `EXE_SLTU: ascii<= "SLTU";
 
-                        `MULT: ascii<= "MULT";
-                        `MULTU: ascii<= "MULTU";
-                        `DIV: ascii<= "DIV";
-                        `DIVU: ascii<= "DIVU";
+                        `EXE_MULT: ascii<= "MULT";
+                        `EXE_MULTU: ascii<= "MULTU";
+                        `EXE_DIV: ascii<= "DIV";
+                        `EXE_DIVU: ascii<= "DIVU";
                         /* jump instraction */
-                        `JR: ascii<= "JR";
-                        `JALR: ascii<= "JALR";
+                        `EXE_JR: ascii<= "JR";
+                        `EXE_JALR: ascii<= "JALR";
                         
-                        `SYSCALL: ascii<= "SYSC";
-                        `BREAK: ascii<= "BRE";
+                        `EXE_SYSCALL: ascii<= "SYSC";
+                        `EXE_BREAK: ascii<= "BRE";
                         default: ascii<="N-R";
                     endcase
                 end
-            `ANDI: ascii<= "ANDI";
-            `XORI: ascii<= "XORI";
-            `LUI: ascii<= "LUI";
-            `ORI: ascii<= "ORI";
+            `EXE_ANDI: ascii<= "ANDI";
+            `EXE_XORI: ascii<= "XORI";
+            `EXE_LUI: ascii<= "LUI";
+            `EXE_ORI: ascii<= "ORI";
 
-            `ADDI: ascii<= "ADDI";
-            `ADDIU: ascii<= "ADDIU";
-            `SLTI: ascii<= "SLTI";
-            `SLTIU: ascii<= "SLTIU";
+            `EXE_ADDI: ascii<= "ADDI";
+            `EXE_ADDIU: ascii<= "ADDIU";
+            `EXE_SLTI: ascii<= "SLTI";
+            `EXE_SLTIU: ascii<= "SLTIU";
 
-            `J: ascii<= "J";
-            `JAL: ascii<= "JAL";
+            `EXE_J: ascii<= "J";
+            `EXE_JAL: ascii<= "JAL";
             
-            `BEQ: ascii<= "BEQ";
-            `BGTZ: ascii<= "BGTZ";
-            `BLEZ: ascii<= "BLEZ";
-            `BNE: ascii<= "BNE";
+            `EXE_BEQ: ascii<= "BEQ";
+            `EXE_BGTZ: ascii<= "BGTZ";
+            `EXE_BLEZ: ascii<= "BLEZ";
+            `EXE_BNE: ascii<= "BNE";
             
-            `LB: ascii<= "LB";
-            `LBU: ascii<= "LBU";
-            `LH: ascii<= "LH";
-            `LHU: ascii<= "LHU";
-            `LW: ascii<= "LW";
-            `SB: ascii<= "SB";
-            `SH: ascii<= "SH";
-            `SW: ascii<= "SW";
+            `EXE_LB: ascii<= "LB";
+            `EXE_LBU: ascii<= "LBU";
+            `EXE_LH: ascii<= "LH";
+            `EXE_LHU: ascii<= "LHU";
+            `EXE_LW: ascii<= "LW";
+            `EXE_SB: ascii<= "SB";
+            `EXE_SH: ascii<= "SH";
+            `EXE_SW: ascii<= "SW";
             6'b000001: begin 
-                case (instr[20:16])
-                    `BGEZ: ascii<= "BGEZ";
-                    `BGEZAL: ascii<= "BGEZAL";
-                    `BLTZ: ascii<= "BLTZ";
-                    `BLTZAL: ascii<= "BLTZAL";
+                case (instruction[20:16])
+                    `EXE_BGEZ: ascii<= "BGEZ";
+                    `EXE_BGEZAL: ascii<= "BGEZAL";
+                    `EXE_BLTZ: ascii<= "BLTZ";
+                    `EXE_BLTZAL: ascii<= "BLTZAL";
                     default : ascii<= " ";
                 endcase
             end
             6'b010000: begin 
-                if(instr==`ERET) begin
+                if(instruction==`EXE_ERET) begin
                     ascii<="ERET";
                 end else begin 
-                    case (instr[25:21])
+                    case (instruction[25:21])
                         5'b00100: ascii<="MTOC0";
                         5'b00000: ascii<="MFC0";
                     endcase
@@ -858,9 +858,9 @@ module inst_decode (
             end
             default: ascii<= "N-R";
        endcase
-    if(instr==`ERET)
+    if(instruction==`EXE_ERET)
         ascii<= "ERET";
-    if(!instr)
+    if(!instruction)
         ascii<= "NOP";
     end
 endmodule

@@ -38,6 +38,7 @@ module write_back(
     input  wire [4 :0]  write_addr_in,          // Register address to be written from memory access stage
     input  wire [31:0]  write_data_alu,
     input  wire [31:0]  write_data_mem,
+    input  wire         reg_write,
 
     input  wire         reg_write_final,    // Final register write enable signal from memory access stage
     input  wire         mem_to_reg_final,   // Final memory to register selection signal from memory access stage
@@ -64,7 +65,7 @@ module write_back(
             reg_inst <= inst_in;
             reg_write_data_alu<=write_data_alu;
             reg_write_data_mem<=write_data_mem;
-            reg_mem_to_reg_final<=mem_to_reg;
+            reg_mem_to_reg_final<=mem_to_reg_final;
         end
     end
 
