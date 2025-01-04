@@ -41,8 +41,6 @@ module inst_fetch (
     reg [31:0] mem [0:1023]; // 4KB memory
     // TODO: use true memory rather than the reg array
 
-reg [31:0] tmp;
-
     assign pc_out = pc_out_reg;
     assign instruction = instruction_reg;
 
@@ -53,18 +51,18 @@ reg [31:0] tmp;
             pc_out_reg <= 32'h00000000;
 
             // Logical operation instructions
-            mem[0] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100100}; // and $3, $1, $2
-            mem[1] <= {6'b000000, 5'b00001, 5'b00010, 5'b00100, 5'b00000, 6'b100101}; // or $4, $1, $2
-            mem[2] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100110}; // xor $5, $1, $2
-            mem[3] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100111}; // nor $6, $1, $2
-            mem[4] <= {6'b001100, 5'b00001, 5'b00010, 16'h000A}; // andi $2, $1, 10
+            mem[0 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100100}; // and $3, $1, $2
+            mem[1 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00100, 5'b00000, 6'b100101}; // or $4, $1, $2
+            mem[2 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100110}; // xor $5, $1, $2
+            mem[3 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100111}; // nor $6, $1, $2
+            mem[4 ] <= {6'b001100, 5'b00001, 5'b00010, 16'h000A}; // andi $2, $1, 10
 
             // Arithmetic operation instructions
-            mem[5] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100000}; // add $3, $1, $2
-            mem[6] <= {6'b000000, 5'b00001, 5'b00010, 5'b00100, 5'b00000, 6'b100001}; // addu $4, $1, $2
-            mem[7] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100010}; // sub $5, $1, $2
-            mem[8] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100011}; // subu $6, $1, $2
-            mem[9] <= {6'b000000, 5'b00001, 5'b00010, 5'b01000, 5'b00000, 6'b101010}; // slt $8, $1, $2
+            mem[5 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100000}; // add $3, $1, $2
+            mem[6 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00100, 5'b00000, 6'b100001}; // addu $4, $1, $2
+            mem[7 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100010}; // sub $5, $1, $2
+            mem[8 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100011}; // subu $6, $1, $2
+            mem[9 ] <= {6'b000000, 5'b00001, 5'b00010, 5'b01000, 5'b00000, 6'b101010}; // slt $8, $1, $2
             mem[10] <= {6'b001000, 5'b00001, 5'b00010, 16'h0005}; // addi $2, $1, 5
 
             instruction_reg = 32'b0;
@@ -74,8 +72,6 @@ reg [31:0] tmp;
             // Here we assume a simple memory read operation
             // In a real design, this would involve interfacing with the memory module
             instruction_reg <= mem[pc_out_reg / 4]; // Fetch instruction from memory
-            
-            tmp <= mem[0];
 
             // Fetch the instruction from memory using the current PC
             pc_out_reg <= pc_in;
