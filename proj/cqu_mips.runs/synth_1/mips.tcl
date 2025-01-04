@@ -76,6 +76,7 @@ read_verilog /home/napbad/Project/cqu_mips/proj/src/defines.vh
 read_verilog -library xil_defaultlib {
   /home/napbad/Project/cqu_mips/proj/src/datapath.v
   /home/napbad/Project/cqu_mips/proj/src/exe/exe.v
+  /home/napbad/Project/cqu_mips/proj/src/hazard.v
   /home/napbad/Project/cqu_mips/proj/src/id/id.v
   /home/napbad/Project/cqu_mips/proj/src/if/if.v
   /home/napbad/Project/cqu_mips/proj/src/mem/mem.v

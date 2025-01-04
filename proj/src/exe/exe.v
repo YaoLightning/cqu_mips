@@ -152,12 +152,12 @@ assign mem_read_out  = mem_read_in;
 assign mem_write_out = mem_write_in;
 assign mem_to_reg_out = mem_to_reg_in;
 
-assign alu_result  = ({32{alusel == `EXE_RES_LOGIC}} & temp_logic) |
-                     ({32{alusel == `EXE_RES_SHIFT}} & temp_shift) |
-                     ({32{alusel == `EXE_RES_MOVE}} & temp_move) |
-                     ({32{alusel == `EXE_RES_ARITHMETIC}} & temp_arith) |
-                     ({32{alusel == `EXE_RES_MUL}} & temp_mul) |
-                     ({32{alusel == `EXE_RES_JUMP_BRANCH}} & final_addr);
+//assign alu_result  = ({32{alusel == `EXE_RES_LOGIC}} & temp_logic) |
+//                     ({32{alusel == `EXE_RES_SHIFT}} & temp_shift) |
+//                     ({32{alusel == `EXE_RES_MOVE}} & temp_move) |
+//                     ({32{alusel == `EXE_RES_ARITHMETIC}} & temp_arith) |
+//                     ({32{alusel == `EXE_RES_MUL}} & temp_mul) |
+//                     ({32{alusel == `EXE_RES_JUMP_BRANCH}} & final_addr);
 
 
 

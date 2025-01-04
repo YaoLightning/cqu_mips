@@ -48,6 +48,20 @@ module datapath(
     // do not do any sequential logic inside the modules
 
 
+    // hazard module signals
+    wire forwardaD, forwardbD;
+    wire stallD, stallF;
+    wire flushE;
+    wire [1:0] forwardaE, forwardbE;
+
+
+    // update stall signals
+    assign mem_stall = wb_stall | !data_data_ok | stallD;
+    assign exe_stall = mem_stall | wb_stall | stallD;
+    assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
+    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall | stallF;
+
+
     wire if_stall ;
     wire id_stall ;
     wire exe_stall ;
@@ -96,9 +110,6 @@ module datapath(
     // exe signal definition
     wire [31:0] src1_exe;
     wire [31:0] src2_exe;
-
-    assign src1_exe = regfile_data_rs;
-    assign src2_exe = alu_sel_ID_EXE ? extended_imm_ID_EXE : regfile_data_rt;
 
     // exe -> mem signal
     wire        reg_write_EXE_MEM;
@@ -150,6 +161,14 @@ module datapath(
     assign data_wdata     = memory_write_data_mem;
     assign mem_read_data_MEM_WB = data_rdata;
     
+    assign src1_exe = forwardaE[0] ? 
+                      alu_result_EXE_MEM : forwardaE[1] ? 
+                      reg_write_data_wb : regfile_data_rs;
+    assign src2_exe = forwardbE[0] ? 
+                      alu_result_EXE_MEM : forwardbE[1] ? 
+                      reg_write_data_wb : (alu_sel_ID_EXE ? 
+                      extended_imm_ID_EXE : regfile_data_rt);
+
 
     inst_fetch if_stage(
         .clk             (clk),
@@ -285,5 +304,33 @@ module datapath(
     );
 
 
+    // instantiate hazard module
+    hazard hazard_unit(
+        // fetch stage
+        .stalwlF(stallF),
+        // decode stage
+        .rsD(rs_id),
+        .rtD(rt_id),
+        .branchD(branch),
+        .forwardaD(forwardaD),
+        .forwardbD(forwardbD),
+        .stallD(stallD),
+        // execute stage
+        .rsE(rs_id),
+        .rtE(rt_id),
+        .writeregE(write_reg_EXE_MEM),
+        .regwriteE(reg_write_EXE_MEM),
+        .memtoregE(mem_to_reg_EXE_MEM),
+        // mem stage
+        .writeregM(write_reg_MEM_WB),
+        .regwriteM(reg_write_MEM_WB),
+        .memtoregM(mem_to_reg_MEM_WB),
+        // write back stage
+        .writeregW(reg_write_addr_wb),
+        .regwriteW(reg_write_MEM_WB),
+        .flushE(flushE),
+        .forwardaE(forwardaE),
+        .forwardbE(forwardbE)
+    );
 
 endmodule
