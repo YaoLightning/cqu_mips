@@ -26,7 +26,7 @@
 module inst_fetch (
     input   wire clk,              // Clock signal
     input   wire rstn,             // Reset signal
-    input   wire [5:0]stall,            // Stall signal
+    input   wire stall,            // Stall signal
 
     input   wire [31:0] pc_in,       // Program counter input
     output  wire [31:0] pc_out,      // Program counter output
@@ -68,7 +68,7 @@ module inst_fetch (
 
             // instruction_reg = 32'b0;
 
-                        // Reset the program counter to the initial value (e.g., 0x00400000)
+            // Reset the program counter to the initial value (e.g., 0x00400000)
             pc <= 32'h00000000;
 
             mem[0 ] <= {6'b001000, 5'b00000, 5'b00000, 16'h0000};
@@ -109,7 +109,7 @@ module inst_fetch (
             mem[33] <= {6'b000000, 5'b00001, 5'b00010, 5'b00100, 5'b00000, 6'b100101}; // or $4, $1, $2
             mem[34] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100110}; // xor $5, $1, $2
             mem[35] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100111}; // nor $6, $1, $2
-            mem[36] <= {6'b001100, 5'b00001, 5'b00010, 16'h000A}; // andi $2, $1, 10
+            mem[36] <= {6'b001100, 5'b00001, 5'b00010, 16'hFFFF}; // andi $2, $1, 10
 
             // Arithmetic operation instructions
             mem[37] <= {6'b000000, 5'b00001, 5'b00010, 5'b00011, 5'b00000, 6'b100000}; // add $3, $1, $2
@@ -117,12 +117,12 @@ module inst_fetch (
             mem[39] <= {6'b000000, 5'b00001, 5'b00010, 5'b00101, 5'b00000, 6'b100010}; // sub $5, $1, $2
             mem[40] <= {6'b000000, 5'b00001, 5'b00010, 5'b00110, 5'b00000, 6'b100011}; // subu $6, $1, $2
             mem[41] <= {6'b000000, 5'b00001, 5'b00010, 5'b01000, 5'b00000, 6'b101010}; // slt $8, $1, $2
-            mem[42] <= {6'b001000, 5'b00001, 5'b00010, 16'h0005}; // addi $2, $1, 5
+            mem[42] <= {6'b001000, 5'b00010, 5'b00011, 16'h0005}; // addi $3, $2, 5
 
             // Shift instructions
-            mem[43] <= {6'b000000, 5'b00000, 5'b00010, 5'b00111, 5'b00000, 6'b000010}; // srl $7, $2, 0
+            mem[43] <= {6'b000000, 5'b00000, 5'b00010, 5'b00111, 5'b00011, 6'b000010}; // srl $7, $2, 3
             mem[44] <= {6'b000000, 5'b00001, 5'b00010, 5'b01001, 5'b00000, 6'b000011}; // sra $9, $1, $2
-            mem[45] <= {6'b000000, 5'b00000, 5'b00010, 5'b01010, 5'b00000, 6'b000100}; // sll $10, $2, 0
+            mem[45] <= {6'b000000, 5'b00001, 5'b00010, 5'b01010, 5'b00000, 6'b000100}; // sllv $10, $2, $1
             mem[46] <= {6'b000000, 5'b00001, 5'b00010, 5'b01011, 5'b00000, 6'b000110}; // srlv $11, $2, $1
             mem[47] <= {6'b000000, 5'b00001, 5'b00010, 5'b01100, 5'b00000, 6'b000111}; // srav $12, $2, $1
 
@@ -159,7 +159,7 @@ module inst_fetch (
             mem[71] <= {6'b000000, 5'b00000, 5'b00000, 5'b00000, 5'b00000, 6'b001101}; // break
 
             instruction_reg = 32'b0;
-        end else if(stall[0]==1'b0) begin
+        end else if (stall != 0) begin
 
             // Assuming the memory module is connected to fetch the instruction
             // Here we assume a simple memory read operation

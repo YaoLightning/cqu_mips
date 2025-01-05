@@ -11,19 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="8.380 ns"></ZoomStartTime>
-      <ZoomEndTime time="148.248 ns"></ZoomEndTime>
+      <ZoomStartTime time="869.833 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,026.034 ns"></ZoomEndTime>
       <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="68"></ValueColumnWidth>
+      <NameColumnWidth column_width="273"></NameColumnWidth>
+      <ValueColumnWidth column_width="63"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="9" />
-   <wvobject type="logic" fp_name="/datapath_sim/clk">
-      <obj_property name="ElementShortName">clk</obj_property>
-      <obj_property name="ObjectShortName">clk</obj_property>
-   </wvobject>
+   <WVObjectSize size="11" />
    <wvobject type="logic" fp_name="/datapath_sim/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -32,14 +28,93 @@
       <obj_property name="ElementShortName">ascii[39:0]</obj_property>
       <obj_property name="ObjectShortName">ascii[39:0]</obj_property>
       <obj_property name="Radix">ASCIIRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datapath_sim/dp/pc_out_IF_ID">
+      <obj_property name="ElementShortName">pc_out_IF_ID[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_out_IF_ID[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/datapath_sim/dp/pc_in_if">
+      <obj_property name="ElementShortName">pc_in_if[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_in_if[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group145">
+      <obj_property name="label">a-ctrl</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/datapath_sim/clk">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/if_stall">
+         <obj_property name="ElementShortName">if_stall</obj_property>
+         <obj_property name="ObjectShortName">if_stall</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/id_stall">
+         <obj_property name="ElementShortName">id_stall</obj_property>
+         <obj_property name="ObjectShortName">id_stall</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/exe_stall">
+         <obj_property name="ElementShortName">exe_stall</obj_property>
+         <obj_property name="ObjectShortName">exe_stall</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/mem_stall">
+         <obj_property name="ElementShortName">mem_stall</obj_property>
+         <obj_property name="ObjectShortName">mem_stall</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/wb_stall">
+         <obj_property name="ElementShortName">wb_stall</obj_property>
+         <obj_property name="ObjectShortName">wb_stall</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/jump">
+         <obj_property name="ElementShortName">jump</obj_property>
+         <obj_property name="ObjectShortName">jump</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/branch">
+         <obj_property name="ElementShortName">branch</obj_property>
+         <obj_property name="ObjectShortName">branch</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/forwardaD">
+         <obj_property name="ElementShortName">forwardaD</obj_property>
+         <obj_property name="ObjectShortName">forwardaD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/forwardbD">
+         <obj_property name="ElementShortName">forwardbD</obj_property>
+         <obj_property name="ObjectShortName">forwardbD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/stallD">
+         <obj_property name="ElementShortName">stallD</obj_property>
+         <obj_property name="ObjectShortName">stallD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/flushE">
+         <obj_property name="ElementShortName">flushE</obj_property>
+         <obj_property name="ObjectShortName">flushE</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/forwardaE">
+         <obj_property name="ElementShortName">forwardaE[1:0]</obj_property>
+         <obj_property name="ObjectShortName">forwardaE[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/forwardbE">
+         <obj_property name="ElementShortName">forwardbE[1:0]</obj_property>
+         <obj_property name="ObjectShortName">forwardbE[1:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group104">
       <obj_property name="label">if</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/if_stage/stall">
+         <obj_property name="ElementShortName">stall</obj_property>
+         <obj_property name="ObjectShortName">stall</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/if_stage/pc_out">
          <obj_property name="ElementShortName">pc_out[31:0]</obj_property>
          <obj_property name="ObjectShortName">pc_out[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/if_stage/pc">
+         <obj_property name="ElementShortName">pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc[31:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/if_stage/pc_in">
          <obj_property name="ElementShortName">pc_in[31:0]</obj_property>
@@ -153,6 +228,18 @@
          <obj_property name="ElementShortName">src2_in[31:0]</obj_property>
          <obj_property name="ObjectShortName">src2_in[31:0]</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src1_reg">
+         <obj_property name="ElementShortName">src1_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src1_reg[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src2_reg">
+         <obj_property name="ElementShortName">src2_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src2_reg[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/aluop_in">
          <obj_property name="ElementShortName">aluop_in[7:0]</obj_property>
          <obj_property name="ObjectShortName">aluop_in[7:0]</obj_property>
@@ -165,10 +252,14 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/alu_result">
          <obj_property name="ElementShortName">alu_result[31:0]</obj_property>
          <obj_property name="ObjectShortName">alu_result[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FFD700</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/write_reg">
          <obj_property name="ElementShortName">write_reg[4:0]</obj_property>
          <obj_property name="ObjectShortName">write_reg[4:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/exe_stage/reg_write_reg">
          <obj_property name="ElementShortName">reg_write_reg</obj_property>
@@ -185,22 +276,6 @@
       <wvobject type="logic" fp_name="/datapath_sim/dp/exe_stage/mem_write_reg">
          <obj_property name="ElementShortName">mem_write_reg</obj_property>
          <obj_property name="ObjectShortName">mem_write_reg</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src1_in">
-         <obj_property name="ElementShortName">src1_in[31:0]</obj_property>
-         <obj_property name="ObjectShortName">src1_in[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src1_reg">
-         <obj_property name="ElementShortName">src1_reg[31:0]</obj_property>
-         <obj_property name="ObjectShortName">src1_reg[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src2_in">
-         <obj_property name="ElementShortName">src2_in[31:0]</obj_property>
-         <obj_property name="ObjectShortName">src2_in[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src2_reg">
-         <obj_property name="ElementShortName">src2_reg[31:0]</obj_property>
-         <obj_property name="ObjectShortName">src2_reg[31:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/waddr_reg">
          <obj_property name="ElementShortName">waddr_reg[4:0]</obj_property>
@@ -234,6 +309,8 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/write_reg_reg">
          <obj_property name="ElementShortName">write_reg_reg[4:0]</obj_property>
          <obj_property name="ObjectShortName">write_reg_reg[4:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/mem_stage/reg_write_in">
          <obj_property name="ElementShortName">reg_write_in</obj_property>
@@ -271,6 +348,8 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/wb_stage/write_addr_out">
          <obj_property name="ElementShortName">write_addr_out[4:0]</obj_property>
          <obj_property name="ObjectShortName">write_addr_out[4:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group22">
@@ -280,6 +359,7 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/reg_file">
          <obj_property name="ElementShortName">reg_file[0:31][31:0]</obj_property>
          <obj_property name="ObjectShortName">reg_file[0:31][31:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/raddr1">
          <obj_property name="ElementShortName">raddr1[4:0]</obj_property>
@@ -304,6 +384,8 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/waddr">
          <obj_property name="ElementShortName">waddr[4:0]</obj_property>
          <obj_property name="ObjectShortName">waddr[4:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/wdata">
          <obj_property name="ElementShortName">wdata[31:0]</obj_property>

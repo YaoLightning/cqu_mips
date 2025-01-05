@@ -22,7 +22,7 @@
 
 module hazard(
 	//fetch stage
-	output 	wire 		stalwlF,
+	output 	wire 		stallF,
 	//decode stage
 	input 	wire[4:0] 	rsD,rtD,
 	input 	wire 		branchD,

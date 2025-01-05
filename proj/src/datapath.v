@@ -19,6 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`include "defines.vh" 
 
 module datapath(
     input clk, rstn
@@ -59,15 +60,15 @@ module datapath(
     wire id_stall;
     wire exe_stall;
     wire mem_stall;
-    wire wb_stall;
+    wire wb_stall = 0;
     
     wire arith_stall_exe;
 
     // update stall signals
-    // assign mem_stall = wb_stall | !data_data_ok | stallD;
-    // assign exe_stall = mem_stall | wb_stall | stallD | arith_stall_exe;
-    // assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
-    // assign if_stall = id_stall | exe_stall | mem_stall | wb_stall | stallF;
+    assign mem_stall = wb_stall  | stallD;
+    assign exe_stall = mem_stall | wb_stall | stallD | 0;
+    assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
+    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall;
 
 
     // signal definition
@@ -91,7 +92,7 @@ module datapath(
     wire [4 :0] rs_id;
     wire [4 :0] rt_id;
     wire [4 :0] rd_ID_EXE;
-
+    wire [4:0]  shamt_id;
     wire [31:0] pc_plus_4_id;
 
     // id -> exe signal
@@ -169,7 +170,10 @@ module datapath(
     
     assign src1_exe = forwardaE[0] ? 
                       exe_result_EXE_MEM : forwardaE[1] ? 
-                      reg_write_data_wb : regfile_data_rs;
+                      reg_write_data_wb : (opcode==`EXE_SRL) ?
+                      extended_imm_ID_EXE : regfile_data_rs;
+
+
     assign src2_exe = forwardbE[0] ? 
                       exe_result_EXE_MEM : forwardbE[1] ? 
                       reg_write_data_wb : (alu_src_ID_EXE ? 
@@ -203,7 +207,7 @@ module datapath(
         .rs              (rs_id),
         .rt              (rt_id),
         .rd              (rd_ID_EXE),
-        .imm             (imm),
+        .shamt           (shamt_id),
         .extended_imm    (extended_imm_ID_EXE),
         .opcode          (opcode),
         .funct           (funct),
@@ -332,8 +336,8 @@ module datapath(
         .forwardbD(forwardbD),
         .stallD(stallD),
         // execute stage
-        .rsE(rs_id),
-        .rtE(rt_id),
+        .rsE(inst_EXE_MEM[25:21]),
+        .rtE(inst_EXE_MEM[20:16]),
         .writeregE(write_reg_EXE_MEM),
         .regwriteE(reg_write_EXE_MEM),
         .memtoregE(mem_to_reg_EXE_MEM),

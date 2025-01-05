@@ -283,8 +283,9 @@ module inst_decode (
     output  wire [4:0]      rs,           // Source register 1 address
     output  wire [4:0]      rt,           // Source register 2 address
     output  wire [4:0]      rd,           // Destination register address
-    output  wire [15:0]     imm,          // Immediate value
+    //output  wire [15:0]     imm,          // Immediate value
     output  wire [5:0]      opcode,       // Opcode of the instruction
+    output  wire [4:0]      shamt,        // shamt of the instruction
     output  wire [5:0]      funct,        // Function field for R-type instructions
     // instruction outputs
     output  wire [7:0]      alu_op,       // ALU operation result
@@ -316,6 +317,7 @@ module inst_decode (
     reg [4 :0] rt_reg;
     reg [4 :0] rd_reg;
     reg [15:0] imm_reg;
+    reg [4 :0] shamt_reg;
     reg [5 :0] opcode_reg;
     reg [5 :0] funct_reg;
     // this reg is used to store the instruction which is decoding
@@ -328,6 +330,7 @@ module inst_decode (
     assign rt = rt_reg;
     assign rd = rd_reg;
     assign imm = imm_reg;
+    assign shamt=shamt_reg;
     assign opcode = opcode_reg;
     assign funct = funct_reg;
     assign inst_out = instruction_reg;
@@ -342,6 +345,7 @@ module inst_decode (
             rt_reg      <= 5'b00000;
             rd_reg      <= 5'b00000;
             imm_reg     <= 16'b0000000000000000;
+            shamt_reg   <= 5'b00000;
             opcode_reg  <= 6'b000000;
             funct_reg   <= 6'b000000;
         end else begin
@@ -351,6 +355,7 @@ module inst_decode (
             rt_reg          <= instruction[20:16];
             rd_reg          <= instruction[15:11];
             imm_reg         <= instruction[15: 0];
+            shamt_reg       <= instruction[10: 6];
             opcode_reg      <= instruction[31:26];
             funct_reg       <= instruction[5 : 0];
         end
@@ -579,7 +584,7 @@ module inst_decode (
 
     //jump value
     reg jump_reg;
-    assign jump=jump_reg;
+    assign jump=0;
     always @(*) begin
         case (opcode_reg)
             `EXE_J, `EXE_JAL, `EXE_JR, `EXE_JALR: 
@@ -598,9 +603,17 @@ module inst_decode (
         opcode == `EXE_XORI  ||
         opcode == `EXE_LUI
     );
+    wire is_zero_shamt;
+    assign is_zero_shamt=(
+        opcode==`EXE_SRL||
+        opcode==`EXE_SLL||
+        opcode==`EXE_SRA
+        );
     wire [31:0] zero_extended = {16'b0, imm_reg};// 0扩展 
     wire [31:0] sign_extended = {{16{imm_reg[15]}}, imm_reg};
-    assign extended_imm = is_zero_extend ? zero_extended : sign_extended;
+    wire [31:0] zero_ex_shamt = {27'b0,shamt};
+    assign extended_imm = is_zero_shamt ? zero_ex_shamt:
+                        (is_zero_extend ? zero_extended : sign_extended);
 
     // PC + 4 value
     assign pc_plus_4 = pc + 4;

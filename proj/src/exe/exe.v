@@ -157,9 +157,9 @@ assign temp_logic = (aluop == `EXE_AND_OP) ? (src1 & src2) :
                     (aluop == `EXE_XORI_OP) ? (src1 ^ src2) :
                     (aluop == `EXE_LUI_OP) ? {src2[15:0], 16'b0}: 32'b0;//低16位立即数保存到高位
 
-assign temp_shift = (aluop == `EXE_SLL_OP) ? (src2 << inst_in[10:6]) ://无v表示直接用指令中的值
-                    (aluop == `EXE_SRL_OP) ? (src2 >> inst_in[10:6]) :
-                    (aluop == `EXE_SRA_OP) ? (src2 >>> inst_in[10:6]) ://算术右移
+assign temp_shift = (aluop == `EXE_SLL_OP) ? (src2 << src1) ://无v表示直接用指令中的值
+                    (aluop == `EXE_SRL_OP) ? (src2 >> src1) :
+                    (aluop == `EXE_SRA_OP) ? (src2 >>> src1) ://算术右移
                     (aluop == `EXE_SLLV_OP) ? (src2 << src1[4:0]) ://v表示要读取寄存器中的值
                     (aluop == `EXE_SRLV_OP) ? (src2 >> src1[4:0]) :
                     (aluop == `EXE_SRAV_OP) ? (src2 >>> src1[4:0]) :
