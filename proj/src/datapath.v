@@ -99,11 +99,12 @@ module datapath(
     wire [ 2:0] alu_sel_ID_EXE;
     wire        alu_src_ID_EXE;
     wire        reg_write_ID_EXE;
-    wire [ 4:0] reg_dst_ID_EXE;
+    wire        reg_dst_ID_EXE;
     wire        mem_read_ID_EXE;
     wire        mem_write_ID_EXE;
     wire [31:0] extended_imm_ID_EXE;
     wire        mem_to_reg_ID_EXE;
+    wire [4 :0] write_reg_ID_EXE;
 
     wire [31:0] inst_ID_EXE;
 
@@ -141,6 +142,7 @@ module datapath(
     // TODO: jumpaddress calculation
     assign pc_in_if = pc_out_IF_ID + 4;
 
+    assign write_reg_ID_EXE = reg_dst_ID_EXE ? rd_ID_EXE : rt_id;
 
     assign regfile_data_to_write = reg_write_data_wb;
     assign reg_write_data_wb     = reg_write_data_MEM_WB;
@@ -236,7 +238,7 @@ module datapath(
 
 
         // .branch_taken_in (0),
-        .waddr_in        (rd_ID_EXE),
+        .waddr_in        (write_reg_ID_EXE),
         .reg_write_in    (reg_write_ID_EXE),
         .mem_read_in     (mem_read_ID_EXE),
         .mem_write_in    (mem_write_ID_EXE),
