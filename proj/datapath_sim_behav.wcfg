@@ -12,12 +12,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="157.810 ns"></ZoomEndTime>
+      <ZoomEndTime time="183.218 ns"></ZoomEndTime>
       <Cursor1Time time="135.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
-      <ValueColumnWidth column_width="80"></ValueColumnWidth>
+      <ValueColumnWidth column_width="76"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/datapath_sim/clk">
@@ -171,6 +171,10 @@
       <obj_property name="label">mem</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/exe_result_reg">
+         <obj_property name="ElementShortName">exe_result_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">exe_result_reg[31:0]</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/inst">
          <obj_property name="ElementShortName">inst[31:0]</obj_property>
          <obj_property name="ObjectShortName">inst[31:0]</obj_property>
@@ -179,9 +183,9 @@
          <obj_property name="ElementShortName">mem_addr[31:0]</obj_property>
          <obj_property name="ObjectShortName">mem_addr[31:0]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/write_reg_in">
-         <obj_property name="ElementShortName">write_reg_in[4:0]</obj_property>
-         <obj_property name="ObjectShortName">write_reg_in[4:0]</obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/mem_stage/write_reg_reg">
+         <obj_property name="ElementShortName">write_reg_reg[4:0]</obj_property>
+         <obj_property name="ObjectShortName">write_reg_reg[4:0]</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/mem_stage/reg_write_in">
          <obj_property name="ElementShortName">reg_write_in</obj_property>

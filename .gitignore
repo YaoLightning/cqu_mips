@@ -1,5 +1,6 @@
 *.md
 **/*.runs/
 **/*.sim/
+**/*.ip_user_files/
 **/*.cache/
 *.log
