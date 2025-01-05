@@ -241,6 +241,7 @@ module datapath(
         .mem_write_in    (mem_write_ID_EXE),
         .mem_to_reg_in   (mem_to_reg_ID_EXE),
 
+
         .alu_result      (exe_result_EXE_MEM),
         
         .write_reg       (write_reg_EXE_MEM),
