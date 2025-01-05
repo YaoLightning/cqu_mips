@@ -1,14 +1,31 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  --include "../../../../src" \
+"../../../../cqu_mips.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
+"../../../../cqu_mips.gen/sources_1/ip/blk_mem_gen_1/sim/blk_mem_gen_1.v" \
+"../../../../cqu_mips.gen/sources_1/ip/ram_axi4/sim/ram_axi4.v" \
+"../../../../cqu_mips.gen/sources_1/ip/ram_easy/sim/ram_easy.v" \
+"../../../../src/cache/cache.v" \
+"../../../../src/cache/cpu_axi_interface.v" \
+"../../../../src/cache/d_cache-write_through.v" \
 "../../../../src/datapath.v" \
 "../../../../src/exe/exe.v" \
 "../../../../src/hazard.v" \
+"../../../../src/cache/i_cache-direct_map.v" \
 "../../../../src/id/id.v" \
 "../../../../src/if/if.v" \
 "../../../../src/mem/mem.v" \
 "../../../../src/regfile.v" \
 "../../../../src/wb/wb.v" \
+"../../../../src/mips.v" \
+"../../../../src/storage/reg.v" \
+"../../../../src/cache/cache_inst.v" \
+"../../../../src/cache/cache_data.v" \
+"../../../../src/exe/hilo_reg.v" \
+"../../../../src/storage/mmu.v" \
+"../../../../src/util/extend.v" \
+"../../../../src/id/id_ex.v" \
 "../../../../sim/datapath_sim.v" \
+"../../../../sim/cpu_sim.v" \
 
 # compile glbl module
 verilog xil_defaultlib "glbl.v"
