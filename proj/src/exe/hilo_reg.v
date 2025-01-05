@@ -4,16 +4,16 @@
 
 module hilo_reg(
     input clk,
-    input rst,
+    input rstn,
     input we,
-    input [31:0] hi_i,
-    input [31:0] lo_i,
+    input wire [31:0] hi_i,
+    input wire [31:0] lo_i,
 
     output reg [31:0] hi_o,
     output reg [31:0] lo_o
     );
 
-    always@(*)begin
+    always@(posedge clk or negedge rstn)begin
         if(rst == 1'b1)begin
             hi_o <=  32'b0;
             lo_o <=  32'b0;

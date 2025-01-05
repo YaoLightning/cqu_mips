@@ -57,17 +57,18 @@ module execute(
 
     output wire [31:0] mem_addr_out,    // Address memory for read or write
 
-    output wire        arith_stall,
+    output wire        arith_stall
 
-    // //add the support for hilo register
-    input  wire [31:0] hi,            // hi register
-    input  wire [31:0] lo,            // lo register
-    output wire [31:0] hi_out,        // hi output
-    output wire [31:0] lo_out,        // lo output
-    output wire        whilo_out      // Write HI/LO enable flag
+    // // //add the support for hilo register
+    // input  wire [31:0] hi_in,            // hi register
+    // input  wire [31:0] lo_in,            // lo register
+    // output wire [31:0] hi_out,        // hi output
+    // output wire [31:0] lo_out,        // lo output
+    // output wire        whilo_out      // Write HI/LO enable flag
+
 );
-// TODO: hilo寄存器逻辑实现 / 时序实现 / div模块实现:需要暂停等额外逻辑
-//注意立即数逻辑的实现位置
+// TODO: hilo寄存器逻辑实现 / div模块实现:需要暂停等额外逻辑
+
 
 // logical usage
 
@@ -112,7 +113,24 @@ always @(posedge clk or negedge rstn) begin
     end
 end
  // Internal register storage
-
+   reg [31:0] hi_reg, lo_reg;
+   wire [31:0] hi_out, lo_out;
+// 实例化 hilo_reg
+    hilo_reg hilo_reg_inst (
+        .clk(clk),
+        .rstn(rstn),
+        .we(whilo_out),
+        .hi_i(hi_out),
+        .lo_i(lo_out),
+        .hi_o(hi_reg),
+        .lo_o(lo_reg)
+    );
+    
+ 
+    wire [31:0] hi_in, lo_in;
+    
+    assign hi_in = hi_reg;
+    assign lo_in = lo_reg;
 
 wire [31:0] src1;
 wire [31:0] src2;
@@ -143,6 +161,8 @@ wire [31:0] temp_shift;            // 移位运算结果
 wire [31:0] temp_move;             // 移动运算结果
 wire [31:0] temp_arith;            // 算术运算结果
 wire [63:0] temp_mul;              // 乘法运算结果
+wire [63:0] div_result_out;
+wire div_ready_out;
 wire [63:0] mulres;              // 乘法运算结果
 wire [31:0] link_addr;             // 跳转地址
 wire [31:0] final_result;          // 最终结果
@@ -166,22 +186,26 @@ assign temp_shift = (aluop == `EXE_SLL_OP) ? (src2 << src1) ://无v表示直接�
                     32'b0;
 
                     //对hilo寄存器的操作
-assign temp_move =  (aluop == `EXE_MFHI_OP) ? hi : 
-                    (aluop == `EXE_MFLO_OP) ? lo :
+assign temp_move =  (aluop == `EXE_MFHI_OP) ? (hi_in) : 
+                    (aluop == `EXE_MFLO_OP) ? lo_in :
                     // (aluop == `EXE_MTHI_OP) ? src1 :
                     // (aluop == `EXE_MTLO_OP) ? src1 :
                     32'b0;
 assign hi_out = (aluop == `EXE_MTHI_OP) ? src1 :
                 (aluop==`EXE_MULT_OP || aluop==`EXE_MULTU_OP) ? mulres[63:32] :
-                 hi;                                  
+                (aluop==`EXE_DIV_OP || aluop==`EXE_DIVU_OP) ? div_result_out[63:32] :
+                hi_in;                                  
 assign lo_out = (aluop == `EXE_MTLO_OP) ? src1 :
                 (aluop==`EXE_MULT_OP || aluop==`EXE_MULTU_OP) ? mulres[31:0] :
-                lo; 
-assign whilo_out = (aluop == `EXE_MTHI_OP) || (aluop == `EXE_MTLO_OP);
+                (aluop==`EXE_DIV_OP || aluop==`EXE_DIVU_OP) ? div_result_out[31:0] :
+                lo_in; 
+assign whilo_out = (aluop == `EXE_MTLO_OP) || (aluop == `EXE_MTLO_OP)
+                || (aluop == `EXE_MULT_OP) || (aluop == `EXE_MULTU_OP)
+                || (aluop == `EXE_DIV_OP) || (aluop == `EXE_DIVU_OP);
 
 //算术运算需要进行溢出检查、符号检查
 wire [31:0]result_sum;
-wire [31:0] src2_mux;
+wire [31:0]src2_mux;
 assign src2_mux = ((aluop == `EXE_SUB_OP) ||
                     (aluop == `EXE_SUBU_OP)) ?//减法转换成加法
                     (~src2 + 1) : src2;
@@ -220,22 +244,51 @@ assign mulres = (aluop == `EXE_MULT_OP ) ?//如果异或为真，相乘为负数
                 ((src1[31] ^ src2[31]) ? (~hilo_temp + 1) : hilo_temp) :
                 hilo_temp;
 
-//乘法最终结果也是放到了hilo寄存器中
+//乘法最终结果也是放到了hilo寄存器中，实际并不会产生alu_result
 // assign temp_mul = (aluop == `EXE_MULT_OP||(aluop == `EXE_MULTU_OP))? mulres :
 //                     64'b0;
 
 
 //除法运算/考虑暂停机制
+	// input wire		  clk,
+	// input wire		  rstn,
+	
+	// input wire        signed_div_i,//是否为有符号除法
+	// input wire [31:0] opdata1_i,//被除数
+	// input wire [31:0] opdata2_i,//除数
+	// input wire        start_i,//是否开始除法运算
+	// input wire        annul_i,//是否取消除法运算
+	
+	// output reg [63:0] result_o,//商
+	// output reg		  ready_o//是否完成除法运算
+     
+wire signed_div;
+assign signed_div = (aluop == `EXE_DIV_OP)? 1'b1 : 1'b0;
 
+wire start_div;
+assign start_div = (aluop == `EXE_DIV_OP || aluop == `EXE_DIVU_OP) ? 1'b1 : 1'b0;
 
-// //分支跳转指令
-// assign link_addr = link_addr_in; 
+// 实例化 div 模块
+div div_inst (
+    .clk(clk),
+    .rstn(rstn),
+    .signed_div_i(signed_div),        // 是否为有符号除法
+    .opdata1_i(src1),              // 被除数
+    .opdata2_i(src2),              // 除数
+    .start_i(start_div),              // 除法开始信号
+    .annul_i(0),              // 除法取消信号
+    .result_o(div_result),            // 除法结果 {商, 余数}
+    .ready_o(div_ready)               // 除法完成标志
+);
+ // Output assignments
 
+    assign div_result_out = div_result;
+    assign div_ready_out = div_ready;
+    assign arith_stall = ((aluop == `EXE_DIV_OP) || (aluop == `EXE_DIVU_OP)) &&(!div_ready_out);
 
 
 //访存以及写回寄存器
-
-
+//目前只是计算了地址
 assign mem_addr_out = src1 + src2; //默认src2已经是立即数
 
 // // 加载数据//这应该是存储器里面实现的
@@ -265,9 +318,6 @@ assign alu_result  = ({32{alusel == `EXE_RES_LOGIC}} & temp_logic) |
                      ({32{alusel == `EXE_RES_ARITHMETIC}} & temp_arith); //|
                      //({32{alusel == `EXE_RES_MUL}} & temp_mul) |
                      //({32{alusel == `EXE_RES_JUMP_BRANCH}} & link_addr);
-
-
-
 
 
 endmodule
