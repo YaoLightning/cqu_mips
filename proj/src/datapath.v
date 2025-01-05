@@ -55,16 +55,17 @@ module datapath(
     wire [1:0] forwardaE, forwardbE;
 
 
-    wire if_stall ;
-    wire id_stall ;
-    wire exe_stall ;
+    wire if_stall;
+    wire id_stall;
+    wire exe_stall;
     wire mem_stall;
-    wire wb_stall  ;
+    wire wb_stall;
     
+    wire arith_stall_exe;
 
     // update stall signals
     // assign mem_stall = wb_stall | !data_data_ok | stallD;
-    // assign exe_stall = mem_stall | wb_stall | stallD;
+    // assign exe_stall = mem_stall | wb_stall | stallD | arith_stall_exe;
     // assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
     // assign if_stall = id_stall | exe_stall | mem_stall | wb_stall | stallF;
 
@@ -243,6 +244,8 @@ module datapath(
 
 
         .alu_result      (exe_result_EXE_MEM),
+
+        .arith_stall     (arith_stall_exe),
         
         .write_reg       (write_reg_EXE_MEM),
         .reg_write_out   (reg_write_EXE_MEM),

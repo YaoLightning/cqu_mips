@@ -57,6 +57,7 @@ module execute(
 
     output wire [31:0] mem_addr_out,    // Address memory for read or write
 
+    output wire        arith_stall,
 
     // //add the support for hilo register
     input  wire [31:0] hi,            // hi register
