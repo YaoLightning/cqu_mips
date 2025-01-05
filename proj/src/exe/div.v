@@ -26,7 +26,7 @@
 module div(
 
 	input wire		  clk,
-	input wire		  rstn,
+	input wire		  rst,
 	
 	input wire        signed_div_i,//是否为有符号除法
 	input wire [31:0] opdata1_i,//被除数

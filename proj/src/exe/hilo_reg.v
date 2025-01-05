@@ -14,7 +14,7 @@ module hilo_reg(
     );
 
     always@(posedge clk or negedge rstn)begin
-        if(rst == 1'b1)begin
+        if(rstn == 1'b1)begin
             hi_o <=  32'b0;
             lo_o <=  32'b0;
         end

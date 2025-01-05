@@ -113,7 +113,7 @@ always @(posedge clk or negedge rstn) begin
     end
 end
  // Internal register storage
-   reg [31:0] hi_reg, lo_reg;
+   //reg [31:0] hi_reg, lo_reg;
    wire [31:0] hi_out, lo_out;
 // 实例化 hilo_reg
     hilo_reg hilo_reg_inst (
@@ -271,7 +271,7 @@ assign start_div = (aluop == `EXE_DIV_OP || aluop == `EXE_DIVU_OP) ? 1'b1 : 1'b0
 // 实例化 div 模块
 div div_inst (
     .clk(clk),
-    .rstn(rstn),
+    .rst(rstn),
     .signed_div_i(signed_div),        // 是否为有符号除法
     .opdata1_i(src1),              // 被除数
     .opdata2_i(src2),              // 除数
