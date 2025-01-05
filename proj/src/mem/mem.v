@@ -81,8 +81,7 @@ module memory_access(
         end
     end
 
-    assign final_result = (mem_read_data_in & mem_read_in) |
-                          (exe_result_reg & ~mem_read_in);
+    assign final_result = exe_result_reg ;
 
 
     

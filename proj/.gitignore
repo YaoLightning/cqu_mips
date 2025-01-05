@@ -4,3 +4,4 @@ project_mips*
 *.jou
 *.log
 *.str
+cqu_mips.xpr
