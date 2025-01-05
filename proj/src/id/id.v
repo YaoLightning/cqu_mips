@@ -370,11 +370,11 @@ module inst_decode (
             `EXE_BEQ    :curr_alu_inst=`EXE_BEQ_OP;
             `EXE_BNE    :curr_alu_inst=`EXE_BNE_OP;
             `EXE_BGEZ   :curr_alu_inst=`EXE_BGEZ_OP;
-            `EXE_BGTZ   :curr_alu_inst=`EXE_BGTZ_OP;
-            `EXE_BGEZAL :curr_alu_inst=`EXE_BGEZAL_OP;
+            //`EXE_BGTZ   :curr_alu_inst=`EXE_BGTZ_OP;
+            //`EXE_BGEZAL :curr_alu_inst=`EXE_BGEZAL_OP;
             `EXE_BLEZ   :curr_alu_inst=`EXE_BLEZ_OP;
-            `EXE_BLTZ   :curr_alu_inst=`EXE_BLTZ_OP;
-            `EXE_BLTZAL :curr_alu_inst=`EXE_BLTZAL_OP;
+            //`EXE_BLTZ   :curr_alu_inst=`EXE_BLTZ_OP;
+            //`EXE_BLTZAL :curr_alu_inst=`EXE_BLTZAL_OP;
             `EXE_J      :curr_alu_inst=`EXE_J_OP;
             `EXE_JAL    :curr_alu_inst=`EXE_JAL_OP;
             `EXE_LB     :curr_alu_inst=`EXE_LB_OP;
