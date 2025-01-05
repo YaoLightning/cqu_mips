@@ -191,6 +191,13 @@ module datapath(
         .instruction     (inst_IF_ID)
     );
 
+    wire do_store_rd_id;         
+    wire do_store_31_id;         
+    wire [31:0] data_to_store_id;
+    wire [31:0] addr_to_store_id;
+    wire [31:0]jump_pc_id;       
+    wire do_jump_id;             
+
     inst_decode id_stage(
         .clk             (clk),
         .rstn            (rstn),
@@ -207,10 +214,11 @@ module datapath(
         .rs              (rs_id),
         .rt              (rt_id),
         .rd              (rd_ID_EXE),
-        .shamt           (shamt_id),
+        //.shamt           (shamt_id),
         .extended_imm    (extended_imm_ID_EXE),
         .opcode          (opcode),
         .funct           (funct),
+        .inst_out         (inst_ID_EXE),
 
         .alu_sel         (alu_sel_ID_EXE),
         .alu_op          (alu_op_ID_EXE),
@@ -221,12 +229,19 @@ module datapath(
         .mem_read        (mem_read_ID_EXE),
         .mem_to_reg      (mem_to_reg_ID_EXE),
         .mem_write       (mem_write_ID_EXE),
-        .branch          (branch),
-        .jump            (jump),
-        
-        .pc_plus_4       (pc_plus_4_id),
+        //.branch          (branch),
+        //.jump            (jump),        
+        //.pc_plus_4       (pc_plus_4_id),
 
-        .inst_out         (inst_ID_EXE)
+        .rs_data         (regfile_data_rs),
+        .rt_data         (regfile_data_rt),
+        .do_store_rd     (do_store_rd_id),       
+        .do_store_31     (do_store_31_id),       
+        .data_to_store   (data_to_store_id),
+        .addr_to_store   (addr_to_store_id),
+        .jump_pc         (jump_pc_id), 
+        .do_jump         (do_jump_id)   
+
     );
 
     execute exe_stage(

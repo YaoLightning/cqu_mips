@@ -265,7 +265,7 @@ module inst_decode (
     // Clock and rstn signals
     input   wire clk,                // Clock signal
     input   wire rstn,               // rstn signal
-    input   wire stall,              // stall signal
+    input   wire [5:0]stall,              // stall signal
 
     // Inputs from the instruction fetch stage
     input   wire [31:0]     instruction, // Instruction fetched from the instruction fetch stage
@@ -277,39 +277,44 @@ module inst_decode (
     input   wire            forward_a_sel,      // Selection signal for forwarding data to source register 1
     input   wire            forward_b_sel,      // Selection signal for forwarding data to source register 2
 
-    //from reg to determine equal
-
     // Input and output related to the register file
-    output  wire [4:0]      rs,           // Source register 1 address
-    output  wire [4:0]      rt,           // Source register 2 address
-    output  wire [4:0]      rd,           // Destination register address
-    //output  wire [15:0]     imm,          // Immediate value
-    output  wire [5:0]      opcode,       // Opcode of the instruction
-    output  wire [4:0]      shamt,        // shamt of the instruction
-    output  wire [5:0]      funct,        // Function field for R-type instructions
-    // instruction outputs
-    output  wire [7:0]      alu_op,       // ALU operation result
-    output  wire [2:0]      alu_sel,      // ALU operation result
+    output  wire [4:0]      rs,                 // Source register 1 address
+    output  wire [4:0]      rt,                 // Source register 2 address
+    output  wire [4:0]      rd,                 // Destination register address
+    //output  wire [15:0]     imm,              // Immediate value
+    output  wire [5:0]      opcode,             // Opcode of the instruction
+    // output  wire [4:0]      shamt,           // shamt of the instruction
+    output  wire [5:0]      funct,              // Function field for R-type instructions
+
+    // instruction outputs  
+    output  wire [7:0]      alu_op,             // ALU operation result
+    output  wire [2:0]      alu_sel,            // ALU operation result
 
     // Control signal outputs
-    output  wire            alu_src,           // ALU source selection signal, 1 means use immediate value, 0 means use register
-    output  wire            reg_dst,           // Register destination selection signal, 1 means write to rd, 0 means write to rt
-    output  wire            reg_write,         // Register write enable signal
-    output  wire            mem_read,          // Memory read enable signal
-    output  wire            mem_write,         // Memory write enable signal
-    output  wire            mem_to_reg,        // Memory to register selection signal, 1 means write memory data to register
-    output  wire            branch,            // Branch signal, 1 means a branch operation is needed
-    output  wire            jump,              // Jump signal, 1 means a jump operation is needed
+    output  wire            alu_src,            // ALU source selection signal, 1 means use immediate value, 0 means use register
+    output  wire            reg_dst,            // Register destination selection signal, 1 means write to rd, 0 means write to rt
+    output  wire            reg_write,          // Register write enable signal
+    output  wire            mem_read,           // Memory read enable signal
+    output  wire            mem_write,          // Memory write enable signal
+    output  wire            mem_to_reg,         // Memory to register selection signal, 1 means write memory data to register
+    // output  wire            branch,          // Branch signal, 1 means a branch operation is needed
+    // output  wire            jump,            // Jump signal, 1 means a jump operation is needed
+    output  wire [31:0]     extended_imm,       // Extended immediate value
+    output  wire [31:0]     inst_out,           // The instruction output
+    // output  wire [31:0]     pc_plus_4,       // The value of the current PC + 4
+    // output  wire [1:0]      pc_src,          // include [jump , branch & equal]
+    // output  wire [31:0]     pc_branch,
+    // output  wire [31:0]     pc_jump
 
-    output  wire [31:0]     inst_out,          // The instruction output
-
-
-    output  wire [31:0]     extended_imm,      // Extended immediate value
-    output  wire [31:0]     pc_plus_4,         // The value of the current PC + 4
-    output  wire [1:0]      pc_src,            // include [jump , branch & equal]
-    output  wire [31:0]     pc_branch,
-    output  wire [31:0]     pc_jump
-
+    //addr,enble,data for jump or branch
+    input   wire [31:0] rs_data,
+    input   wire [31:0] rt_data,
+    output  wire do_store_rd,                   //enable for store pc_plus_4+4 to rd_reg 
+    output  wire do_store_31,                   //enable for store pc_plus_4+4 to reg[31]  
+    output  wire [31:0] data_to_store,          //calculate store data 
+    output  wire [31:0] addr_to_store,          //choose store addr
+    output  wire [31:0]jump_pc,                 //jump_pc 跳转目的地址
+    output  wire do_jump                        //do_jump 是否进行跳转
 );
 
     // Internal registers to store output values
@@ -324,6 +329,9 @@ module inst_decode (
     reg [31:0] instruction_reg;
     reg [7 :0] curr_alu_inst;
     reg [2 :0] curr_alu_sel;
+    //for jump or branch
+    reg [31:0]reg_jump_pc;     
+    reg reg_do_jump;   
 
     // Assign internal registers to output wires
     assign rs = rs_reg;
@@ -427,16 +435,6 @@ module inst_decode (
         endcase
     end
 
-    // ALU source and register destination selection
-    // assign alu_src = (opcode_reg == `EXE_ANDI)  |
-    //                  (opcode_reg == `EXE_ORI)   |
-    //                  (opcode_reg == `EXE_XORI)  |
-    //                  (opcode_reg == `EXE_LUI)   |
-    //                  (opcode_reg == `EXE_SLTI)  |
-    //                  (opcode_reg == `EXE_SLTIU) |
-    //                  (opcode_reg == `EXE_ADDI)  |
-    //                  (opcode_reg == `EXE_ADDIU);
-    // alu_src value
     reg alu_src_reg;
     assign alu_src = alu_src_reg;
     always @(*) begin
@@ -453,10 +451,6 @@ module inst_decode (
         endcase
     end
 
-    // assign reg_dst = (opcode_reg == `EXE_SPECIAL_INST) &&
-    //                  (funct_reg!= `EXE_JR) &&
-    //                  (funct_reg!= `EXE_JALR);
-    //reg_dst value
     reg  reg_dst_reg;
     assign reg_dst = reg_dst_reg;
     always @(*) begin
@@ -472,18 +466,6 @@ module inst_decode (
         endcase
     end
 
-    // Register write, memory read/write, and other control signals
-    // assign reg_write = (opcode_reg!= `EXE_J)     &&
-    //                  (opcode_reg!= `EXE_JAL)     &&
-    //                  (opcode_reg!= `EXE_BEQ)     &&
-    //                  (opcode_reg!= `EXE_BNE)     &&
-    //                  (opcode_reg!= `EXE_BGTZ)    &&
-    //                  (opcode_reg!= `EXE_BLEZ)    &&
-    //                  (opcode_reg!= `EXE_BLTZ)    &&
-    //                  (opcode_reg!= `EXE_BGEZ)    &&
-    //                  (opcode_reg!= `EXE_SYSCALL) &&
-    //                  (opcode_reg!= `EXE_BREAK);
-    //reg_write value
     reg reg_write_reg;
     assign reg_write=reg_write_reg;
     always @(*) begin
@@ -558,44 +540,34 @@ module inst_decode (
                      (opcode_reg == `EXE_LWL)  ||
                      (opcode_reg == `EXE_LWR);
 
-    // Branch and jump signals
-    // assign jump = (opcode_reg == `EXE_J)        ||
-    //                  (opcode_reg == `EXE_JAL)   ||
-    //                  (opcode_reg == `EXE_JALR);
-    // assign branch = (opcode_reg == `EXE_BEQ)    ||
-    //                  (opcode_reg == `EXE_BNE)   ||
-    //                  (opcode_reg == `EXE_BGTZ)  ||
-    //                  (opcode_reg == `EXE_BLEZ)  ||
-    //                  (opcode_reg == `EXE_BLTZ)  ||
-    //                  (opcode_reg == `EXE_BGEZ);
+
     
-    //branch value
-	reg branch_reg;
-	assign branch=branch_reg;
-    always @(*) begin
-        case (opcode_reg)
-            `EXE_BEQ, `EXE_BNE, `EXE_BGTZ, `EXE_BLEZ, 
-            `EXE_BGEZ, `EXE_BGEZAL, `EXE_BLTZ, `EXE_BLTZAL: 
-                branch_reg = 1'b1;
-            default: 
-                branch_reg = 1'b0;
-        endcase
-    end
+    // //branch value
+	// reg branch_reg;
+	// assign branch=branch_reg;
+    // always @(*) begin
+    //     case (opcode_reg)
+    //         `EXE_BEQ, `EXE_BNE, `EXE_BGTZ, `EXE_BLEZ, 
+    //         `EXE_BGEZ, `EXE_BGEZAL, `EXE_BLTZ, `EXE_BLTZAL: 
+    //             branch_reg = 1'b1;
+    //         default: 
+    //             branch_reg = 1'b0;
+    //     endcase
+    // end
 
-    //jump value
-    reg jump_reg;
-    assign jump=0;
-    always @(*) begin
-        case (opcode_reg)
-            `EXE_J, `EXE_JAL, `EXE_JR, `EXE_JALR: 
-                jump_reg = 1'b1;
-            default: 
-                jump_reg = 1'b0;
-        endcase
-    end
+    // //jump value
+    // reg jump_reg;
+    // assign jump=0;
+    // always @(*) begin
+    //     case (opcode_reg)
+    //         `EXE_J, `EXE_JAL, `EXE_JR, `EXE_JALR: 
+    //             jump_reg = 1'b1;
+    //         default: 
+    //             jump_reg = 1'b0;
+    //     endcase
+    // end
 
-    // Extended immediate value
-    //assign extended_imm = {{16{imm_reg[15]}}, imm_reg};
+    ////assign extended_imm in zero or sign or shamt.
     wire is_zero_extend;
     assign is_zero_extend = (
         opcode == `EXE_ANDI  ||
@@ -615,8 +587,6 @@ module inst_decode (
     assign extended_imm = is_zero_shamt ? zero_ex_shamt:
                         (is_zero_extend ? zero_extended : sign_extended);
 
-    // PC + 4 value
-    assign pc_plus_4 = pc + 4;
 
     //current_alu_sel value
     always @(*) begin
@@ -675,29 +645,93 @@ module inst_decode (
         endcase
     end
 
-    //extended_imm_sl2 value
-    assign extended_imm_sl2 = {extended_imm[29:0],2'b0};
 
-    //equal value
-    // always@(*)begin
-    //     if(rs_data==rt_data)begin
-    //         equal=1'b1;
-    //     end else begin equal =1'b0;
-    //     end
-    // end
+    assign pc_plus_4 = pc + 4;                              //pc_plus_4
+    assign extended_imm_sl2 = {extended_imm[29:0],2'b0};    //extended_imm_sl2 
+    assign pc_branch = pc_plus_4 + extended_imm_sl2;        //pc_plus_4 + extended_imm 
 
-    //pc_src
-    // assign pc_src = {jump,branch&equal};
-    //pc + 4 + extended_imm value
-    assign pc_branch = pc_plus_4 + extended_imm_sl2;
-    //pc_jump
-    assign pc_jump = {instruction[25:0],2'b0};
+    wire equal;                                             //equal value
+    assign equal=(rs_data==rt_data)?1'b1:1'b0;
+    
+    assign do_store=((opcode_reg==`EXE_BGEZAL)||
+            (opcode_reg==`EXE_BLTZAL))? 1'b1:1'b0;           //enable for store pc_plus_4+4 to rd_reg                        
+    assign do_store_rd=(opcode_reg==`EXE_JALR)? 1'b1:1'b0;   //enable for store pc_plus_4+4 to reg[31]
+    assign data_to_store=pc_plus_4 + 4;                      //calculate store data   
+    assign addr_to_store=do_store_31==1'b1 ? 5'b11111 : rd_reg;  //choose store addr
+
+               
+    assign jump_pc=reg_jump_pc;             //jump_pc 跳转目的地址
+    assign do_jump=reg_do_jump;             //do_jump 是否进行跳转
+    //assign reg_jump_pc and reg_do_jump
+    always@(*)begin
+        if(stall[2]==1'b1)begin
+        reg_do_jump=1'b0;
+        reg_jump_pc=8'h00000000;
+        end else begin
+        case(opcode_reg)
+            `EXE_BEQ:begin
+                reg_do_jump=equal;
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BNE:begin
+                reg_do_jump=!equal;
+                reg_jump_pc= pc_branch;
+            end
+            `EXE_BGEZ:begin
+                reg_do_jump=!(rs_data<8'h00000000);
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BGTZ:begin
+                reg_do_jump=(rs_data>8'h00000000);
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BGEZ:begin
+                reg_do_jump=!(rs_data>8'h00000000);
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BGTZ:begin
+                reg_do_jump=(rs_data<8'h00000000);
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BGEZAL:begin
+                reg_do_jump=!(rs_data<8'h00000000);
+                reg_jump_pc=pc_branch;
+            end
+            `EXE_BLTZAL:begin
+                reg_do_jump=(rs_data<8'h00000000);
+                reg_jump_pc=pc_branch;
+            end  
+            `EXE_J:begin
+                reg_do_jump=1'b1;
+                reg_jump_pc={pc[31:27],instruction[25:0],2'b0};
+            end
+            `EXE_JR:begin
+                reg_do_jump=1'b1;
+                reg_jump_pc=rs_data;
+            end
+            `EXE_JALR:begin
+                reg_do_jump=1'b1;
+                reg_jump_pc=rs_data;
+            end
+        endcase
+        end
+    end
+  
+
+
+
+
+
+
+
+
+
+
 
 
 
     // debug usage
     reg [39:0] ascii;
-
     always @(*)
     begin
         ascii<="N-R";
