@@ -327,7 +327,7 @@ module datapath(
     // instantiate hazard module
     hazard hazard_unit(
         // fetch stage
-        .stalwlF(stallF),
+        .stallF(stallF),
         // decode stage
         .rsD(rs_id),
         .rtD(rt_id),
