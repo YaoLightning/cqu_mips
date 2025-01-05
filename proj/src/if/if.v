@@ -26,7 +26,7 @@
 module inst_fetch (
     input   wire clk,              // Clock signal
     input   wire rstn,             // Reset signal
-    input   wire stall,            // Stall signal
+    input   wire [5:0]stall,            // Stall signal
 
     input   wire [31:0] pc_in,       // Program counter input
     output  wire [31:0] pc_out,      // Program counter output
@@ -159,7 +159,7 @@ module inst_fetch (
             mem[71] <= {6'b000000, 5'b00000, 5'b00000, 5'b00000, 5'b00000, 6'b001101}; // break
 
             instruction_reg = 32'b0;
-        end else begin
+        end else if(stall[0]==1'b0) begin
 
             // Assuming the memory module is connected to fetch the instruction
             // Here we assume a simple memory read operation
