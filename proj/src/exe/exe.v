@@ -181,20 +181,32 @@ assign whilo_out = (aluop == `EXE_MTHI_OP) || (aluop == `EXE_MTLO_OP);
 
 //算术运算需要进行溢出检查、符号检查
 wire [31:0]result_sum;
+wire [31:0] src2_mux;
 assign src2_mux = ((aluop == `EXE_SUB_OP) ||
                     (aluop == `EXE_SUBU_OP)) ?//减法转换成加法
                     (~src2 + 1) : src2;
                     
 assign result_sum = src1 + src2_mux;//加、减、比较
-assign ov_sum = ((src1[31] == src2[31]) && 
+assign ov_sum = ((src1[31]       == src2[31]) && 
                  (result_sum[31] != src1[31])) ? 1'b1 : 1'b0;//高位符号不同则溢出
-assign src1_lt_src2 = ((aluop == `EXE_SLTU_OP)||(aluop == `EXE_SLTIU_OP)||(src1[31]==src2[31])) ? 
-                      (src1 < src2) : 
+assign src1_lt_src2 = ((aluop == `EXE_SLTU_OP)||
+                      ( aluop == `EXE_SLTIU_OP)||
+                      ( src1[31]==src2[31])) ? 
+                      ( src1 < src2) : 
                       ((src1[31] && !src2[31]) ? 1 : 0);
 
-assign temp_arith = ((aluop == `EXE_ADD_OP)||(aluop == `EXE_ADDI_OP)||(aluop == `EXE_SUB_OP))?(ov_sum ? 32'b0 : result_sum) : // 加减法操作，若溢出则输出固定值（0），否则输出结果
-                    ((aluop == `EXE_ADDU_OP) || (aluop == `EXE_ADDIU_OP) || (aluop == `EXE_SUBU_OP)) ? result_sum : // 无符号加法/减法操作，无需处理溢出
-                    ((aluop == `EXE_SLT_OP) || (aluop == `EXE_SLTU_OP) || (aluop == `EXE_SLTI_OP) || (aluop == `EXE_SLTIU_OP)) ? src1_lt_src2 : 
+assign temp_arith = ((aluop == `EXE_ADD_OP)||
+                    ( aluop == `EXE_ADDI_OP)||
+                    ( aluop == `EXE_SUB_OP))?
+                    ( ov_sum ? 32'b0 : result_sum) : // 加减法操作，若溢出则输出固定值（0），否则输出结果
+                    ((aluop == `EXE_ADDU_OP) ||
+                    ( aluop == `EXE_ADDIU_OP) ||
+                    ( aluop == `EXE_SUBU_OP)) ? 
+                      result_sum : // 无符号加法/减法操作，无需处理溢出
+                    ((aluop == `EXE_SLT_OP) ||
+                    ( aluop == `EXE_SLTU_OP) ||
+                    ( aluop == `EXE_SLTI_OP) || 
+                    ( aluop == `EXE_SLTIU_OP)) ? src1_lt_src2 : 
                      32'b0;
 //乘法运算
 //如果按照现实中的乘法，乘出来的结果是源码，而在计算机中应该是补码，所以需要取其补码

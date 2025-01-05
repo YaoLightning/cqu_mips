@@ -11,9 +11,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="152.096 ns"></ZoomEndTime>
-      <Cursor1Time time="69.759 ns"></Cursor1Time>
+      <ZoomStartTime time="8.380 ns"></ZoomStartTime>
+      <ZoomEndTime time="148.248 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="276"></NameColumnWidth>
@@ -186,6 +186,22 @@
          <obj_property name="ElementShortName">mem_write_reg</obj_property>
          <obj_property name="ObjectShortName">mem_write_reg</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src1_in">
+         <obj_property name="ElementShortName">src1_in[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src1_in[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src1_reg">
+         <obj_property name="ElementShortName">src1_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src1_reg[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src2_in">
+         <obj_property name="ElementShortName">src2_in[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src2_in[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/src2_reg">
+         <obj_property name="ElementShortName">src2_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">src2_reg[31:0]</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/waddr_reg">
          <obj_property name="ElementShortName">waddr_reg[4:0]</obj_property>
          <obj_property name="ObjectShortName">waddr_reg[4:0]</obj_property>
@@ -193,6 +209,10 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/waddr_in">
          <obj_property name="ElementShortName">waddr_in[4:0]</obj_property>
          <obj_property name="ObjectShortName">waddr_in[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/exe_stage/result_sum">
+         <obj_property name="ElementShortName">result_sum[31:0]</obj_property>
+         <obj_property name="ObjectShortName">result_sum[31:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group106">
