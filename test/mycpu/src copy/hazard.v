@@ -26,6 +26,7 @@ module hazard(
 	//decode stage
 	input 	wire[4:0] 	rsD,rtD,
 	input 	wire 		branchD,
+
 	output 	wire 		forwardaD,forwardbD,
 	output 	wire 		stallD,
 	//execute stage

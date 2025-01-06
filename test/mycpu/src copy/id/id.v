@@ -69,10 +69,7 @@ module inst_decode (
     //addr,enble,data for jump or branch
     input  wire [31:0]      rs_data,
     input  wire [31:0]      rt_data,
-    output wire             do_store_rd,            // enable for store pc_plus_4+4 to rd_reg 
-    output wire             do_store_31,            // enable for store pc_plus_4+4 to reg[31]  
-    output wire [31:0]      data_to_store,          // calculate store data 
-    output wire [31:0]      addr_to_store,          // choose store addr
+
     output wire [31:0]      jump_pc,                // jump_pc 跳转目的地址
     output wire             do_jump,                // do_jump 是否进行跳转
 
@@ -132,12 +129,13 @@ module inst_decode (
             pc_reg      <= 32'b00000000000000000000000000000000;
 
             id_valid_reg<= 1'b0;
-        end else if (if_valid) begin
+        end else if (if_valid & !stall) begin
             // Extract fields from the instruction
             instruction_reg <= instruction;
             rs_reg          <= instruction[25:21];
             rt_reg          <= instruction[20:16];
-            rd_reg          <= instruction[15:11];
+            rd_reg          <= 
+                    instruction[31:26] == `EXE_JAL ? 31 : instruction[15:11];
             imm_reg         <= instruction[15: 0];
             shamt_reg       <= instruction[10: 6];
             opcode_reg      <= instruction[31:26];
@@ -146,7 +144,10 @@ module inst_decode (
             pc_reg          <= pc;
             id_valid_reg    <= 1'b1;
 
+        end else begin
+            id_valid_reg<= 1'b0;
         end
+
     end
 
     //curr_alu_inst value
@@ -442,8 +443,8 @@ module inst_decode (
             reg_do_jump = 1'b0;
             reg_jump_pc = 8'h00000000;  
         end else if(!if_valid || stall == 1'b1)begin
-            reg_do_jump = reg_do_jump;
-            reg_jump_pc = reg_jump_pc;
+            reg_do_jump = 0;
+            reg_jump_pc = 0;
         end else begin
         case(instruction[31:26])
             6'b000000:begin
@@ -477,6 +478,14 @@ module inst_decode (
             `EXE_J:begin
                 reg_do_jump = 1'b1;
                 reg_jump_pc = {pc[31:27],instruction[25:0],2'b0};
+            end
+            `EXE_JAL:begin
+                reg_do_jump = 1'b1;
+                reg_jump_pc = {pc[31:27],instruction[25:0],2'b0};
+            end
+            default: begin
+                reg_do_jump = 1'b0;
+                reg_jump_pc = 0;
             end
 
         endcase
@@ -541,8 +550,8 @@ module inst_decode (
             `EXE_SLTI: ascii<= "SLTI";
             `EXE_SLTIU: ascii<= "SLTIU";
 
-            // `EXE_J: ascii<= "J";
-            // `EXE_JAL: ascii<= "JAL";
+            `EXE_J: ascii<= "J";
+            `EXE_JAL: ascii<= "JAL";
             
             // `EXE_BEQ: ascii<= "BEQ";
             // `EXE_BGTZ: ascii<= "BGTZ";

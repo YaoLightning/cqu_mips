@@ -28,6 +28,7 @@ module inst_fetch (
     input   wire rstn,             // Reset signal
     input   wire stall,            // Stall signal
 
+    input   wire jump,
 
     input   wire [31:0] pc_in,       // Program counter input
     output  wire [31:0] pc_out,      // Program counter output
@@ -46,12 +47,12 @@ module inst_fetch (
             // Reset the program counter to the initial value (e.g., 0x00400000)
             pc <= 32'h00000000;
             if_valid <= 1'b0;
-        end else if (stall == 1'b0) begin
+        end else if (stall == 1'b0 | jump) begin
             // Fetch the instruction from memory using the current PC
             pc <= pc_in;
             if_valid <= 1'b1;
         end else begin
-            pc <= 32'h00000004;
+            pc <= pc;
             if_valid <= 1'b0;
         end
     end

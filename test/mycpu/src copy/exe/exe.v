@@ -28,6 +28,7 @@ module execute(
     input  wire clk,                // Clock signal
     input  wire rstn,              // Reset signal
     input  wire stall,            // Stall signal     
+    input  wire flush,
     // Inputs from decode stage
     input  wire [31:0] rs_in,         // Source register 1 value
     input  wire [31:0] rt_in,         // Source register 2 value or immediate value
@@ -36,9 +37,6 @@ module execute(
     input  wire [2: 0] alusel_in,       // ALU Select Signal
 
     input  wire        id_valid,
-
-    input  wire [31:0] forwardData_exe,
-    input  wire [31:0] forwardData_mem,
 
     input  wire [1 :0] forwardaE_in,
     input  wire [1 :0] forwardbE_in,
@@ -115,7 +113,7 @@ assign mem_data_out     =
     mem_data_out_reg;
 
 always @(posedge clk or negedge rstn) begin
-    if (!rstn) begin
+    if (!rstn | flush) begin
         rs_reg          <= 32'h0;
         rt_reg          <= 32'h0;
         aluop_reg       <= 8'h0;
@@ -127,7 +125,7 @@ always @(posedge clk or negedge rstn) begin
         mem_write_reg   <= 1'b0;
         inst            <= 32'h0;
         arith_stall_reg <= 1'b0;
-        exe_valid_reg  <= 1'b0;
+        exe_valid_reg   <= 1'b0;
         mem_data_out_reg <= 32'h0;
     end else if (!stall) begin
         rs_reg          <= rs_in;
@@ -171,16 +169,11 @@ wire [31:0] alu_res;
 wire        zero;
 
 assign alu_src1 = 
-    // (forwardaE_in[0] & forwardData_exe) |
-    // (forwardaE_in[1] & forwardData_mem) |
-    // (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL & rt_reg) | 
     ((inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL) |
     ( inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)  ) ?
     (rt_in) :
     (rs_in);
 assign alu_src2 = 
-    // (forwardbE_in[0] & forwardData_exe) |
-    // (forwardbE_in[1] & forwardData_mem) |
     imm_en ? (imm_in) : (rt_in);
 
 assign alu_op   = aluop_in;

@@ -82,10 +82,10 @@ module datapath(
     wire arith_stall_exe;
 
     // update stall signals
-    assign mem_stall = wb_stall  | stallD;
-    assign exe_stall = mem_stall | wb_stall | stallD;
-    assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
-    assign if_stall = id_stall | exe_stall | mem_stall | wb_stall;
+    assign mem_stall = wb_stall;
+    assign exe_stall = mem_stall | wb_stall;
+    assign id_stall  = exe_stall | stallD;
+    assign if_stall  = id_stall;
 
     wire if_valid_;
     wire id_valid_;
@@ -186,7 +186,7 @@ module datapath(
     wire [4 :0] reg_write_addr_wb;
 
     // TODO: jumpaddress calculation
-    assign pc_in_if = !rstn ? 32'b0 : if_stall ? pc_out_IF_ID : !if_valid_ ? pc_out_IF_ID :
+    assign pc_in_if = !rstn ? 32'b0 : !if_valid_ ? pc_out_IF_ID :
                      do_jump_id ? jump_pc_id : (pc_out_IF_ID + 4);
 
     assign write_reg_ID_EXE = reg_dst_ID_EXE ? rd_ID_EXE : rt_id;
@@ -244,6 +244,8 @@ module datapath(
         .rstn            (rstn),
         .stall           (if_stall),
 
+        .jump            (do_jump_id),
+
         .pc_in           (pc_in_if),
         .pc_out          (pc_out_IF_ID),
 
@@ -282,10 +284,6 @@ module datapath(
 
         .rs_data         (regfile_data_rs),
         .rt_data         (regfile_data_rt),
-        .do_store_rd     (do_store_rd_id),       
-        .do_store_31     (do_store_31_id),       
-        .data_to_store   (data_to_store_id),
-        .addr_to_store   (addr_to_store_id),
         .jump_pc         (jump_pc_id), 
         .do_jump         (do_jump_id),
 
@@ -296,6 +294,7 @@ module datapath(
         .clk             (clk),
         .rstn            (rstn),
         .stall           (exe_stall),
+        .flush           (flushE),
 
         .rs_in           (rs_exe),
         .rt_in           (rt_exe),
@@ -308,8 +307,6 @@ module datapath(
         .imm_en          (alu_src_ID_EXE),
         .imm_in          (extended_imm_ID_EXE),
 
-        .forwardData_exe (exe_result_EXE_MEM),
-        .forwardData_mem (reg_write_data_wb),
 
         .forwardaE_in    (forwardaE),
         .forwardbE_in    (forwardbE),
