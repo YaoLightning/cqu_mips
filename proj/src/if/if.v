@@ -159,7 +159,7 @@ module inst_fetch (
             mem[71] <= {6'b000000, 5'b00000, 5'b00000, 5'b00000, 5'b00000, 6'b001101}; // break
 
             instruction_reg = 32'b0;
-        end else if (stall != 0) begin
+        end else if (!stall) begin
 
             // Assuming the memory module is connected to fetch the instruction
             // Here we assume a simple memory read operation

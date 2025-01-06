@@ -66,7 +66,7 @@ module datapath(
 
     // update stall signals
     assign mem_stall = wb_stall  | stallD;
-    assign exe_stall = mem_stall | wb_stall | stallD | 0;
+    assign exe_stall = mem_stall | wb_stall | stallD;
     assign id_stall = exe_stall | mem_stall | wb_stall | stallD;
     assign if_stall = id_stall | exe_stall | mem_stall | wb_stall;
 
@@ -141,7 +141,7 @@ module datapath(
     wire [4 :0] reg_write_addr_wb;
 
     // TODO: jumpaddress calculation
-    assign pc_in_if = pc_out_IF_ID + 4;
+    assign pc_in_if = do_jump_id ? jump_pc_id : (pc_out_IF_ID + 4);
 
     assign write_reg_ID_EXE = reg_dst_ID_EXE ? rd_ID_EXE : rt_id;
 
@@ -195,7 +195,7 @@ module datapath(
     wire do_store_31_id;         
     wire [31:0] data_to_store_id;
     wire [31:0] addr_to_store_id;
-    wire [31:0]jump_pc_id;       
+    wire [31:0] jump_pc_id;       
     wire do_jump_id;             
 
     inst_decode id_stage(
@@ -346,7 +346,7 @@ module datapath(
         // decode stage
         .rsD(rs_id),
         .rtD(rt_id),
-        .branchD(branch),
+        .branchD(do_jump_id),
         .forwardaD(forwardaD),
         .forwardbD(forwardbD),
         .stallD(stallD),

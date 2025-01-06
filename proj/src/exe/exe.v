@@ -80,7 +80,7 @@ reg [2:0]  alusel_reg;
 reg [4:0]  waddr_reg;
 reg        reg_write_reg;
 reg        mem_to_reg_reg;
-reg        mem_read_reg;
+reg        mem_read_reg;  
 reg        mem_write_reg;
 reg [31:0] inst;
 
@@ -98,7 +98,7 @@ always @(posedge clk or negedge rstn) begin
         mem_read_reg     <= 1'b0;
         mem_write_reg    <= 1'b0;
     end        
-    else begin
+    else if (stall != 0) begin
         inst <= inst_in;
         src1_reg         <= src1_in;
         src2_reg         <= src2_in;

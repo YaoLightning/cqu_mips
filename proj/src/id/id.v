@@ -372,63 +372,63 @@ module inst_decode (
     //curr_alu_inst value
     always @(*) begin
         case (opcode_reg)
-            `EXE_ADDI   :curr_alu_inst=`EXE_ADDI_OP;
-            `EXE_ADDIU  :curr_alu_inst=`EXE_ADDIU_OP;
-            `EXE_SLTI   :curr_alu_inst=`EXE_SLTI_OP;
-            `EXE_SLTIU  :curr_alu_inst=`EXE_SLTIU_OP;
-            `EXE_ANDI	:curr_alu_inst=`EXE_ANDI_OP;
-            `EXE_LUI	:curr_alu_inst=`EXE_LUI_OP;
-            `EXE_ORI	:curr_alu_inst=`EXE_ORI_OP;
-            `EXE_XORI	:curr_alu_inst=`EXE_XORI_OP;
-            `EXE_BEQ    :curr_alu_inst=`EXE_BEQ_OP;
-            `EXE_BNE    :curr_alu_inst=`EXE_BNE_OP;
-            `EXE_BGEZ   :curr_alu_inst=`EXE_BGEZ_OP;
-            //`EXE_BGTZ   :curr_alu_inst=`EXE_BGTZ_OP;
-            //`EXE_BGEZAL :curr_alu_inst=`EXE_BGEZAL_OP;
-            `EXE_BLEZ   :curr_alu_inst=`EXE_BLEZ_OP;
-            //`EXE_BLTZ   :curr_alu_inst=`EXE_BLTZ_OP;
-            //`EXE_BLTZAL :curr_alu_inst=`EXE_BLTZAL_OP;
-            `EXE_J      :curr_alu_inst=`EXE_J_OP;
-            `EXE_JAL    :curr_alu_inst=`EXE_JAL_OP;
-            `EXE_LB     :curr_alu_inst=`EXE_LB_OP;
-            `EXE_LBU    :curr_alu_inst=`EXE_LBU_OP;
-            `EXE_LH     :curr_alu_inst=`EXE_LH_OP;
-            `EXE_LHU    :curr_alu_inst=`EXE_LHU_OP;
-            `EXE_LW     :curr_alu_inst=`EXE_LW_OP;
-            `EXE_SB     :curr_alu_inst=`EXE_SB_OP;
-            `EXE_SH     :curr_alu_inst=`EXE_SH_OP;
-            `EXE_SW     :curr_alu_inst=`EXE_SW_OP;
-            `EXE_ERET   :curr_alu_inst=`EXE_ERET_OP;
+            `EXE_ADDI   :curr_alu_inst = `EXE_ADDI_OP;
+            `EXE_ADDIU  :curr_alu_inst = `EXE_ADDIU_OP;
+            `EXE_SLTI   :curr_alu_inst = `EXE_SLTI_OP;
+            `EXE_SLTIU  :curr_alu_inst = `EXE_SLTIU_OP;
+            `EXE_ANDI	:curr_alu_inst = `EXE_ANDI_OP;
+            `EXE_LUI	:curr_alu_inst = `EXE_LUI_OP;
+            `EXE_ORI	:curr_alu_inst = `EXE_ORI_OP;
+            `EXE_XORI	:curr_alu_inst = `EXE_XORI_OP;
+            `EXE_BEQ    :curr_alu_inst = `EXE_BEQ_OP;
+            `EXE_BNE    :curr_alu_inst = `EXE_BNE_OP;
+            `EXE_BGEZ   :curr_alu_inst = `EXE_BGEZ_OP;
+            //`EXE_BGTZ   :curr_alu_inst = `EXE_BGTZ_OP;
+            //`EXE_BGEZAL :curr_alu_inst = `EXE_BGEZAL_OP;
+            `EXE_BLEZ   :curr_alu_inst = `EXE_BLEZ_OP;
+            //`EXE_BLTZ   :curr_alu_inst = `EXE_BLTZ_OP;
+            //`EXE_BLTZAL :curr_alu_inst = `EXE_BLTZAL_OP;
+            `EXE_J      :curr_alu_inst = `EXE_J_OP;
+            `EXE_JAL    :curr_alu_inst = `EXE_JAL_OP;
+            `EXE_LB     :curr_alu_inst = `EXE_LB_OP;
+            `EXE_LBU    :curr_alu_inst = `EXE_LBU_OP;
+            `EXE_LH     :curr_alu_inst = `EXE_LH_OP;
+            `EXE_LHU    :curr_alu_inst = `EXE_LHU_OP;
+            `EXE_LW     :curr_alu_inst = `EXE_LW_OP;
+            `EXE_SB     :curr_alu_inst = `EXE_SB_OP;
+            `EXE_SH     :curr_alu_inst = `EXE_SH_OP;
+            `EXE_SW     :curr_alu_inst = `EXE_SW_OP;
+            `EXE_ERET   :curr_alu_inst = `EXE_ERET_OP;
             6'b000000: begin
                 case (funct_reg)
-                    `EXE_ADD    : curr_alu_inst=`EXE_ADD_OP;
-                    `EXE_ADDU   : curr_alu_inst=`EXE_ADDU_OP;
-                    `EXE_SUB    : curr_alu_inst=`EXE_SUB_OP;
-                    `EXE_SUBU   : curr_alu_inst=`EXE_SUBU_OP;
-                    `EXE_SLT    : curr_alu_inst=`EXE_SLT_OP;
-                    `EXE_SLTU   : curr_alu_inst=`EXE_SLTU_OP;
-                    `EXE_DIV    : curr_alu_inst=`EXE_DIV_OP;
-                    `EXE_DIVU   : curr_alu_inst=`EXE_DIVU_OP;
-                    `EXE_MULT   : curr_alu_inst=`EXE_MULT_OP;
-                    `EXE_MULTU  : curr_alu_inst=`EXE_MULTU_OP;
-                    `EXE_AND 	: curr_alu_inst=`EXE_AND_OP;
-                    `EXE_NOR	: curr_alu_inst=`EXE_NOR_OP;
-                    `EXE_OR 	: curr_alu_inst=`EXE_OR_OP;
-                    `EXE_XOR 	: curr_alu_inst=`EXE_XOR_OP;
-                    `EXE_SLLV	: curr_alu_inst=`EXE_SLLV_OP;
-                    `EXE_SLL	: curr_alu_inst=`EXE_SLL_OP;
-                    `EXE_SRA 	: curr_alu_inst=`EXE_SRA_OP;
-                    `EXE_SRAV 	: curr_alu_inst=`EXE_SRAV_OP;
-                    `EXE_SRL 	: curr_alu_inst=`EXE_SRL_OP;
-                    `EXE_SRLV 	: curr_alu_inst=`EXE_SRLV_OP;
-                    `EXE_JALR   : curr_alu_inst=`EXE_JALR_OP;
-                    `EXE_JR     : curr_alu_inst=`EXE_JR_OP;
-                    `EXE_MFHI  	: curr_alu_inst=`EXE_MFHI_OP;
-                    `EXE_MTHI  	: curr_alu_inst=`EXE_MTHI_OP;
-                    `EXE_MFLO  	: curr_alu_inst=`EXE_MFLO_OP;
-                    `EXE_MTLO  	: curr_alu_inst=`EXE_MTLO_OP;
-                    `EXE_SYSCALL: curr_alu_inst=`EXE_SYSCALL_OP;
-                    `EXE_BREAK  : curr_alu_inst=`EXE_BREAK_OP;
+                    `EXE_ADD    : curr_alu_inst = `EXE_ADD_OP;
+                    `EXE_ADDU   : curr_alu_inst = `EXE_ADDU_OP;
+                    `EXE_SUB    : curr_alu_inst = `EXE_SUB_OP;
+                    `EXE_SUBU   : curr_alu_inst = `EXE_SUBU_OP;
+                    `EXE_SLT    : curr_alu_inst = `EXE_SLT_OP;
+                    `EXE_SLTU   : curr_alu_inst = `EXE_SLTU_OP;
+                    `EXE_DIV    : curr_alu_inst = `EXE_DIV_OP;
+                    `EXE_DIVU   : curr_alu_inst = `EXE_DIVU_OP;
+                    `EXE_MULT   : curr_alu_inst = `EXE_MULT_OP;
+                    `EXE_MULTU  : curr_alu_inst = `EXE_MULTU_OP;
+                    `EXE_AND 	: curr_alu_inst = `EXE_AND_OP;
+                    `EXE_NOR	: curr_alu_inst = `EXE_NOR_OP;
+                    `EXE_OR 	: curr_alu_inst = `EXE_OR_OP;
+                    `EXE_XOR 	: curr_alu_inst = `EXE_XOR_OP;
+                    `EXE_SLLV	: curr_alu_inst = `EXE_SLLV_OP;
+                    `EXE_SLL	: curr_alu_inst = `EXE_SLL_OP;
+                    `EXE_SRA 	: curr_alu_inst = `EXE_SRA_OP;
+                    `EXE_SRAV 	: curr_alu_inst = `EXE_SRAV_OP;
+                    `EXE_SRL 	: curr_alu_inst = `EXE_SRL_OP;
+                    `EXE_SRLV 	: curr_alu_inst = `EXE_SRLV_OP;
+                    `EXE_JALR   : curr_alu_inst = `EXE_JALR_OP;
+                    `EXE_JR     : curr_alu_inst = `EXE_JR_OP;
+                    `EXE_MFHI  	: curr_alu_inst = `EXE_MFHI_OP;
+                    `EXE_MTHI  	: curr_alu_inst = `EXE_MTHI_OP;
+                    `EXE_MFLO  	: curr_alu_inst = `EXE_MFLO_OP;
+                    `EXE_MTLO  	: curr_alu_inst = `EXE_MTLO_OP;
+                    `EXE_SYSCALL: curr_alu_inst = `EXE_SYSCALL_OP;
+                    `EXE_BREAK  : curr_alu_inst = `EXE_BREAK_OP;
                 endcase
             end
             default:     curr_alu_inst = 8'bxxxx_xxxx;
@@ -594,52 +594,52 @@ module inst_decode (
             6'b000000:begin
                 case(funct_reg)
                 //R型28条
-                    `EXE_ADD    :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_ADDU   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_SUB    :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_SUBU   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_SLT    :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_SLTU   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_DIV    :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_DIVU   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_MULT   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_MULTU  :curr_alu_sel=`EXE_RES_ARITHMETIC;
-                    `EXE_AND 	:curr_alu_sel=`EXE_RES_LOGIC;
-                    `EXE_NOR	:curr_alu_sel=`EXE_RES_LOGIC;
-                    `EXE_OR 	:curr_alu_sel=`EXE_RES_LOGIC;
-                    `EXE_XOR 	:curr_alu_sel=`EXE_RES_LOGIC;
-                    `EXE_SLLV	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_SLL	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_SRA 	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_SRAV 	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_SRL 	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_SRLV 	:curr_alu_sel=`EXE_RES_SHIFT;
-                    `EXE_MFHI  	:curr_alu_sel=`EXE_RES_MOVE;
-                    `EXE_MTHI  	:curr_alu_sel=`EXE_RES_MOVE;
-                    `EXE_MFLO  	:curr_alu_sel=`EXE_RES_MOVE;
-                    `EXE_MTLO  	:curr_alu_sel=`EXE_RES_MOVE;
-                    `EXE_SYSCALL:curr_alu_sel=`EXE_RES_NOP;
-                    `EXE_BREAK  :curr_alu_sel=`EXE_RES_NOP;
+                    `EXE_ADD    :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_ADDU   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUB    :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SUBU   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SLT    :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_SLTU   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_DIV    :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_DIVU   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULT   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_MULTU  :curr_alu_sel = `EXE_RES_ARITHMETIC;
+                    `EXE_AND 	:curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_NOR	:curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_OR 	:curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_XOR 	:curr_alu_sel = `EXE_RES_LOGIC;
+                    `EXE_SLLV	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SLL	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRA 	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRAV 	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRL 	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_SRLV 	:curr_alu_sel = `EXE_RES_SHIFT;
+                    `EXE_MFHI  	:curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTHI  	:curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MFLO  	:curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_MTLO  	:curr_alu_sel = `EXE_RES_MOVE;
+                    `EXE_SYSCALL:curr_alu_sel = `EXE_RES_NOP;
+                    `EXE_BREAK  :curr_alu_sel = `EXE_RES_NOP;
                 endcase
                 end
             //其他27条
-            `EXE_ADDI   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-            `EXE_ADDIU  :curr_alu_sel=`EXE_RES_ARITHMETIC;
-            `EXE_SLTI   :curr_alu_sel=`EXE_RES_ARITHMETIC;
-            `EXE_SLTIU  :curr_alu_sel=`EXE_RES_ARITHMETIC;
-            `EXE_ANDI	:curr_alu_sel=`EXE_RES_LOGIC;
-            `EXE_LUI	:curr_alu_sel=`EXE_RES_LOGIC;
-            `EXE_ORI	:curr_alu_sel=`EXE_RES_LOGIC;
-            `EXE_XORI	:curr_alu_sel=`EXE_RES_LOGIC;
-            `EXE_LB     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_LBU    :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_LH     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_LHU    :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_LW     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_SB     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_SH     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_SW     :curr_alu_sel=`EXE_RES_LOAD_STORE;
-            `EXE_ERET   :curr_alu_sel=`EXE_RES_NOP;       
+            `EXE_ADDI   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+            `EXE_ADDIU  :curr_alu_sel = `EXE_RES_ARITHMETIC;
+            `EXE_SLTI   :curr_alu_sel = `EXE_RES_ARITHMETIC;
+            `EXE_SLTIU  :curr_alu_sel = `EXE_RES_ARITHMETIC;
+            `EXE_ANDI	:curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_LUI	:curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_ORI	:curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_XORI	:curr_alu_sel = `EXE_RES_LOGIC;
+            `EXE_LB     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_LBU    :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_LH     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_LHU    :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_LW     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_SB     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_SH     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_SW     :curr_alu_sel = `EXE_RES_LOAD_STORE;
+            `EXE_ERET   :curr_alu_sel = `EXE_RES_NOP;       
             default: 
                 curr_alu_sel = `EXE_RES_NOP; // 默认值或未定义指令
         endcase
@@ -651,81 +651,75 @@ module inst_decode (
     assign pc_branch = pc_plus_4 + extended_imm_sl2;        //pc_plus_4 + extended_imm 
 
     wire equal;                                             //equal value
-    assign equal=(rs_data==rt_data)?1'b1:1'b0;
+    assign equal=(rs_data==rt_data) ? 1'b1 : 1'b0;
     
-    assign do_store=((opcode_reg==`EXE_BGEZAL)||
-            (opcode_reg==`EXE_BLTZAL))? 1'b1:1'b0;           //enable for store pc_plus_4+4 to rd_reg                        
-    assign do_store_rd=(opcode_reg==`EXE_JALR)? 1'b1:1'b0;   //enable for store pc_plus_4+4 to reg[31]
-    assign data_to_store=pc_plus_4 + 4;                      //calculate store data   
-    assign addr_to_store=do_store_31==1'b1 ? 5'b11111 : rd_reg;  //choose store addr
+    assign do_store = ((opcode_reg == `EXE_BGEZAL) ||
+            (opcode_reg == `EXE_BLTZAL))? 1'b1:1'b0;           //enable for store pc_plus_4+4 to rd_reg                        
+    assign do_store_rd = (opcode_reg == `EXE_JALR)? 1'b1:1'b0;   //enable for store pc_plus_4+4 to reg[31]
+    assign data_to_store = pc_plus_4 + 4;                      //calculate store data   
+    assign addr_to_store = do_store_31 == 1'b1 ? 5'b11111 : rd_reg;  //choose store addr
 
                
     assign jump_pc=reg_jump_pc;             //jump_pc 跳转目的地址
     assign do_jump=reg_do_jump;             //do_jump 是否进行跳转
     //assign reg_jump_pc and reg_do_jump
-    always@(*)begin
-        if(stall[2]==1'b1)begin
-        reg_do_jump=1'b0;
-        reg_jump_pc=8'h00000000;
+    always@(posedge clk or negedge rstn)begin
+        if (!rstn) begin
+            reg_do_jump = 1'b0;
+            reg_jump_pc = 8'h00000000;  
+        end else if(stall[2] == 1'b1)begin
+            reg_do_jump = reg_do_jump;
+            reg_jump_pc = reg_jump_pc;
         end else begin
         case(opcode_reg)
             `EXE_BEQ:begin
-                reg_do_jump=equal;
-                reg_jump_pc=pc_branch;
+                reg_do_jump = equal;
+                reg_jump_pc = pc_branch;
             end
             `EXE_BNE:begin
-                reg_do_jump=!equal;
-                reg_jump_pc= pc_branch;
+                reg_do_jump =! equal;
+                reg_jump_pc = pc_branch;
             end
             `EXE_BGEZ:begin
-                reg_do_jump=!(rs_data<8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump =! (rs_data < 8'h00000000);
+                reg_jump_pc = pc_branch;
             end
             `EXE_BGTZ:begin
-                reg_do_jump=(rs_data>8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump = (rs_data > 8'h00000000);
+                reg_jump_pc = pc_branch;
             end
             `EXE_BGEZ:begin
-                reg_do_jump=!(rs_data>8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump =! (rs_data > 8'h00000000);
+                reg_jump_pc = pc_branch;
             end
             `EXE_BGTZ:begin
-                reg_do_jump=(rs_data<8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump = (rs_data < 8'h00000000);
+                reg_jump_pc = pc_branch;
             end
             `EXE_BGEZAL:begin
-                reg_do_jump=!(rs_data<8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump =! (rs_data < 8'h00000000);
+                reg_jump_pc = pc_branch;
             end
             `EXE_BLTZAL:begin
-                reg_do_jump=(rs_data<8'h00000000);
-                reg_jump_pc=pc_branch;
+                reg_do_jump = (rs_data < 8'h00000000);
+                reg_jump_pc = pc_branch;
             end  
             `EXE_J:begin
-                reg_do_jump=1'b1;
-                reg_jump_pc={pc[31:27],instruction[25:0],2'b0};
+                reg_do_jump = 1'b1;
+                reg_jump_pc = {pc[31:27],instruction[25:0],2'b0};
             end
             `EXE_JR:begin
-                reg_do_jump=1'b1;
-                reg_jump_pc=rs_data;
+                reg_do_jump = 1'b1;
+                reg_jump_pc = rs_data;
             end
             `EXE_JALR:begin
-                reg_do_jump=1'b1;
-                reg_jump_pc=rs_data;
+                reg_do_jump = 1'b1;
+                reg_jump_pc = rs_data;
             end
         endcase
         end
     end
   
-
-
-
-
-
-
-
-
-
 
 
 

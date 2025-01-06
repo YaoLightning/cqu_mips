@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="869.833 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,026.034 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="13.701 ns"></ZoomEndTime>
+      <Cursor1Time time="445.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="273"></NameColumnWidth>
-      <ValueColumnWidth column_width="63"></ValueColumnWidth>
+      <NameColumnWidth column_width="272"></NameColumnWidth>
+      <ValueColumnWidth column_width="60"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="12" />
    <wvobject type="logic" fp_name="/datapath_sim/rst">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -67,14 +67,6 @@
          <obj_property name="ElementShortName">wb_stall</obj_property>
          <obj_property name="ObjectShortName">wb_stall</obj_property>
       </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/jump">
-         <obj_property name="ElementShortName">jump</obj_property>
-         <obj_property name="ObjectShortName">jump</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/branch">
-         <obj_property name="ElementShortName">branch</obj_property>
-         <obj_property name="ObjectShortName">branch</obj_property>
-      </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/forwardaD">
          <obj_property name="ElementShortName">forwardaD</obj_property>
          <obj_property name="ObjectShortName">forwardaD</obj_property>
@@ -91,6 +83,18 @@
          <obj_property name="ElementShortName">flushE</obj_property>
          <obj_property name="ObjectShortName">flushE</obj_property>
       </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/do_jump_id">
+         <obj_property name="ElementShortName">do_jump_id</obj_property>
+         <obj_property name="ObjectShortName">do_jump_id</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/pc_in_if">
+         <obj_property name="ElementShortName">pc_in_if[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc_in_if[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/pc_out_IF_ID">
+         <obj_property name="ElementShortName">pc_out_IF_ID[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc_out_IF_ID[31:0]</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/forwardaE">
          <obj_property name="ElementShortName">forwardaE[1:0]</obj_property>
          <obj_property name="ObjectShortName">forwardaE[1:0]</obj_property>
@@ -98,6 +102,99 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/forwardbE">
          <obj_property name="ElementShortName">forwardbE[1:0]</obj_property>
          <obj_property name="ObjectShortName">forwardbE[1:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group121">
+      <obj_property name="label">hazard</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/rsD">
+         <obj_property name="ElementShortName">rsD[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rsD[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/rtD">
+         <obj_property name="ElementShortName">rtD[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rtD[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/branchD">
+         <obj_property name="ElementShortName">branchD</obj_property>
+         <obj_property name="ObjectShortName">branchD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/forwardaD">
+         <obj_property name="ElementShortName">forwardaD</obj_property>
+         <obj_property name="ObjectShortName">forwardaD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/forwardbD">
+         <obj_property name="ElementShortName">forwardbD</obj_property>
+         <obj_property name="ObjectShortName">forwardbD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/stallD">
+         <obj_property name="ElementShortName">stallD</obj_property>
+         <obj_property name="ObjectShortName">stallD</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/rsE">
+         <obj_property name="ElementShortName">rsE[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rsE[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/rtE">
+         <obj_property name="ElementShortName">rtE[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rtE[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/writeregE">
+         <obj_property name="ElementShortName">writeregE[4:0]</obj_property>
+         <obj_property name="ObjectShortName">writeregE[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/regwriteE">
+         <obj_property name="ElementShortName">regwriteE</obj_property>
+         <obj_property name="ObjectShortName">regwriteE</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/memtoregE">
+         <obj_property name="ElementShortName">memtoregE</obj_property>
+         <obj_property name="ObjectShortName">memtoregE</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/writeregM">
+         <obj_property name="ElementShortName">writeregM[4:0]</obj_property>
+         <obj_property name="ObjectShortName">writeregM[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/regwriteM">
+         <obj_property name="ElementShortName">regwriteM</obj_property>
+         <obj_property name="ObjectShortName">regwriteM</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/memtoregM">
+         <obj_property name="ElementShortName">memtoregM</obj_property>
+         <obj_property name="ObjectShortName">memtoregM</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/writeregW">
+         <obj_property name="ElementShortName">writeregW[4:0]</obj_property>
+         <obj_property name="ObjectShortName">writeregW[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/regwriteW">
+         <obj_property name="ElementShortName">regwriteW</obj_property>
+         <obj_property name="ObjectShortName">regwriteW</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/flushE">
+         <obj_property name="ElementShortName">flushE</obj_property>
+         <obj_property name="ObjectShortName">flushE</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/forwardaE">
+         <obj_property name="ElementShortName">forwardaE[1:0]</obj_property>
+         <obj_property name="ObjectShortName">forwardaE[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/datapath_sim/dp/hazard_unit/forwardbE">
+         <obj_property name="ElementShortName">forwardbE[1:0]</obj_property>
+         <obj_property name="ObjectShortName">forwardbE[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/lwstallD">
+         <obj_property name="ElementShortName">lwstallD</obj_property>
+         <obj_property name="ObjectShortName">lwstallD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/branchstallD">
+         <obj_property name="ElementShortName">branchstallD</obj_property>
+         <obj_property name="ObjectShortName">branchstallD</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/datapath_sim/dp/hazard_unit/stallF">
+         <obj_property name="ElementShortName">stallF</obj_property>
+         <obj_property name="ObjectShortName">stallF</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group104">
@@ -182,14 +279,6 @@
       <wvobject type="logic" fp_name="/datapath_sim/dp/id_stage/reg_write_reg">
          <obj_property name="ElementShortName">reg_write_reg</obj_property>
          <obj_property name="ObjectShortName">reg_write_reg</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/id_stage/branch_reg">
-         <obj_property name="ElementShortName">branch_reg</obj_property>
-         <obj_property name="ObjectShortName">branch_reg</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/datapath_sim/dp/id_stage/jump_reg">
-         <obj_property name="ElementShortName">jump_reg</obj_property>
-         <obj_property name="ObjectShortName">jump_reg</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/datapath_sim/dp/id_stage/reg_dst">
          <obj_property name="ElementShortName">reg_dst</obj_property>
@@ -359,7 +448,6 @@
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/reg_file">
          <obj_property name="ElementShortName">reg_file[0:31][31:0]</obj_property>
          <obj_property name="ObjectShortName">reg_file[0:31][31:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/datapath_sim/dp/reg_file_unit/raddr1">
          <obj_property name="ElementShortName">raddr1[4:0]</obj_property>
