@@ -41,7 +41,11 @@ module write_back(
     input  wire [31:0]  pc_in,
     output wire [31:0]  pc_out,
 
+    input  wire         mem_valid, 
+
     input  wire [31:0]  inst_in,
+
+    output wire         wb_valid,
 
     output wire [4 :0]  write_addr_out,     // Address of the register to write in register file
     output wire [31:0]  write_data_out      // Data to be written to register file
@@ -50,7 +54,7 @@ module write_back(
     reg [31:0] reg_inst;
 
     always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin
+        if (!rstn | !mem_valid) begin
             reg_inst <= 32'b0;
         end        
         else begin

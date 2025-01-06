@@ -36,6 +36,7 @@ module memory_access(
 
     input  wire [31:0] mem_read_data_in,// Data read from memory
 
+    input  wire        exe_valid,
 
     input  wire        mem_read_in,     // Memory read enable signal from execute stage
     input  wire        mem_write_in,    // Memory write enable signal from execute stage
@@ -43,6 +44,7 @@ module memory_access(
     input  wire        mem_to_reg_in,   // Memory to register selection signal from execute stage
     input  wire [ 4:0] write_reg_in,     // Register address to be written from execute stage
     input  wire        reg_write_in,    // Register write enable signal from execute stage
+    output wire        mem_valid,
 
     input  wire [31:0] inst_in,
     output wire [31:0] inst_out,
@@ -64,27 +66,33 @@ module memory_access(
     reg [31:0] exe_result_reg;
     reg [31:0] inst;
 
+    reg        mem_valid_reg;
+
     assign inst_out = inst;
 
     assign reg_write_out = reg_write;
     assign write_reg_out = write_reg_reg;
     assign mem_to_reg_out = mem_to_reg_reg;
 
+    assign mem_valid = mem_valid_reg;
+
 
     always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin
-            inst <= 32'b0;
-            exe_result_reg <= 32'b0;
-            reg_write <= 1'b0;
-            write_reg_reg <= 5'b0;
-            mem_to_reg_reg <= 1'b0;
+        if (!rstn | !exe_valid) begin
+            inst            <= 32'b0;
+            exe_result_reg  <= 32'b0;
+            reg_write       <= 1'b0;
+            write_reg_reg   <= 5'b0;
+            mem_to_reg_reg  <= 1'b0;
+            mem_valid_reg   <= 1'b0;
         end        
         else begin
-            inst <= inst_in;
-            reg_write <= reg_write_in;
+            inst           <= inst_in;
+            reg_write      <= reg_write_in;
             exe_result_reg <= exe_result;
-            write_reg_reg <= write_reg_in;
+            write_reg_reg  <= write_reg_in;
             mem_to_reg_reg <= mem_to_reg_in;
+            mem_valid_reg  <= 1'b0; // TODO: optimize it
         end
     end
 

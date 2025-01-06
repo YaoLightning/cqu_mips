@@ -91,6 +91,7 @@ module datapath(
     wire id_valid_;
     wire exe_valid_;
     wire mem_valid_;
+    wire wb_valid_;
 
     // signal definition
     wire jump;
@@ -353,6 +354,8 @@ module datapath(
 
         .mem_to_reg_in   (mem_to_reg_EXE_MEM),
 
+        .exe_valid       (exe_valid_),
+        .mem_valid       (mem_valid_),
 
         .write_reg_in    (write_reg_EXE_MEM),
         .reg_write_in    (reg_write_EXE_MEM),
@@ -375,6 +378,8 @@ module datapath(
         .rstn            (rstn),
         .stall           (wb_stall),
 
+        .mem_valid       (mem_valid_),
+
         .write_addr_in   (write_reg_MEM_WB),
         .write_data_in   (reg_write_data_MEM_WB),
         .reg_write       (reg_write_MEM_WB),
@@ -383,6 +388,8 @@ module datapath(
 
         .pc_in           (pc_out_EXE_MEM),
         .pc_out          (pc_out_MEM_WB),
+
+        .wb_valid        (wb_valid_),
 
         .write_addr_out  (reg_write_addr_wb),
         .write_data_out  (reg_write_data_wb)
