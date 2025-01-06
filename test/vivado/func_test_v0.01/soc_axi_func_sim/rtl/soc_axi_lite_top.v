@@ -159,6 +159,61 @@ wire [3 :0] cpu_bid    ;
 wire [1 :0] cpu_bresp  ;
 wire        cpu_bvalid ;
 wire        cpu_bready ;
+// MIPS核心数据接口信号
+wire cpu_data_req;
+wire cpu_data_wr;
+wire [1 :0] cpu_data_size;
+wire [31:0] cpu_data_addr;
+wire [31:0] cpu_data_wdata;
+wire [31:0] cpu_data_rdata;
+wire cpu_data_addr_ok;
+wire cpu_data_data_ok;
+
+// MIPS核心指令接口信号
+wire cpu_inst_req;
+wire cpu_inst_wr;
+wire [1 :0] cpu_inst_size;
+wire [31:0] cpu_inst_addr;
+wire [31:0] cpu_inst_wdata;
+wire [31:0] cpu_inst_rdata;
+wire cpu_inst_addr_ok;
+wire cpu_inst_data_ok;
+// Instruction access signals
+wire        inst_req;           // Instruction request signal
+wire        inst_wr;            // Instruction write signal
+wire [1:0]  inst_size;          // Instruction size (e.g., byte, half-word, word)
+wire [31:0] inst_addr;          // Instruction address
+wire [31:0] inst_rdata;         // Instruction read data
+wire [31:0] inst_wdata;         // Instruction write data
+wire        inst_addr_ok;       // Instruction address acknowledged
+wire        inst_data_ok;       // Instruction data acknowledged
+
+// Data access signals
+wire        data_req;           // Data request signal
+wire        data_wr;            // Data write signal
+wire [1:0]  data_size;          // Data size (e.g., byte, half-word, word)
+wire [31:0] data_addr;          // Data address
+wire [31:0] data_rdata;         // Data read data
+wire [31:0] data_wdata;         // Data write data
+wire        data_addr_ok;       // Data address acknowledged
+wire        data_data_ok;       // Data data acknowledged
+// 缓存模块与总线接口模块连接信号
+wire        cache_data_req;
+wire        cache_data_wr;
+wire [1 :0] cache_data_size;
+wire [31:0] cache_data_addr;
+wire [31:0] cache_data_wdata;
+wire [31:0] cache_data_rdata;
+wire        cache_data_addr_ok;
+wire        cache_data_data_ok;
+wire        cache_inst_req;
+wire        cache_inst_wr;
+wire [1 :0] cache_inst_size;
+wire [31:0] cache_inst_addr;
+wire [31:0] cache_inst_wdata;
+wire [31:0] cache_inst_rdata;
+wire        cache_inst_addr_ok;
+wire        cache_inst_data_ok;
 
 //cpu axi wrap
 wire        cpu_wrap_aclk   ;
@@ -314,61 +369,204 @@ wire        conf_bready ;
 //for lab6
 wire [4 :0] ram_random_mask;
 
-//cpu axi
-//debug_*
-mycpu_top u_cpu(
-    .ext_int   (6'd0          ),   //high active
+    // Instantiate the datapath module
+// 实例化数据路径模块
+datapath datapath_m(
+    .clk(clk),
+    .rstn(resetn),
 
-    .aclk      (cpu_clk       ),
-    .aresetn   (cpu_resetn    ),   //low active
+    // Instruction fetch and decode signals
+    .inst_req       (inst_req       ),
+    .inst_wr        (inst_wr        ),
+    .inst_size      (inst_size      ),
+    .inst_addr      (inst_addr      ),
+    .inst_wdata     (inst_wdata     ),
+    .inst_rdata     (inst_rdata     ),
+    .inst_addr_ok   (inst_addr_ok   ),
+    .inst_data_ok   (inst_data_ok   ),
 
-    .arid      (cpu_arid      ),
-    .araddr    (cpu_araddr    ),
-    .arlen     (cpu_arlen     ),
-    .arsize    (cpu_arsize    ),
-    .arburst   (cpu_arburst   ),
-    .arlock    (cpu_arlock    ),
-    .arcache   (cpu_arcache   ),
-    .arprot    (cpu_arprot    ),
-    .arvalid   (cpu_arvalid   ),
-    .arready   (cpu_arready   ),
-                
-    .rid       (cpu_rid       ),
-    .rdata     (cpu_rdata     ),
-    .rresp     (cpu_rresp     ),
-    .rlast     (cpu_rlast     ),
-    .rvalid    (cpu_rvalid    ),
-    .rready    (cpu_rready    ),
-               
-    .awid      (cpu_awid      ),
-    .awaddr    (cpu_awaddr    ),
-    .awlen     (cpu_awlen     ),
-    .awsize    (cpu_awsize    ),
-    .awburst   (cpu_awburst   ),
-    .awlock    (cpu_awlock    ),
-    .awcache   (cpu_awcache   ),
-    .awprot    (cpu_awprot    ),
-    .awvalid   (cpu_awvalid   ),
-    .awready   (cpu_awready   ),
-    
-    .wid       (cpu_wid       ),
-    .wdata     (cpu_wdata     ),
-    .wstrb     (cpu_wstrb     ),
-    .wlast     (cpu_wlast     ),
-    .wvalid    (cpu_wvalid    ),
-    .wready    (cpu_wready    ),
-    
-    .bid       (cpu_bid       ),
-    .bresp     (cpu_bresp     ),
-    .bvalid    (cpu_bvalid    ),
-    .bready    (cpu_bready    ),
 
-    //debug interface
-    .debug_wb_pc      (debug_wb_pc      ),
-    .debug_wb_rf_wen  (debug_wb_rf_wen  ),
-    .debug_wb_rf_wnum (debug_wb_rf_wnum ),
-    .debug_wb_rf_wdata(debug_wb_rf_wdata)
+    // Data access signals
+    .data_req       (data_req       ),
+    .data_wr        (data_wr        ),
+    .data_size      (data_size      ),
+    .data_addr      (data_addr      ),
+    .data_wdata     (data_wdata     ),
+    .data_rdata     (data_rdata     ),
+    .data_addr_ok   (data_addr_ok   ),
+    .data_data_ok   (data_data_ok   )
+    //  //debug interface//未找到实现
+    // .debug_wb_pc      (debug_wb_pc      ),
+    // .debug_wb_rf_wen  (debug_wb_rf_wen  ),
+    // .debug_wb_rf_wnum (debug_wb_rf_wnum ),
+    // .debug_wb_rf_wdata(debug_wb_rf_wdata)
 );
+// 实例化缓存模块
+cache_module cache (
+    .clk(clk),
+    .rst(~resetn),
+
+   // CPU 请求信号
+    .cpu_data_req       (data_req       ),     // 统一连接数据请求信号
+    .cpu_data_wr        (data_wr        ),     // 数据写信号
+    .cpu_data_size      (data_size      ),     // 数据大小
+    .cpu_data_addr      (data_addr      ),     // 地址
+    .cpu_data_wdata     (data_wdata     ),     // 写数据
+    .cpu_data_rdata     (data_rdata     ),     // 读数据
+    .cpu_data_addr_ok   (data_addr_ok   ),     // 地址有效信号
+    .cpu_data_data_ok   (data_data_ok   ),     // 数据有效信号
+    .cpu_inst_req       (inst_req       ),     // 指令请求信号
+    .cpu_inst_wr        (inst_wr        ),     // 指令写信号
+    .cpu_inst_size      (inst_size      ),     // 指令大小
+    .cpu_inst_addr      (inst_addr      ),     // 指令地址
+    .cpu_inst_wdata     (inst_wdata     ),     // 指令写数据
+    .cpu_inst_rdata     (inst_rdata     ),     // 指令读数据
+    .cpu_inst_addr_ok   (inst_addr_ok   ),     // 指令地址有效信号
+    .cpu_inst_data_ok   (inst_data_ok   ),     // 指令数据有效信号
+    
+    // 缓存请求信号
+    .cache_data_req         (cache_data_req     ),
+    .cache_data_wr          (cache_data_wr      ),
+    .cache_data_size        (cache_data_size    ),
+    .cache_data_addr        (cache_data_addr    ),
+    .cache_data_wdata       (cache_data_wdata   ),
+    .cache_data_rdata       (cache_data_rdata   ),
+    .cache_data_addr_ok     (cache_data_addr_ok ),
+    .cache_data_data_ok     (cache_data_data_ok ),
+    .cache_inst_req         (cache_inst_req     ),
+    .cache_inst_wr          (cache_inst_wr      ),
+    .cache_inst_size        (cache_inst_size    ),
+    .cache_inst_addr        (cache_inst_addr    ),
+    .cache_inst_wdata       (cache_inst_wdata   ),
+    .cache_inst_rdata       (cache_inst_rdata   ),
+    .cache_inst_addr_ok     (cache_inst_addr_ok ),
+    .cache_inst_data_ok     (cache_inst_data_ok )
+);
+// 实例化总线接口模块
+cpu_axi_interface axi_interface (
+    .clk            (clk),
+    .resetn         (resetn),
+
+    // 将缓存模块的信号传递到 AXI 接口模块
+    .inst_req       (cache_inst_req     ),
+    .inst_wr        (cache_inst_wr      ),
+    .inst_size      (cache_inst_size    ),
+    .inst_addr      (cache_inst_addr    ),
+    .inst_wdata     (cache_inst_wdata   ),
+    .inst_rdata     (cache_inst_rdata   ),
+    .inst_addr_ok   (cache_inst_addr_ok ),
+    .inst_data_ok   (cache_inst_data_ok ),
+    
+    .data_req       (cache_data_req     ),
+    .data_wr        (cache_data_wr      ),
+    .data_size      (cache_data_size    ),
+    .data_addr      (cache_data_addr    ),
+    .data_wdata     (cache_data_wdata   ),
+    .data_rdata     (cache_data_rdata   ),
+    .data_addr_ok   (cache_data_addr_ok ),
+    .data_data_ok   (cache_data_data_ok ),
+
+    // AXI 总线的信号
+    .arid           (cpu_arid       ),
+    .araddr         (cpu_araddr     ),
+    .arlen          (cpu_arlen      ),
+    .arsize         (cpu_arsize     ),
+    .arburst        (cpu_arburst    ),
+    .arlock         (cpu_arlock     ),
+    .arcache        (cpu_arcache    ),
+    .arprot         (cpu_arprot     ),
+    .arvalid        (cpu_arvalid    ),
+    .arready        (cpu_arready    ),
+
+    .rid            (cpu_rid        ),
+    .rdata          (cpu_rdata      ),
+    .rresp          (cpu_rresp      ),
+    .rlast          (cpu_rlast      ),
+    .rvalid         (cpu_rvalid     ),
+    .rready         (cpu_rready     ),
+
+    .awid           (cpu_awid       ),
+    .awaddr         (cpu_awaddr     ),
+    .awlen          (cpu_awlen      ),
+    .awsize         (cpu_awsize     ),
+    .awburst        (cpu_awburst    ),
+    .awlock         (cpu_awlock     ),
+    .awcache        (cpu_awcache    ),
+    .awprot         (cpu_awprot     ),
+    .awvalid        (cpu_awvalid    ),
+    .awready        (cpu_awready    ),
+
+    .wid            (cpu_wid        ),
+    .wdata          (cpu_wdata      ),
+    .wstrb          (cpu_wstrb      ),
+    .wlast          (cpu_wlast      ),
+    .wvalid         (cpu_wvalid     ),
+    .wready         (cpu_wready     ),
+
+    .bid            (cpu_bid        ),
+    .bresp          (cpu_bresp      ),
+    .bvalid         (cpu_bvalid     ),
+    .bready         (cpu_bready     )
+
+);
+
+
+
+// //cpu axi由上面的接口模块取代
+// //debug_*
+// mycpu_top u_cpu(
+//     .ext_int   (6'd0          ),   //high active
+
+//     .aclk      (cpu_clk       ),
+//     .aresetn   (cpu_resetn    ),   //low active
+
+//     .arid      (cpu_arid      ),
+//     .araddr    (cpu_araddr    ),
+//     .arlen     (cpu_arlen     ),
+//     .arsize    (cpu_arsize    ),
+//     .arburst   (cpu_arburst   ),
+//     .arlock    (cpu_arlock    ),
+//     .arcache   (cpu_arcache   ),
+//     .arprot    (cpu_arprot    ),
+//     .arvalid   (cpu_arvalid   ),
+//     .arready   (cpu_arready   ),
+                
+//     .rid       (cpu_rid       ),
+//     .rdata     (cpu_rdata     ),
+//     .rresp     (cpu_rresp     ),
+//     .rlast     (cpu_rlast     ),
+//     .rvalid    (cpu_rvalid    ),
+//     .rready    (cpu_rready    ),
+               
+//     .awid      (cpu_awid      ),
+//     .awaddr    (cpu_awaddr    ),
+//     .awlen     (cpu_awlen     ),
+//     .awsize    (cpu_awsize    ),
+//     .awburst   (cpu_awburst   ),
+//     .awlock    (cpu_awlock    ),
+//     .awcache   (cpu_awcache   ),
+//     .awprot    (cpu_awprot    ),
+//     .awvalid   (cpu_awvalid   ),
+//     .awready   (cpu_awready   ),
+    
+//     .wid       (cpu_wid       ),
+//     .wdata     (cpu_wdata     ),
+//     .wstrb     (cpu_wstrb     ),
+//     .wlast     (cpu_wlast     ),
+//     .wvalid    (cpu_wvalid    ),
+//     .wready    (cpu_wready    ),
+    
+//     .bid       (cpu_bid       ),
+//     .bresp     (cpu_bresp     ),
+//     .bvalid    (cpu_bvalid    ),
+//     .bready    (cpu_bready    ),
+
+//     //debug interface
+//     .debug_wb_pc      (debug_wb_pc      ),
+//     .debug_wb_rf_wen  (debug_wb_rf_wen  ),
+//     .debug_wb_rf_wnum (debug_wb_rf_wnum ),
+//     .debug_wb_rf_wdata(debug_wb_rf_wdata)
+// );
 //cpu axi wrap
 axi_wrap u_cpu_axi_wrap(
   .m_aclk    ( cpu_clk     ),
