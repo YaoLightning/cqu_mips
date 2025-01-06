@@ -152,7 +152,7 @@ module inst_decode (
     //curr_alu_inst value
     always @(posedge clk) begin
 
-        if (id_valid) begin
+        if (if_valid) begin
             case (instruction[31:26])
                 `EXE_ADDI   :curr_alu_inst = `EXE_ADDI_OP;
                 `EXE_ADDIU  :curr_alu_inst = `EXE_ADDIU_OP;

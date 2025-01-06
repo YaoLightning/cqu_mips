@@ -73,9 +73,9 @@ module execute(
     output wire [ 4:0] write_reg,       // Register address to be written
     output wire        reg_write_out,   // Register write enable signal
     output wire        mem_to_reg_out,
-    output wire [31:0] mem_addr_out,    // Address memory for read or write
+    output wire [31:0] mem_data_out,    // Address memory for read or write
 
-    output wire        exe_vaild,
+    output wire        exe_valid,
 
     output wire [31:0] hi_out,        // hi output
     output wire [31:0] lo_out,        // lo output
@@ -93,6 +93,7 @@ reg        mem_to_reg_reg;
 reg        mem_read_reg;  
 reg        mem_write_reg;
 reg [31:0] inst;
+reg [31:0] mem_data_out_reg;
 reg        arith_stall_reg;
 reg        exe_valid_reg;
 
@@ -104,6 +105,7 @@ assign mem_read_out     = mem_read_reg;
 assign mem_write_out    = mem_write_reg;
 assign inst_out         = inst;
 assign exe_valid        = exe_valid_reg;
+assign mem_data_out     = mem_data_out_reg;
 
 always @(posedge clk or negedge rstn) begin
     if (!rstn) begin
@@ -119,7 +121,8 @@ always @(posedge clk or negedge rstn) begin
         inst            <= 32'h0;
         arith_stall_reg <= 1'b0;
         exe_valid_reg  <= 1'b0;
-    end else if (!stall) begin
+        mem_data_out_reg <= 32'h0;
+    end else if (stall) begin
         rs_reg          <= rs_in;
         rt_reg          <= rt_in;
         aluop_reg       <= aluop_in;
@@ -132,6 +135,7 @@ always @(posedge clk or negedge rstn) begin
         inst            <= inst_in;
         arith_stall_reg <= 1'b0;
         exe_valid_reg  <= 1'b0;
+        mem_data_out_reg <= rt_in;
     end else begin
         arith_stall_reg <= arith_stall_reg;
 
@@ -145,6 +149,7 @@ always @(posedge clk or negedge rstn) begin
         mem_read_reg    <= mem_read_reg;
         mem_write_reg   <= mem_write_reg;
         inst            <= inst;
+        mem_data_out_reg <= rt_in;
 
         arith_stall_reg <= 1'b1;
         exe_valid_reg  <= 1'b1;
@@ -163,7 +168,7 @@ assign alu_src1 =
     // (forwardaE_in[1] & forwardData_mem) |
     // (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL & rt_reg) | 
     ((inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL) |
-    (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)) ?
+    ( inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)) ?
     (rt_in) :
     (rs_in);
 assign alu_src2 = 

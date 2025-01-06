@@ -154,6 +154,7 @@ module datapath(
     wire [31:0] rs_exe;
     wire [31:0] rt_exe;
 
+
     // exe -> mem signal
     wire        reg_write_EXE_MEM;
     wire [31:0] exe_result_EXE_MEM;
@@ -164,6 +165,7 @@ module datapath(
 
     wire [31:0] inst_EXE_MEM;
     wire [31:0] pc_out_EXE_MEM;
+    wire [31:0] mem_data_EXE_MEM;
 
     // mem signal definition
     wire [31:0] memory_addr_mem;
@@ -184,7 +186,7 @@ module datapath(
     wire [4 :0] reg_write_addr_wb;
 
     // TODO: jumpaddress calculation
-    assign pc_in_if = !rstn ? 32'b0 :
+    assign pc_in_if = !rstn ? 32'b0 : if_stall ? pc_out_IF_ID : !if_valid_ ? pc_out_IF_ID :
                      do_jump_id ? jump_pc_id : (pc_out_IF_ID + 4);
 
     assign write_reg_ID_EXE = reg_dst_ID_EXE ? rd_ID_EXE : rt_id;
@@ -205,6 +207,7 @@ module datapath(
     assign inst_IF_ID = instr;
     assign memwrite = mem_write_EXE_MEM;
     assign aluout = exe_result_EXE_MEM;
+    assign writedata = mem_data_EXE_MEM;
 
 
     // ************************************************************************ //
@@ -333,6 +336,10 @@ module datapath(
         .mem_read_out    (mem_read_EXE_MEM),
         .mem_write_out   (mem_write_EXE_MEM),
 
+        .exe_valid       (exe_valid_),
+
+        .mem_data_out    (mem_data_EXE_MEM),
+
         .inst_in         (inst_ID_EXE),
         .inst_out        (inst_EXE_MEM),
 
@@ -350,7 +357,7 @@ module datapath(
 
         .mem_read_in     (mem_read_EXE_MEM),
         .mem_write_in    (mem_write_EXE_MEM),
-        .mem_read_data_in(mem_read_data_MEM_WB),
+        .mem_read_data_in(readdata),
 
         .mem_to_reg_in   (mem_to_reg_EXE_MEM),
 
