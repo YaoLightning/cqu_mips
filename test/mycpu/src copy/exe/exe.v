@@ -162,7 +162,8 @@ assign alu_src1 =
     // (forwardaE_in[0] & forwardData_exe) |
     // (forwardaE_in[1] & forwardData_mem) |
     // (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL & rt_reg) | 
-    (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL) ?
+    ((inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL) |
+    (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)) ?
     (rt_in) :
     (rs_in);
 assign alu_src2 = 

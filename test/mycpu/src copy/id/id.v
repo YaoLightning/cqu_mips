@@ -549,14 +549,14 @@ module inst_decode (
             // `EXE_BLEZ: ascii<= "BLEZ";
             // `EXE_BNE: ascii<= "BNE";
             
-            // `EXE_LB: ascii<= "LB";
-            // `EXE_LBU: ascii<= "LBU";
-            // `EXE_LH: ascii<= "LH";
-            // `EXE_LHU: ascii<= "LHU";
-            // `EXE_LW: ascii<= "LW";
-            // `EXE_SB: ascii<= "SB";
-            // `EXE_SH: ascii<= "SH";
-            // `EXE_SW: ascii<= "SW";
+            `EXE_LB: ascii<= "LB";
+            `EXE_LBU: ascii<= "LBU";
+            `EXE_LH: ascii<= "LH";
+            `EXE_LHU: ascii<= "LHU";
+            `EXE_LW: ascii<= "LW";
+            `EXE_SB: ascii<= "SB";
+            `EXE_SH: ascii<= "SH";
+            `EXE_SW: ascii<= "SW";
             6'b000001: begin 
                 case (instruction[20:16])
                     `EXE_BGEZ: ascii<= "BGEZ";
