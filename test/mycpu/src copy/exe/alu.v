@@ -143,10 +143,9 @@ module alu (
                     `EXE_LWL_OP: result          = b;
                     `EXE_LWR_OP: result          = b;
                     `EXE_PREF_OP: result         = 32'b0;
-                    `EXE_SB_OP: result           = 32'b0;
-                    `EXE_SC_OP: result           = 32'b0;
-                    `EXE_SH_OP: result           = 32'b0;
-                    `EXE_SW_OP: result           = 32'b0;
+                    `EXE_SB_OP: result           = a + b;
+                    `EXE_SH_OP: result           = a + b;
+                    `EXE_SW_OP: result           = a + b;
                     `EXE_SWL_OP: result          = 32'b0;
                     `EXE_SWR_OP: result          = 32'b0;
                     `EXE_SYNC_OP: result         = 32'b0;

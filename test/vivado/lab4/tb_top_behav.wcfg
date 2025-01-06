@@ -11,12 +11,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="88.220 ns"></ZoomStartTime>
-      <ZoomEndTime time="219.321 ns"></ZoomEndTime>
-      <Cursor1Time time="122.120 ns"></Cursor1Time>
+      <ZoomStartTime time="74.160 ns"></ZoomStartTime>
+      <ZoomEndTime time="215.686 ns"></ZoomEndTime>
+      <Cursor1Time time="135.075 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="293"></NameColumnWidth>
+      <NameColumnWidth column_width="289"></NameColumnWidth>
       <ValueColumnWidth column_width="60"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="5" />
@@ -188,10 +188,6 @@
                <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/funct_reg">
                   <obj_property name="ElementShortName">funct_reg[5:0]</obj_property>
                   <obj_property name="ObjectShortName">funct_reg[5:0]</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/alu_src_reg">
-                  <obj_property name="ElementShortName">alu_src_reg</obj_property>
-                  <obj_property name="ObjectShortName">alu_src_reg</obj_property>
                </wvobject>
                <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/reg_dst_reg">
                   <obj_property name="ElementShortName">reg_dst_reg</obj_property>
@@ -391,6 +387,14 @@
                <obj_property name="ElementShortName">mem_to_reg_out</obj_property>
                <obj_property name="ObjectShortName">mem_to_reg_out</obj_property>
             </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/exe_result">
+            <obj_property name="ElementShortName">exe_result[31:0]</obj_property>
+            <obj_property name="ObjectShortName">exe_result[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/exe_result_reg">
+            <obj_property name="ElementShortName">exe_result_reg[31:0]</obj_property>
+            <obj_property name="ObjectShortName">exe_result_reg[31:0]</obj_property>
          </wvobject>
          <wvobject type="group" fp_name="group166">
             <obj_property name="label">wb</obj_property>

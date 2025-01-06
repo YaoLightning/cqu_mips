@@ -105,7 +105,14 @@ assign mem_read_out     = mem_read_reg;
 assign mem_write_out    = mem_write_reg;
 assign inst_out         = inst;
 assign exe_valid        = exe_valid_reg;
-assign mem_data_out     = mem_data_out_reg;
+assign mem_data_out     = 
+    (inst[31:26] == `EXE_SB) ? (
+        mem_data_out_reg & {{24'b0}, 8'hFF}
+    ) :
+    (inst[31:26] == `EXE_SH) ? (
+        mem_data_out_reg & {{16'b0}, 16'hFF}
+    ) :
+    mem_data_out_reg;
 
 always @(posedge clk or negedge rstn) begin
     if (!rstn) begin
@@ -168,7 +175,7 @@ assign alu_src1 =
     // (forwardaE_in[1] & forwardData_mem) |
     // (inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL & rt_reg) | 
     ((inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SLL) |
-    ( inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)) ?
+    ( inst_in[31:26] == 6'b000000 & inst_in[5:0] == `EXE_SRL)  ) ?
     (rt_in) :
     (rs_in);
 assign alu_src2 = 

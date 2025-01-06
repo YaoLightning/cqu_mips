@@ -67,16 +67,16 @@ module inst_decode (
     output wire             lo_write,
 
     //addr,enble,data for jump or branch
-    input   wire [31:0]     rs_data,
-    input   wire [31:0]     rt_data,
-    output  wire            do_store_rd,            // enable for store pc_plus_4+4 to rd_reg 
-    output  wire            do_store_31,            // enable for store pc_plus_4+4 to reg[31]  
-    output  wire [31:0]     data_to_store,          // calculate store data 
-    output  wire [31:0]     addr_to_store,          // choose store addr
-    output  wire [31:0]     jump_pc,                // jump_pc 跳转目的地址
-    output  wire            do_jump,                // do_jump 是否进行跳转
+    input  wire [31:0]      rs_data,
+    input  wire [31:0]      rt_data,
+    output wire             do_store_rd,            // enable for store pc_plus_4+4 to rd_reg 
+    output wire             do_store_31,            // enable for store pc_plus_4+4 to reg[31]  
+    output wire [31:0]      data_to_store,          // calculate store data 
+    output wire [31:0]      addr_to_store,          // choose store addr
+    output wire [31:0]      jump_pc,                // jump_pc 跳转目的地址
+    output wire             do_jump,                // do_jump 是否进行跳转
 
-    output  wire            id_valid
+    output wire             id_valid
 );
 
     // Internal registers to store output values
@@ -94,8 +94,8 @@ module inst_decode (
     reg [2 :0] curr_alu_sel;
 
     //for jump or branch
-    reg [31:0]reg_jump_pc;     
-    reg reg_do_jump;   
+    reg [31:0] reg_jump_pc;     
+    reg        reg_do_jump;   
 
     reg [31:0] pc_reg;
 
@@ -221,7 +221,7 @@ module inst_decode (
             case (instruction[31:26])
                 `EXE_NOP:
                     case (instruction[5:0])
-                        `EXE_SLL:
+                        `EXE_SLL, `EXE_SRL:
                             alu_src_reg = 1'b1;
                         default: 
                             alu_src_reg = 1'b0;
@@ -230,8 +230,8 @@ module inst_decode (
                 `EXE_ADDI, `EXE_ADDIU, `EXE_SLTI, `EXE_SLTIU,
                 `EXE_LB, `EXE_LBU, `EXE_LH, `EXE_LHU, 
                 `EXE_LL, `EXE_LW, `EXE_LWL, `EXE_LWR,
-                `EXE_SB, `EXE_SC, `EXE_SH, `EXE_SW, 
-                `EXE_SWL, `EXE_SWR, `EXE_SLL: 
+                `EXE_SB, `EXE_SH, `EXE_SW, 
+                `EXE_SWL, `EXE_SWR, `EXE_SLL, `EXE_SRL: 
                     alu_src_reg = 1'b1;
                 default: 
                     alu_src_reg = 1'b0;
