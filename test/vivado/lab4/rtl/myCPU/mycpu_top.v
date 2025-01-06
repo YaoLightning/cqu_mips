@@ -23,7 +23,7 @@ module mycpu_top(
 	wire [31:0] aluout, writedata, readdata;
     mips mips(
         .clk(clk),
-        .rst(~resetn),
+        .rstn(resetn),
         //instr
         // .inst_en(inst_en),
         .pc(pc),                    //pcF

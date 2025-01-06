@@ -1,4 +1,4 @@
-   .org 0x0
+      .org 0x0
    .set noat
    .global _start
 _start:

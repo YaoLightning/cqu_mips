@@ -11,91 +11,589 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="929666fs"></ZoomStartTime>
-      <ZoomEndTime time="981967fs"></ZoomEndTime>
-      <Cursor1Time time="1000000fs"></Cursor1Time>
+      <ZoomStartTime time="136.970 ns"></ZoomStartTime>
+      <ZoomEndTime time="267.671 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="199"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <NameColumnWidth column_width="297"></NameColumnWidth>
+      <ValueColumnWidth column_width="60"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="5" />
-   <wvobject fp_name="/tb_top/clk" type="logic">
+   <wvobject type="logic" fp_name="/tb_top/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top/resetn" type="logic">
+   <wvobject type="logic" fp_name="/tb_top/resetn">
       <obj_property name="ElementShortName">resetn</obj_property>
       <obj_property name="ObjectShortName">resetn</obj_property>
    </wvobject>
-   <wvobject fp_name="group25" type="group">
+   <wvobject type="group" fp_name="group25">
       <obj_property name="label">cpu</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_top/soc/cpu/clk" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/cpu/clk">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/cpu/resetn" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/cpu/resetn">
          <obj_property name="ElementShortName">resetn</obj_property>
          <obj_property name="ObjectShortName">resetn</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/cpu/pc" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/cpu/pc">
          <obj_property name="ElementShortName">pc[31:0]</obj_property>
          <obj_property name="ObjectShortName">pc[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/cpu/instdec/ascii" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/cpu/instdec/ascii">
          <obj_property name="ElementShortName">ascii[39:0]</obj_property>
          <obj_property name="ObjectShortName">ascii[39:0]</obj_property>
          <obj_property name="Radix">ASCIIRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/cpu/instr" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/cpu/instr">
          <obj_property name="ElementShortName">instr[31:0]</obj_property>
          <obj_property name="ObjectShortName">instr[31:0]</obj_property>
       </wvobject>
+      <wvobject type="group" fp_name="group175">
+         <obj_property name="label">dp</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/pc">
+            <obj_property name="ElementShortName">pc[31:0]</obj_property>
+            <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/pc_in_if">
+            <obj_property name="ElementShortName">pc_in_if[31:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_in_if[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/pc_out_IF_ID">
+            <obj_property name="ElementShortName">pc_out_IF_ID[31:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_out_IF_ID[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/pc_out_ID_EXE">
+            <obj_property name="ElementShortName">pc_out_ID_EXE[31:0]</obj_property>
+            <obj_property name="ObjectShortName">pc_out_ID_EXE[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/do_jump_id">
+            <obj_property name="ElementShortName">do_jump_id</obj_property>
+            <obj_property name="ObjectShortName">do_jump_id</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_to_reg_MEM_WB">
+            <obj_property name="ElementShortName">mem_to_reg_MEM_WB</obj_property>
+            <obj_property name="ObjectShortName">mem_to_reg_MEM_WB</obj_property>
+         </wvobject>
+         <wvobject type="group" fp_name="group166">
+            <obj_property name="label">if</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/stall">
+               <obj_property name="ElementShortName">stall</obj_property>
+               <obj_property name="ObjectShortName">stall</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/clk">
+               <obj_property name="ElementShortName">clk</obj_property>
+               <obj_property name="ObjectShortName">clk</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/pc">
+               <obj_property name="ElementShortName">pc[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/pc_in">
+               <obj_property name="ElementShortName">pc_in[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc_in[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/pc_out">
+               <obj_property name="ElementShortName">pc_out[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc_out[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/if_stage/if_valid">
+               <obj_property name="ElementShortName">if_valid</obj_property>
+               <obj_property name="ObjectShortName">if_valid</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="group" fp_name="group166">
+            <obj_property name="label">id</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/instruction">
+               <obj_property name="ElementShortName">instruction[31:0]</obj_property>
+               <obj_property name="ObjectShortName">instruction[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/ascii">
+               <obj_property name="ElementShortName">ascii[39:0]</obj_property>
+               <obj_property name="ObjectShortName">ascii[39:0]</obj_property>
+               <obj_property name="Radix">ASCIIRADIX</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/instruction_reg">
+               <obj_property name="ElementShortName">instruction_reg[31:0]</obj_property>
+               <obj_property name="ObjectShortName">instruction_reg[31:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/pc">
+               <obj_property name="ElementShortName">pc[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/do_jump">
+               <obj_property name="ElementShortName">do_jump</obj_property>
+               <obj_property name="ObjectShortName">do_jump</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/imm_reg">
+               <obj_property name="ElementShortName">imm_reg[15:0]</obj_property>
+               <obj_property name="ObjectShortName">imm_reg[15:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/rs_reg">
+               <obj_property name="ElementShortName">rs_reg[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rs_reg[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/rt_reg">
+               <obj_property name="ElementShortName">rt_reg[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rt_reg[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/rd_reg">
+               <obj_property name="ElementShortName">rd_reg[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rd_reg[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/extended_imm">
+               <obj_property name="ElementShortName">extended_imm[31:0]</obj_property>
+               <obj_property name="ObjectShortName">extended_imm[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="group" fp_name="group341">
+               <obj_property name="label">decode_info</obj_property>
+               <obj_property name="DisplayName">label</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/alu_src_reg">
+                  <obj_property name="ElementShortName">alu_src_reg</obj_property>
+                  <obj_property name="ObjectShortName">alu_src_reg</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/shamt_reg">
+                  <obj_property name="ElementShortName">shamt_reg[4:0]</obj_property>
+                  <obj_property name="ObjectShortName">shamt_reg[4:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/is_zero_shamt">
+                  <obj_property name="ElementShortName">is_zero_shamt</obj_property>
+                  <obj_property name="ObjectShortName">is_zero_shamt</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/opcode_reg">
+                  <obj_property name="ElementShortName">opcode_reg[5:0]</obj_property>
+                  <obj_property name="ObjectShortName">opcode_reg[5:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/curr_alu_sel">
+                  <obj_property name="ElementShortName">curr_alu_sel[2:0]</obj_property>
+                  <obj_property name="ObjectShortName">curr_alu_sel[2:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/funct_reg">
+                  <obj_property name="ElementShortName">funct_reg[5:0]</obj_property>
+                  <obj_property name="ObjectShortName">funct_reg[5:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/alu_src_reg">
+                  <obj_property name="ElementShortName">alu_src_reg</obj_property>
+                  <obj_property name="ObjectShortName">alu_src_reg</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/reg_dst_reg">
+                  <obj_property name="ElementShortName">reg_dst_reg</obj_property>
+                  <obj_property name="ObjectShortName">reg_dst_reg</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/reg_write_reg">
+                  <obj_property name="ElementShortName">reg_write_reg</obj_property>
+                  <obj_property name="ObjectShortName">reg_write_reg</obj_property>
+               </wvobject>
+            </wvobject>
+            <wvobject type="group" fp_name="group296">
+               <obj_property name="label">ctrl_dp</obj_property>
+               <obj_property name="DisplayName">label</obj_property>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/forwardaD">
+                  <obj_property name="ElementShortName">forwardaD</obj_property>
+                  <obj_property name="ObjectShortName">forwardaD</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/forwardaE">
+                  <obj_property name="ElementShortName">forwardaE[1:0]</obj_property>
+                  <obj_property name="ObjectShortName">forwardaE[1:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/forwardbD">
+                  <obj_property name="ElementShortName">forwardbD</obj_property>
+                  <obj_property name="ObjectShortName">forwardbD</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/forwardbE">
+                  <obj_property name="ElementShortName">forwardbE[1:0]</obj_property>
+                  <obj_property name="ObjectShortName">forwardbE[1:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/alu_src_ID_EXE">
+                  <obj_property name="ElementShortName">alu_src_ID_EXE</obj_property>
+                  <obj_property name="ObjectShortName">alu_src_ID_EXE</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/extended_imm_ID_EXE">
+                  <obj_property name="ElementShortName">extended_imm_ID_EXE[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">extended_imm_ID_EXE[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/regfile_data_rs">
+                  <obj_property name="ElementShortName">regfile_data_rs[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">regfile_data_rs[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/regfile_data_rt">
+                  <obj_property name="ElementShortName">regfile_data_rt[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">regfile_data_rt[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_result_EXE_MEM">
+                  <obj_property name="ElementShortName">exe_result_EXE_MEM[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">exe_result_EXE_MEM[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_write_data_MEM_WB">
+                  <obj_property name="ElementShortName">reg_write_data_MEM_WB[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">reg_write_data_MEM_WB[31:0]</obj_property>
+               </wvobject>
+            </wvobject>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/id_stage/stall">
+            <obj_property name="ElementShortName">stall</obj_property>
+            <obj_property name="ObjectShortName">stall</obj_property>
+         </wvobject>
+         <wvobject type="group" fp_name="group166">
+            <obj_property name="label">exe</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/rstn">
+               <obj_property name="ElementShortName">rstn</obj_property>
+               <obj_property name="ObjectShortName">rstn</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/stall">
+               <obj_property name="ElementShortName">stall</obj_property>
+               <obj_property name="ObjectShortName">stall</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/rs_in">
+               <obj_property name="ElementShortName">rs_in[31:0]</obj_property>
+               <obj_property name="ObjectShortName">rs_in[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/rt_in">
+               <obj_property name="ElementShortName">rt_in[31:0]</obj_property>
+               <obj_property name="ObjectShortName">rt_in[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/imm_in">
+               <obj_property name="ElementShortName">imm_in[31:0]</obj_property>
+               <obj_property name="ObjectShortName">imm_in[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/imm_en">
+               <obj_property name="ElementShortName">imm_en</obj_property>
+               <obj_property name="ObjectShortName">imm_en</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_result">
+               <obj_property name="ElementShortName">alu_result[31:0]</obj_property>
+               <obj_property name="ObjectShortName">alu_result[31:0]</obj_property>
+               <obj_property name="CustomSignalColor">#800080</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/aluop_reg">
+               <obj_property name="ElementShortName">aluop_reg[7:0]</obj_property>
+               <obj_property name="ObjectShortName">aluop_reg[7:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alusel_reg">
+               <obj_property name="ElementShortName">alusel_reg[2:0]</obj_property>
+               <obj_property name="ObjectShortName">alusel_reg[2:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/reg_write_reg">
+               <obj_property name="ElementShortName">reg_write_reg</obj_property>
+               <obj_property name="ObjectShortName">reg_write_reg</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/mem_to_reg_reg">
+               <obj_property name="ElementShortName">mem_to_reg_reg</obj_property>
+               <obj_property name="ObjectShortName">mem_to_reg_reg</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/mem_read_reg">
+               <obj_property name="ElementShortName">mem_read_reg</obj_property>
+               <obj_property name="ObjectShortName">mem_read_reg</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/mem_write_reg">
+               <obj_property name="ElementShortName">mem_write_reg</obj_property>
+               <obj_property name="ObjectShortName">mem_write_reg</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_src1">
+               <obj_property name="ElementShortName">alu_src1[31:0]</obj_property>
+               <obj_property name="ObjectShortName">alu_src1[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_src2">
+               <obj_property name="ElementShortName">alu_src2[31:0]</obj_property>
+               <obj_property name="ObjectShortName">alu_src2[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="group" fp_name="group170">
+               <obj_property name="label">alu</obj_property>
+               <obj_property name="DisplayName">label</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/a">
+                  <obj_property name="ElementShortName">a[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">a[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/b">
+                  <obj_property name="ElementShortName">b[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">b[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/alu_op">
+                  <obj_property name="ElementShortName">alu_op[7:0]</obj_property>
+                  <obj_property name="ObjectShortName">alu_op[7:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/alu_sel">
+                  <obj_property name="ElementShortName">alu_sel[2:0]</obj_property>
+                  <obj_property name="ObjectShortName">alu_sel[2:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/result">
+                  <obj_property name="ElementShortName">result[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">result[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/zero">
+                  <obj_property name="ElementShortName">zero</obj_property>
+                  <obj_property name="ObjectShortName">zero</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/hi">
+                  <obj_property name="ElementShortName">hi[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">hi[31:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/alu_unit/lo">
+                  <obj_property name="ElementShortName">lo[31:0]</obj_property>
+                  <obj_property name="ObjectShortName">lo[31:0]</obj_property>
+               </wvobject>
+            </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_result_EXE_MEM">
+            <obj_property name="ElementShortName">exe_result_EXE_MEM[31:0]</obj_property>
+            <obj_property name="ObjectShortName">exe_result_EXE_MEM[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="group" fp_name="group166">
+            <obj_property name="label">mem</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/inst_out">
+               <obj_property name="ElementShortName">inst_out[31:0]</obj_property>
+               <obj_property name="ObjectShortName">inst_out[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/pc_out">
+               <obj_property name="ElementShortName">pc_out[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc_out[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/final_result">
+               <obj_property name="ElementShortName">final_result[31:0]</obj_property>
+               <obj_property name="ObjectShortName">final_result[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/write_reg_out">
+               <obj_property name="ElementShortName">write_reg_out[4:0]</obj_property>
+               <obj_property name="ObjectShortName">write_reg_out[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/reg_write_out">
+               <obj_property name="ElementShortName">reg_write_out</obj_property>
+               <obj_property name="ObjectShortName">reg_write_out</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/mem_stage/mem_to_reg_out">
+               <obj_property name="ElementShortName">mem_to_reg_out</obj_property>
+               <obj_property name="ObjectShortName">mem_to_reg_out</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="group" fp_name="group166">
+            <obj_property name="label">wb</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/wb_stage/write_addr_in">
+               <obj_property name="ElementShortName">write_addr_in[4:0]</obj_property>
+               <obj_property name="ObjectShortName">write_addr_in[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/wb_stage/reg_write">
+               <obj_property name="ElementShortName">reg_write</obj_property>
+               <obj_property name="ObjectShortName">reg_write</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/wb_stage/inst_in">
+               <obj_property name="ElementShortName">inst_in[31:0]</obj_property>
+               <obj_property name="ObjectShortName">inst_in[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/wb_stage/reg_inst">
+               <obj_property name="ElementShortName">reg_inst[31:0]</obj_property>
+               <obj_property name="ObjectShortName">reg_inst[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/wb_stage/pc">
+               <obj_property name="ElementShortName">pc[31:0]</obj_property>
+               <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="group" fp_name="group179">
+            <obj_property name="label">reg</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/clk">
+               <obj_property name="ElementShortName">clk</obj_property>
+               <obj_property name="ObjectShortName">clk</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/rstn">
+               <obj_property name="ElementShortName">rstn</obj_property>
+               <obj_property name="ObjectShortName">rstn</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/reg_write">
+               <obj_property name="ElementShortName">reg_write</obj_property>
+               <obj_property name="ObjectShortName">reg_write</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/waddr">
+               <obj_property name="ElementShortName">waddr[4:0]</obj_property>
+               <obj_property name="ObjectShortName">waddr[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/wdata">
+               <obj_property name="ElementShortName">wdata[31:0]</obj_property>
+               <obj_property name="ObjectShortName">wdata[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/raddr1">
+               <obj_property name="ElementShortName">raddr1[4:0]</obj_property>
+               <obj_property name="ObjectShortName">raddr1[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/rdata1">
+               <obj_property name="ElementShortName">rdata1[31:0]</obj_property>
+               <obj_property name="ObjectShortName">rdata1[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/raddr2">
+               <obj_property name="ElementShortName">raddr2[4:0]</obj_property>
+               <obj_property name="ObjectShortName">raddr2[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/rdata2">
+               <obj_property name="ElementShortName">rdata2[31:0]</obj_property>
+               <obj_property name="ObjectShortName">rdata2[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/reg_file_unit/reg_file">
+               <obj_property name="ElementShortName">reg_file[0:31][31:0]</obj_property>
+               <obj_property name="ObjectShortName">reg_file[0:31][31:0]</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="group" fp_name="group284">
+            <obj_property name="label">hazard</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/stallF">
+               <obj_property name="ElementShortName">stallF</obj_property>
+               <obj_property name="ObjectShortName">stallF</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/rsD">
+               <obj_property name="ElementShortName">rsD[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rsD[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/rtD">
+               <obj_property name="ElementShortName">rtD[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rtD[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/branchD">
+               <obj_property name="ElementShortName">branchD</obj_property>
+               <obj_property name="ObjectShortName">branchD</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/forwardaD">
+               <obj_property name="ElementShortName">forwardaD</obj_property>
+               <obj_property name="ObjectShortName">forwardaD</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/forwardbD">
+               <obj_property name="ElementShortName">forwardbD</obj_property>
+               <obj_property name="ObjectShortName">forwardbD</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/stallD">
+               <obj_property name="ElementShortName">stallD</obj_property>
+               <obj_property name="ObjectShortName">stallD</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/rsE">
+               <obj_property name="ElementShortName">rsE[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rsE[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/rtE">
+               <obj_property name="ElementShortName">rtE[4:0]</obj_property>
+               <obj_property name="ObjectShortName">rtE[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/writeregE">
+               <obj_property name="ElementShortName">writeregE[4:0]</obj_property>
+               <obj_property name="ObjectShortName">writeregE[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/regwriteE">
+               <obj_property name="ElementShortName">regwriteE</obj_property>
+               <obj_property name="ObjectShortName">regwriteE</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/memtoregE">
+               <obj_property name="ElementShortName">memtoregE</obj_property>
+               <obj_property name="ObjectShortName">memtoregE</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/writeregM">
+               <obj_property name="ElementShortName">writeregM[4:0]</obj_property>
+               <obj_property name="ObjectShortName">writeregM[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/regwriteM">
+               <obj_property name="ElementShortName">regwriteM</obj_property>
+               <obj_property name="ObjectShortName">regwriteM</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/memtoregM">
+               <obj_property name="ElementShortName">memtoregM</obj_property>
+               <obj_property name="ObjectShortName">memtoregM</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/writeregW">
+               <obj_property name="ElementShortName">writeregW[4:0]</obj_property>
+               <obj_property name="ObjectShortName">writeregW[4:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/regwriteW">
+               <obj_property name="ElementShortName">regwriteW</obj_property>
+               <obj_property name="ObjectShortName">regwriteW</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/flushE">
+               <obj_property name="ElementShortName">flushE</obj_property>
+               <obj_property name="ObjectShortName">flushE</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/forwardaE">
+               <obj_property name="ElementShortName">forwardaE[1:0]</obj_property>
+               <obj_property name="ObjectShortName">forwardaE[1:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/forwardbE">
+               <obj_property name="ElementShortName">forwardbE[1:0]</obj_property>
+               <obj_property name="ObjectShortName">forwardbE[1:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/lwstallD">
+               <obj_property name="ElementShortName">lwstallD</obj_property>
+               <obj_property name="ObjectShortName">lwstallD</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/branchstallD">
+               <obj_property name="ElementShortName">branchstallD</obj_property>
+               <obj_property name="ObjectShortName">branchstallD</obj_property>
+            </wvobject>
+         </wvobject>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="group13" type="group">
+   <wvobject type="group" fp_name="group13">
       <obj_property name="label">inst_ram</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_top/soc/inst_ram/clka" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/inst_ram/clka">
          <obj_property name="ElementShortName">clka</obj_property>
          <obj_property name="ObjectShortName">clka</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/inst_ram/ena" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/inst_ram/ena">
          <obj_property name="ElementShortName">ena</obj_property>
          <obj_property name="ObjectShortName">ena</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/inst_ram/douta" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/inst_ram/douta">
          <obj_property name="ElementShortName">douta[31:0]</obj_property>
          <obj_property name="ObjectShortName">douta[31:0]</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject fp_name="group12" type="group">
+   <wvobject type="group" fp_name="group12">
       <obj_property name="label">data_ram</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_top/soc/data_ram/clka" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/data_ram/clka">
          <obj_property name="ElementShortName">clka</obj_property>
          <obj_property name="ObjectShortName">clka</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/data_ram/ena" type="logic">
+      <wvobject type="logic" fp_name="/tb_top/soc/data_ram/ena">
          <obj_property name="ElementShortName">ena</obj_property>
          <obj_property name="ObjectShortName">ena</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/data_ram/wea" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/data_ram/wea">
          <obj_property name="ElementShortName">wea[3:0]</obj_property>
          <obj_property name="ObjectShortName">wea[3:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/data_ram/addra" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/data_ram/addra">
          <obj_property name="ElementShortName">addra[31:0]</obj_property>
          <obj_property name="ObjectShortName">addra[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/data_ram/dina" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/data_ram/dina">
          <obj_property name="ElementShortName">dina[31:0]</obj_property>
          <obj_property name="ObjectShortName">dina[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_top/soc/data_ram/douta" type="array">
+      <wvobject type="array" fp_name="/tb_top/soc/data_ram/douta">
          <obj_property name="ElementShortName">douta[31:0]</obj_property>
          <obj_property name="ObjectShortName">douta[31:0]</obj_property>
       </wvobject>
