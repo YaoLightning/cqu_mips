@@ -97,11 +97,11 @@ module memory_access(
     end
 
     assign final_result = 
-    ((inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SW) |
-    ( inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SH) |
-    ( inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SB)) ?
-    mem_read_data_in :
-    exe_result_reg ;
+            ((inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SW) |
+            ( inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SH) |
+            ( inst[31:26] == 6'b000000 & inst[5:0] == `EXE_SB)) ?
+            mem_read_data_in :
+            exe_result_reg ;
 
 
     reg [31:0] pc;

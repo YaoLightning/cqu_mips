@@ -11,12 +11,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="101.083 ns"></ZoomStartTime>
-      <ZoomEndTime time="231.784 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="88.220 ns"></ZoomStartTime>
+      <ZoomEndTime time="219.321 ns"></ZoomEndTime>
+      <Cursor1Time time="122.120 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="297"></NameColumnWidth>
+      <NameColumnWidth column_width="293"></NameColumnWidth>
       <ValueColumnWidth column_width="60"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="5" />
@@ -293,6 +293,10 @@
                <obj_property name="ElementShortName">alusel_reg[2:0]</obj_property>
                <obj_property name="ObjectShortName">alusel_reg[2:0]</obj_property>
             </wvobject>
+            <wvobject type="array" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/write_reg_reg">
+               <obj_property name="ElementShortName">write_reg_reg[4:0]</obj_property>
+               <obj_property name="ObjectShortName">write_reg_reg[4:0]</obj_property>
+            </wvobject>
             <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/exe_stage/reg_write_reg">
                <obj_property name="ElementShortName">reg_write_reg</obj_property>
                <obj_property name="ObjectShortName">reg_write_reg</obj_property>
@@ -461,7 +465,6 @@
          <wvobject type="group" fp_name="group284">
             <obj_property name="label">hazard</obj_property>
             <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="isExpanded"></obj_property>
             <wvobject type="logic" fp_name="/tb_top/soc/cpu/mips/datapath_m/hazard_unit/stallF">
                <obj_property name="ElementShortName">stallF</obj_property>
                <obj_property name="ObjectShortName">stallF</obj_property>

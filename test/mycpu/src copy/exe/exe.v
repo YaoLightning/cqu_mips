@@ -122,7 +122,7 @@ always @(posedge clk or negedge rstn) begin
         arith_stall_reg <= 1'b0;
         exe_valid_reg  <= 1'b0;
         mem_data_out_reg <= 32'h0;
-    end else if (stall) begin
+    end else if (!stall) begin
         rs_reg          <= rs_in;
         rt_reg          <= rt_in;
         aluop_reg       <= aluop_in;
@@ -134,7 +134,7 @@ always @(posedge clk or negedge rstn) begin
         mem_write_reg   <= mem_write_in;
         inst            <= inst_in;
         arith_stall_reg <= 1'b0;
-        exe_valid_reg  <= 1'b0;
+        exe_valid_reg   <= 1'b1;
         mem_data_out_reg <= rt_in;
     end else begin
         arith_stall_reg <= arith_stall_reg;
@@ -152,7 +152,7 @@ always @(posedge clk or negedge rstn) begin
         mem_data_out_reg <= rt_in;
 
         arith_stall_reg <= 1'b1;
-        exe_valid_reg  <= 1'b1;
+        exe_valid_reg  <= 1'b0;
     end
 end
 
