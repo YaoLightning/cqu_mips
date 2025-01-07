@@ -42,13 +42,27 @@ module datapath(
     // input  [31:0] data_rdata   ,
     // input         data_addr_ok ,
     // input         data_data_ok ,
+    // Instruction SRAM signals
+    output wire        inst_sram_en,      // 指令 SRAM 使能信号
+    output wire [31:0] inst_sram_addr,    // 指令地址
+    input  wire [31:0] inst_sram_rdata,   // 指令读取数据
+    input  wire        i_stall,           // 指令阶段暂停信号
 
+    // Data SRAM signals
+    output wire        data_sram_en,      // 数据 SRAM 使能信号
+    output wire [31:0] data_sram_addr,    // 数据地址
+    input  wire [31:0] data_sram_rdata,   // 数据读取数据
+    output wire        data_sram_wen,     // 数据写使能信号
+    output wire [31:0] data_sram_wdata,   // 数据写入数据
+    input  wire        d_stall            // 数据阶段暂停信号
+
+    output wire longest_stall,
     // ************************************************************************ //
 
-    output [31:0] pc,
-    input  [31:0] instr,
+    // output [31:0] pc,
+    // input  [31:0] instr,
 
-    output        memwrite,
+    //output        memwrite,
     output [31:0] aluout,
     output [31:0] writedata,
     input  [31:0] readdata,
@@ -60,7 +74,27 @@ module datapath(
     output [4 :0] debug_wb_rf_wnum ,
     output [31:0] debug_wb_rf_wdata
 );
+    //inst 和 data stall信号待实现
+    
 
+    wire [31:0] pc;
+    wire [31:0] instr;
+    wire mem_write;
+    wire mem_read;
+    wire [31:0] aluout;
+    wire [31:0] writedata;
+    wire [31:0] readdata;
+
+    assign inst_sram_en = 1'b1;
+    assign inst_sram_addr = pc;
+    assign instr = inst_sram_rdata;
+
+    assign data_sram_en = mem_write||mem_read;
+    assign data_sram_wen = mem_write;
+    assign data_sram_addr = aluout;
+    assign readdata = data_sram_rdata;
+    assign data_sram_wdata = writedata;
+    assign longest_stall = i_stall | d_stall;//或者其他更长的暂停信号
     // implement all used modules here and link them
     // only implement the inter-connection between modules here
     // do not do any sequential logic inside the modules
